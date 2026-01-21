@@ -30,4 +30,9 @@ class SectionRegistry
     {
         return Arr::get(self::get($type), 'schema', []);
     }
+
+    public static function labelFor(string $type): string
+    {
+        return (string) Arr::get(self::get($type), 'label', $type);
+    }
 }

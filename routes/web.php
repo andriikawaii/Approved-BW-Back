@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\Pages\PagePreviewController;
+use App\Services\Seo\SitemapGenerator;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Admin;
 
@@ -15,7 +17,29 @@ Route::get('/home', fn () => redirect('/dashboard'))->name('home');
 // Root uvek vodi na dashboard
 Route::redirect('/', '/dashboard');
 
+Route::get('/sitemap.xml', function (SitemapGenerator $gen) {
+    $xml = Cache::remember('seo:sitemap.xml', now()->addHours(6), function () use ($gen) {
+        return $gen->generate();
+    });
 
+    return response($xml, 200)
+        ->header('Content-Type', 'application/xml; charset=UTF-8');
+})->name('seo.sitemap');
+
+Route::get('/robots.txt', function () {
+    $appUrl = rtrim(config('app.url'), '/');
+
+    $txt = implode("\n", [
+        "User-agent: *",
+        "Allow: /",
+        "",
+        "Sitemap: {$appUrl}/sitemap.xml",
+        "",
+    ]);
+
+    return response($txt, 200)
+        ->header('Content-Type', 'text/plain; charset=UTF-8');
+})->name('seo.robots');
 /*
 |--------------------------------------------------------------------------
 | Authenticated dashboard
@@ -31,7 +55,8 @@ Route::middleware(['auth', 'role:super_admin|editor|seo_manager'])->group(functi
     |--------------------------------------------------------------------------
     */
     Route::prefix('admin')->name('admin.')->group(function () {
-
+        Route::get('/pages/{page}/preview', [PagePreviewController::class, '__invoke'])
+            ->name('pages.preview');
         /*
         | Pages
         */
@@ -95,8 +120,11 @@ Route::middleware(['auth', 'role:super_admin|editor|seo_manager'])->group(functi
         /*
         | SEO & Ops
         */
-        Route::get('/redirects', Admin\Redirects\Index::class)->name('redirects.index');
-
+        Route::prefix('redirects')->name('redirects.')->group(function () {
+            Route::get('/', Admin\Redirects\Index::class)->name('index');
+            Route::get('/create', Admin\Redirects\Create::class)->name('create');
+            Route::get('/{redirect}/edit', Admin\Redirects\Edit::class)->name('edit');
+        });
         /*
         | System
         */
