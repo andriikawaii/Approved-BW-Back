@@ -1,4 +1,5 @@
 <?php
+// App\Observers\SectionObserver.php
 
 namespace App\Observers;
 
@@ -9,24 +10,24 @@ use Illuminate\Support\Facades\Cache;
 
 class SectionObserver
 {
-    public function created(Section $section): void { $this->forgetForSection($section); }
-    public function updated(Section $section): void { $this->forgetForSection($section); }
-    public function deleted(Section $section): void { $this->forgetForSection($section); }
-    public function restored(Section $section): void { $this->forgetForSection($section); }
-    public function forceDeleted(Section $section): void { $this->forgetForSection($section); }
+    public function created(Section $section): void { $this->handle($section); }
+    public function updated(Section $section): void { $this->handle($section); }
+    public function deleted(Section $section): void { $this->handle($section); }
+    public function restored(Section $section): void { $this->handle($section); }
+    public function forceDeleted(Section $section): void { $this->handle($section); }
 
-    protected function forgetForSection(Section $section): void
+    protected function handle(Section $section): void
     {
-        $fullPath = Page::query()
-            ->whereKey($section->page_id)
-            ->value('full_path');
+        $page = Page::find($section->page_id);
 
-        if ($fullPath) {
-            ApiPageController::forgetCacheForPath($fullPath);
+        if ($page) {
+            // ✅ da sitemap lastmod prati promene sekcija
+            $page->touch();
+
+            // ✅ bust page cache
+            ApiPageController::forgetCacheForPath($page->full_path);
         }
 
-        // nije obavezno, ali realno: content se promenio => updated_at page može da se menja,
-        // a i ti želiš da sitemap lastmod prati izmene.
         Cache::forget('seo:sitemap.xml');
     }
 }

@@ -8,9 +8,8 @@ class SitemapGenerator
 {
     public function generate(): string
     {
-        $appUrl = rtrim(config('app.url'), '/');
+        $frontUrl = rtrim(config('app.frontend_url', env('FRONTEND_URL', config('app.url'))), '/');
 
-        // Samo published stranice
         $pages = Page::query()
             ->select(['full_path', 'updated_at', 'canonical_url'])
             ->where('status', 'published')
@@ -20,19 +19,17 @@ class SitemapGenerator
         $urls = [];
 
         foreach ($pages as $page) {
-            // canonical ima prioritet ako je validan
-            $loc = $page->canonical_url ?: $this->fullUrlFromPath($appUrl, $page->full_path);
-
-            $lastmod = optional($page->updated_at)->toAtomString();
+            $loc = $page->canonical_url ?: $this->fullUrlFromPath($frontUrl, $page->full_path);
 
             $urls[] = [
                 'loc' => $loc,
-                'lastmod' => $lastmod,
+                'lastmod' => optional($page->updated_at)->toAtomString(),
             ];
         }
 
         return $this->renderXml($urls);
     }
+
 
     private function fullUrlFromPath(string $appUrl, string $fullPath): string
     {

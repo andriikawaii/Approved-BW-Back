@@ -45,6 +45,12 @@ class Index extends Component
         ]);
     }
 
+    public function delete(int $id): void
+    {
+        Redirect::whereKey($id)->delete();
+        $this->resetPage();
+    }
+
     public function render()
     {
         $query = Redirect::query();

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\Pages\PagePreviewController;
 use App\Services\Seo\SitemapGenerator;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Admin;
 
@@ -27,18 +28,19 @@ Route::get('/sitemap.xml', function (SitemapGenerator $gen) {
 })->name('seo.sitemap');
 
 Route::get('/robots.txt', function () {
-    $appUrl = rtrim(config('app.url'), '/');
+    $frontUrl = rtrim(config('app.frontend_url', env('FRONTEND_URL', config('app.url'))), '/');
 
     $txt = implode("\n", [
         "User-agent: *",
-        "Allow: /",
+        "Disallow: /admin",
+        "Disallow: /api",
+        "Disallow: /livewire",
         "",
-        "Sitemap: {$appUrl}/sitemap.xml",
+        "Sitemap: {$frontUrl}/sitemap.xml",
         "",
     ]);
 
-    return response($txt, 200)
-        ->header('Content-Type', 'text/plain; charset=UTF-8');
+    return response($txt, 200)->header('Content-Type', 'text/plain; charset=UTF-8');
 })->name('seo.robots');
 /*
 |--------------------------------------------------------------------------

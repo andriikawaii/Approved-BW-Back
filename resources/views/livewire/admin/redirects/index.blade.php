@@ -96,7 +96,7 @@
                                     {{ $r->is_active ? 'Active' : 'Inactive' }}
                                 </button>
                             </td>
-                            <td class="px-4 py-3 text-right">
+                            <td class="px-4 py-3 text-right space-x-2">
                                 <flux:button
                                     href="{{ route('admin.redirects.edit', $r) }}"
                                     wire:navigate
@@ -104,6 +104,16 @@
                                 >
                                     Edit
                                 </flux:button>
+
+                                <button
+                                    onclick="if(!confirm('Delete redirect: {{ addslashes($r->from_path) }} -> {{ addslashes($r->to_path) }} ?')) { event.preventDefault(); event.stopImmediatePropagation(); }"
+                                    wire:click="delete({{ $r->id }})"
+                                    class="inline-flex items-center justify-center rounded-lg border px-3 py-2 text-sm
+                                           border-red-300 text-red-700 hover:bg-red-50
+                                           dark:border-red-700 dark:text-red-300 dark:hover:bg-red-900/20"
+                                >
+                                    Delete
+                                </button>
                             </td>
                         </tr>
                     @empty
