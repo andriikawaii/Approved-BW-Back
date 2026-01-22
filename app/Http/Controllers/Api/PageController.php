@@ -23,7 +23,7 @@ class PageController extends Controller
         $fullPath = $this->normalizePath($path);
         $cacheKey = self::cacheKeyForPath($fullPath);
 
-        $page = Cache::remember($cacheKey, now()->addMinutes(10), function () use ($fullPath) {
+        $page = Cache::remember($cacheKey, now()->addMinutes((int) config('pages.cache_ttl')), function () use ($fullPath) {
             return Page::query()
                 ->publicVisible()
                 ->where('full_path', $fullPath)

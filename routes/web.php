@@ -35,6 +35,8 @@ Route::get('/robots.txt', function () {
         "Disallow: /admin",
         "Disallow: /api",
         "Disallow: /livewire",
+        "Disallow: /preview",
+        "Disallow: /*?",
         "",
         "Sitemap: {$frontUrl}/sitemap.xml",
         "",
