@@ -31,7 +31,7 @@ class PageObserver
         if ($oldPath && $oldPath !== $newPath) {
 
             // ne pravi redirect ako bi napravio besmisao
-            if ($oldPath !== $newPath) {
+            if ($oldPath !== $newPath && !Redirect::wouldCreateLoop($oldPath, $newPath)) {
                 Redirect::updateOrCreate(
                     ['from_path' => $oldPath],
                     [
