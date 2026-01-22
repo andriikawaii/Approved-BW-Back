@@ -1,25 +1,29 @@
-<div class="p-6 max-w-2xl space-y-6">
+{{-- resources/views/livewire/admin/testimonials/create.blade.php --}}
+
+<div class="max-w-3xl mx-auto p-6 space-y-6">
     <flux:heading size="lg">Create Testimonial</flux:heading>
 
-    <flux:input label="Author" wire:model.defer="author" />
+    <flux:input label="Author name" wire:model.defer="author_name" />
 
-    <flux:textarea
-        label="Testimonial"
-        wire:model.defer="content"
-    />
+    <flux:input label="Author position" wire:model.defer="author_position" />
 
-    <flux:select label="Rating" wire:model.defer="rating">
-        @for($i = 5; $i >= 1; $i--)
-            <option value="{{ $i }}">{{ $i }}/5</option>
-        @endfor
-    </flux:select>
+    <flux:input label="Company" wire:model.defer="company" />
 
-    <flux:select label="Status" wire:model.defer="status">
-        <option value="draft">Draft</option>
-        <option value="published">Published</option>
-    </flux:select>
+    <flux:textarea label="Testimonial content" wire:model.defer="content" />
 
-    <flux:button wire:click="save" variant="primary">
-        Save
-    </flux:button>
+    <div class="flex items-center gap-6">
+        <flux:input type="number" label="Sort order" wire:model.defer="sort_order" />
+
+        <label class="flex items-center gap-2 text-sm">
+            <input type="checkbox" wire:model.defer="is_active">
+            Active
+        </label>
+    </div>
+
+    <div class="flex gap-3">
+        <flux:button wire:click="save" variant="primary">Save</flux:button>
+        <flux:button href="{{ route('admin.testimonials.index') }}" wire:navigate variant="outline">
+            Cancel
+        </flux:button>
+    </div>
 </div>

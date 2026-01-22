@@ -1,4 +1,5 @@
 <?php
+// app/Livewire/Admin/Testimonials/Create.php
 
 namespace App\Livewire\Admin\Testimonials;
 
@@ -7,18 +8,22 @@ use App\Models\Testimonial;
 
 class Create extends Component
 {
-    public string $author = '';
+    public string $author_name = '';
+    public ?string $author_position = null;
+    public ?string $company = null;
     public string $content = '';
-    public int $rating = 5;
-    public string $status = 'draft';
+    public bool $is_active = true;
+    public int $sort_order = 0;
 
     protected function rules(): array
     {
         return [
-            'author' => 'required|string|max:255',
+            'author_name' => 'required|string|max:255',
+            'author_position' => 'nullable|string|max:255',
+            'company' => 'nullable|string|max:255',
             'content' => 'required|string',
-            'rating' => 'required|integer|min:1|max:5',
-            'status' => 'required|in:draft,published',
+            'is_active' => 'boolean',
+            'sort_order' => 'integer|min:0',
         ];
     }
 
@@ -27,10 +32,12 @@ class Create extends Component
         $this->validate();
 
         Testimonial::create([
-            'author' => $this->author,
+            'author_name' => $this->author_name,
+            'author_position' => $this->author_position,
+            'company' => $this->company,
             'content' => $this->content,
-            'rating' => $this->rating,
-            'status' => $this->status,
+            'is_active' => $this->is_active,
+            'sort_order' => $this->sort_order,
         ]);
 
         return redirect()->route('admin.testimonials.index');

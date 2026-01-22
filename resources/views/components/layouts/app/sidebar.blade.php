@@ -12,32 +12,26 @@
     class="border-e border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900"
 >
 
-    {{-- BRAND HEADER --}}
+    {{-- BRAND --}}
     <flux:sidebar.header class="px-4 py-4 border-b border-zinc-200 dark:border-zinc-700">
-        <div class="flex items-center justify-between w-full">
-            <a href="{{ route('dashboard') }}" wire:navigate class="flex items-center gap-3">
-                <div class="h-10 w-10 rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center shadow-sm">
-                    <span class="font-extrabold text-black text-lg">BW</span>
-                </div>
+        <a href="{{ route('dashboard') }}" wire:navigate class="flex items-center gap-3">
+            <div class="h-10 w-10 rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center">
+                <span class="font-extrabold text-black">BW</span>
+            </div>
 
-                <div class="leading-tight">
-                    <div class="font-bold text-zinc-900 dark:text-white text-base">
-                        BuiltWell
-                    </div>
-                    <div class="text-xs text-amber-600 dark:text-amber-400 font-medium">
-                        Admin Panel
-                    </div>
-                </div>
-            </a>
+            <div>
+                <div class="font-bold text-zinc-900 dark:text-white">BuiltWell</div>
+                <div class="text-xs text-amber-600 dark:text-amber-400">Admin Panel</div>
+            </div>
+        </a>
 
-            <flux:sidebar.collapse class="lg:hidden text-zinc-700 dark:text-zinc-200 hover:text-amber-500 dark:hover:text-amber-400 transition" />
-        </div>
+        <flux:sidebar.collapse class="lg:hidden" />
     </flux:sidebar.header>
 
-    {{-- Navigation --}}
+    {{-- NAV --}}
     <flux:sidebar.nav>
 
-        {{-- PLATFORM --}}
+        {{-- DASHBOARD --}}
         <flux:sidebar.group heading="Platform">
             <flux:sidebar.item
                 icon="home"
@@ -56,14 +50,6 @@
                 wire:navigate
             >
                 Pages
-            </flux:sidebar.item>
-
-            <flux:sidebar.item
-                icon="squares-2x2"
-                :href="route('admin.rules.index')"
-                wire:navigate
-            >
-                Templates
             </flux:sidebar.item>
         </flux:sidebar.group>
 
@@ -147,7 +133,7 @@
                 :href="route('admin.rules.index')"
                 wire:navigate
             >
-                Rules (Locked)
+                Rules
             </flux:sidebar.item>
         </flux:sidebar.group>
 
@@ -155,27 +141,12 @@
 
     <flux:spacer />
 
-    {{-- External --}}
-    <flux:sidebar.nav>
-        <flux:sidebar.item
-            icon="folder-git-2"
-            href="https://github.com/laravel/livewire-starter-kit"
-            target="_blank"
-        >
-            Repository
-        </flux:sidebar.item>
-
-        <flux:sidebar.item
-            icon="book-open-text"
-            href="https://laravel.com/docs/starter-kits#livewire"
-            target="_blank"
-        >
-            Documentation
-        </flux:sidebar.item>
-    </flux:sidebar.nav>
-
+    {{-- USER --}}
     <x-desktop-user-menu class="hidden lg:block" :name="auth()->user()->name" />
+
 </flux:sidebar>
+
+
 
 {{-- MOBILE HEADER --}}
 <flux:header class="lg:hidden">

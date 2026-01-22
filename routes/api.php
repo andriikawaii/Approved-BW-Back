@@ -3,14 +3,19 @@
 use App\Http\Controllers\Api\PageController;
 use Illuminate\Support\Facades\Route;
 
-// LIVE page fetch (published + cache u controlleru)
-// Bitno: where('.*') da podrži /a/b/c
+/*
+|--------------------------------------------------------------------------
+| Page API
+|--------------------------------------------------------------------------
+*/
+
+// PUBLIC (published + published_at)
 Route::get('/pages/{path}', [PageController::class, 'show'])
     ->where('path', '.*')
-    ->middleware('page.redirect')
+    ->middleware('page.redirect') // redirect pre resolve-a
     ->name('api.pages.show');
 
-// PREVIEW (draft + published, bez cache) - signed URL
+// PREVIEW (draft + published, bez cache)
 Route::get('/preview/pages', [PageController::class, 'preview'])
     ->middleware('signed')
     ->name('api.pages.preview');

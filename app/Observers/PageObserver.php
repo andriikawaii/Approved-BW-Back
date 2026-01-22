@@ -7,6 +7,7 @@ namespace App\Observers;
 use App\Models\Page;
 use App\Http\Controllers\Api\PageController as ApiPageController;
 use App\Models\Redirect;
+use App\Support\Paths\PathNormalizer;
 use Illuminate\Support\Facades\Cache;
 
 class PageObserver
@@ -16,7 +17,10 @@ class PageObserver
         ApiPageController::forgetCacheForPath($page->full_path);
         Cache::forget('seo:sitemap.xml');
     }
-
+    public function saving(Page $page): void
+    {
+        $page->full_path = PathNormalizer::normalize($page->full_path);
+    }
     public function updated(Page $page): void
     {
         $oldPath = $page->getOriginal('full_path');

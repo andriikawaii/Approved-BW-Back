@@ -65,7 +65,7 @@ class Page extends Model
 
     public function heroMedia(): BelongsTo
     {
-        return $this->belongsTo(MediaAsset::class, 'hero_media_asset_id');
+        return $this->belongsTo(MediaAsset::class, 'hero_media_id');
     }
 
     public function creator(): BelongsTo
@@ -81,7 +81,15 @@ class Page extends Model
     /* -----------------
      | Scopes
      |-----------------*/
-
+    public function scopePublicVisible($query)
+    {
+        return $query
+            ->where('status', 'published')
+            ->where(function ($q) {
+                $q->whereNull('published_at')
+                    ->orWhere('published_at', '<=', now());
+            });
+    }
     public function scopePublished($query)
     {
         return $query->where('status', 'published');

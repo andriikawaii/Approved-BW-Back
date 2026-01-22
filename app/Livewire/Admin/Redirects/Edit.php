@@ -3,6 +3,7 @@
 namespace App\Livewire\Admin\Redirects;
 
 use App\Models\Redirect;
+use App\Support\Paths\RedirectPathNormalizer;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 
@@ -29,32 +30,16 @@ class Edit extends Component
     {
         return [
             'from_path' => [
-                'required', 'string', 'max:255',
-                Rule::unique('redirects', 'from_path')->ignore($this->redirect->id),
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('redirects', 'from_path')
+                    ->ignore($this->redirect->id),
             ],
             'to_path' => ['required', 'string', 'max:2048'],
             'status_code' => ['required', 'integer', 'in:301,302,307,308'],
             'is_active' => ['boolean'],
         ];
-    }
-
-    protected function normalizeFrom(string $path): string
-    {
-        $path = trim($path);
-        $path = '/' . ltrim($path, '/');
-        return $path === '/' ? '/' : rtrim($path, '/');
-    }
-
-    protected function normalizeTo(string $to): string
-    {
-        $to = trim($to);
-
-        if (preg_match('#^https?://#i', $to)) {
-            return rtrim($to, '/');
-        }
-
-        $to = '/' . ltrim($to, '/');
-        return $to === '/' ? '/' : rtrim($to, '/');
     }
 
     protected function validateToFormat(): bool
@@ -66,25 +51,35 @@ class Edit extends Component
             return true;
         }
 
-        $this->addError('to_path', 'To path mora biti relativan path (/nešto) ili full URL (https://...).');
+        $this->addError(
+            'to_path',
+            'To path mora biti relativan path (/nešto) ili full URL (https://...).'
+        );
+
         return false;
     }
 
     protected function validateLoopProtection(): bool
     {
         if ($this->from_path === $this->to_path) {
-            $this->addError('to_path', 'To path ne može biti isti kao From path.');
+            $this->addError(
+                'to_path',
+                'To path ne može biti isti kao From path.'
+            );
             return false;
         }
 
         $reverseExists = Redirect::query()
             ->where('from_path', $this->to_path)
             ->where('to_path', $this->from_path)
-            ->where('id', '!=', $this->redirect->id)
+            ->whereKeyNot($this->redirect->id)
             ->exists();
 
         if ($reverseExists) {
-            $this->addError('to_path', 'Ovo pravi redirect loop (već postoji reverse redirect).');
+            $this->addError(
+                'to_path',
+                'Ovo pravi redirect loop (već postoji reverse redirect).'
+            );
             return false;
         }
 
@@ -93,8 +88,9 @@ class Edit extends Component
 
     public function save()
     {
-        $this->from_path = $this->normalizeFrom($this->from_path);
-        $this->to_path   = $this->normalizeTo($this->to_path);
+        // ✅ normalizacija (centralno)
+        $this->from_path = RedirectPathNormalizer::from($this->from_path);
+        $this->to_path   = RedirectPathNormalizer::to($this->to_path);
 
         if (!$this->validateToFormat()) {
             return;

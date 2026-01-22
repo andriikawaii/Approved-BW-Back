@@ -25,19 +25,19 @@
             </h1>
 
             <p class="text-sm text-gray-500 dark:text-zinc-400 mt-2 max-w-md mx-auto">
-                Manage URL, SEO and page content.
+                Manage URL, publishing, relations and content.
             </p>
         </div>
 
         {{-- ===================== --}}
-        {{-- PAGE SETTINGS CARD --}}
+        {{-- PAGE SETTINGS --}}
         {{-- ===================== --}}
         <div class="bg-white dark:bg-zinc-800 rounded-2xl border
                     border-gray-200 dark:border-zinc-700 shadow-sm overflow-hidden">
 
             <form wire:submit.prevent="save" class="p-6 space-y-8">
 
-                {{-- Meta --}}
+                {{-- META --}}
                 <div class="flex items-center justify-between pb-4 border-b
                             border-gray-200 dark:border-zinc-700">
                     <div>
@@ -63,16 +63,14 @@
                     </div>
                 </div>
 
-                {{-- Full path --}}
+                {{-- FULL PATH --}}
                 <div class="space-y-2">
-                    <label class="block text-sm font-medium text-gray-700 dark:text-zinc-300">
+                    <label class="text-sm font-medium text-gray-700 dark:text-zinc-300">
                         Full path <span class="text-rose-500">*</span>
                     </label>
-
                     <div class="relative">
                         <span class="absolute left-3 top-1/2 -translate-y-1/2
                                      text-gray-400 dark:text-zinc-500 text-sm">/</span>
-
                         <input
                             type="text"
                             wire:model.defer="full_path"
@@ -82,94 +80,121 @@
                                    px-4 py-2.5 text-sm
                                    text-gray-900 dark:text-white
                                    focus:ring-2 focus:ring-purple-500"
-                            placeholder="kitchen-remodeling/greenwich-ct"
                         >
                     </div>
                 </div>
 
-                {{-- Status --}}
+                {{-- STATUS + PUBLISHED AT --}}
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t
                             border-gray-200 dark:border-zinc-700">
-
                     <div class="space-y-2">
-                        <label class="block text-sm font-medium text-gray-700 dark:text-zinc-300">
+                        <label class="text-sm font-medium text-gray-700 dark:text-zinc-300">
                             Status
                         </label>
-
                         <select
                             wire:model.defer="status"
                             class="w-full rounded-lg border
-                                   border-gray-300 dark:border-zinc-600
-                                   bg-white dark:bg-zinc-700
-                                   px-4 py-2.5 text-sm
-                                   text-gray-900 dark:text-white">
-                            <option value="draft">Draft</option>
-                            <option value="published">Published</option>
+           border-gray-300 dark:border-zinc-600
+           bg-white dark:bg-zinc-700
+           px-4 py-2.5 text-sm
+           text-gray-900 dark:text-white
+           focus:ring-2 focus:ring-purple-500 focus:border-purple-500
+           appearance-none">
+                            <option value="draft" class="bg-white text-gray-900 dark:bg-zinc-800 dark:text-white">Draft</option>
+                            <option value="published" class="bg-white text-gray-900 dark:bg-zinc-800 dark:text-white">Published</option>
                         </select>
+
                     </div>
 
                     <div class="space-y-2">
-                        <label class="block text-sm font-medium text-gray-700 dark:text-zinc-300">
-                            County (optional)
+                        <label class="text-sm font-medium text-gray-700 dark:text-zinc-300">
+                            Publish at (optional)
                         </label>
-
-                        <select
-                            wire:model.defer="county_id"
-                            class="w-full rounded-lg border
-                                   border-gray-300 dark:border-zinc-600
-                                   bg-white dark:bg-zinc-700
-                                   px-4 py-2.5 text-sm
-                                   text-gray-900 dark:text-white">
-                            <option value="">Global</option>
-                            @foreach($counties as $county)
-                                <option value="{{ $county->id }}">{{ $county->name }}</option>
-                            @endforeach
-                        </select>
+                        <input
+                            type="datetime-local"
+                            wire:model.defer="published_at"
+                            class="w-full rounded-lg border px-4 py-2.5 text-sm">
                     </div>
                 </div>
 
-                {{-- Footer --}}
+                {{-- RELATIONS --}}
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4 border-t
+                            border-gray-200 dark:border-zinc-700">
+                    <div>
+                        <label class="text-sm font-medium">Service</label>
+                        <select
+                            wire:model.defer="service_id"
+                            class="w-full rounded-lg border
+           border-gray-300 dark:border-zinc-600
+           bg-white dark:bg-zinc-700
+           px-4 py-2.5 text-sm
+           text-gray-900 dark:text-white
+           focus:ring-2 focus:ring-purple-500 focus:border-purple-500
+           appearance-none">
+                            <option value="" class="bg-white text-gray-900 dark:bg-zinc-800 dark:text-white">— None —</option>
+                            @foreach($services as $service)
+                                <option value="{{ $service->id }}" class="bg-white text-gray-900 dark:bg-zinc-800 dark:text-white">
+                                    {{ $service->name }}
+                                </option>
+                            @endforeach
+                        </select>
+
+                    </div>
+
+                    <div>
+                        <label class="text-sm font-medium">County</label>
+                        <select
+                            wire:model.defer="county_id"
+                            class="w-full rounded-lg border
+           border-gray-300 dark:border-zinc-600
+           bg-white dark:bg-zinc-700
+           px-4 py-2.5 text-sm
+           text-gray-900 dark:text-white
+           focus:ring-2 focus:ring-purple-500 focus:border-purple-500
+           appearance-none">
+                            <option value="" class="bg-white text-gray-900 dark:bg-zinc-800 dark:text-white">Global</option>
+                            @foreach($counties as $county)
+                                <option value="{{ $county->id }}" class="bg-white text-gray-900 dark:bg-zinc-800 dark:text-white">
+                                    {{ $county->name }}
+                                </option>
+                            @endforeach
+                        </select>
+
+                    </div>
+
+                    <div>
+                        <label class="text-sm font-medium">Town</label>
+                        <select
+                            wire:model.defer="town_id"
+                            class="w-full rounded-lg border
+           border-gray-300 dark:border-zinc-600
+           bg-white dark:bg-zinc-700
+           px-4 py-2.5 text-sm
+           text-gray-900 dark:text-white
+           focus:ring-2 focus:ring-purple-500 focus:border-purple-500
+           appearance-none">
+                            <option value="" class="bg-white text-gray-900 dark:bg-zinc-800 dark:text-white">—</option>
+                            @foreach($towns as $town)
+                                <option value="{{ $town->id }}" class="bg-white text-gray-900 dark:bg-zinc-800 dark:text-white">
+                                    {{ $town->name }}
+                                </option>
+                            @endforeach
+                        </select>
+
+                    </div>
+                </div>
+
+                {{-- FOOTER --}}
                 <div class="pt-6 border-t border-gray-200 dark:border-zinc-700
                             flex justify-between items-center">
-
                     <p class="text-xs text-gray-500 dark:text-zinc-400">
                         Last updated {{ $page->updated_at->format('M d, Y H:i') }}
                     </p>
-
                     <div class="flex gap-3">
-                        <flux:button
-                            href="{{ route('admin.pages.index') }}"
-                            wire:navigate
-                            variant="outline">
+                        <flux:button href="{{ route('admin.pages.index') }}" wire:navigate variant="outline">
                             Cancel
                         </flux:button>
-
-                        {{-- Preview (opens in new tab) --}}
-                        <a
-                            href="{{ route('admin.pages.preview', $page) }}"
-                            target="_blank"
-                            rel="noopener"
-                            class="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium
-               border border-gray-300 dark:border-zinc-600
-               bg-white dark:bg-zinc-800
-               text-gray-900 dark:text-white
-               hover:bg-gray-50 dark:hover:bg-zinc-700 transition"
-                            title="Open frontend preview in a new tab"
-                        >
-                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7
-                     -1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                            </svg>
-                            Preview
-                        </a>
-
-                        <flux:button
-                            type="submit"
-                            variant="primary"
-                            class="bg-purple-600 hover:bg-purple-700">
+                        <flux:button type="submit" variant="primary" class="bg-purple-600 hover:bg-purple-700">
                             Update Page
                         </flux:button>
                     </div>
@@ -178,32 +203,17 @@
             </form>
         </div>
 
-        {{-- ===================== --}}
-        {{-- SEO SETTINGS --}}
-        {{-- ===================== --}}
+        {{-- SEO --}}
         <div class="mt-10 bg-white dark:bg-zinc-800 rounded-2xl border
                     border-gray-200 dark:border-zinc-700 shadow-sm">
-
-            <div class="p-6 border-b border-gray-200 dark:border-zinc-700">
-                <h2 class="text-lg font-semibold text-gray-900 dark:text-white">
-                    SEO Settings
-                </h2>
-                <p class="text-sm text-gray-500 dark:text-zinc-400 mt-1">
-                    Google preview and meta information.
-                </p>
-            </div>
-
             <div class="p-6">
                 <livewire:admin.pages.page-seo-editor :page="$page" />
             </div>
         </div>
     </div>
 
-    {{-- ===================== --}}
-    {{-- PAGE BUILDER – FULL WIDTH --}}
-    {{-- ===================== --}}
+    {{-- PAGE BUILDER --}}
     <div class="mt-16 border-t border-gray-200 dark:border-zinc-800">
-
         <div class="px-6 py-8">
             <h2 class="text-2xl font-bold text-gray-900 dark:text-white">
                 Page Builder
@@ -212,7 +222,6 @@
                 Build and reorder page sections.
             </p>
         </div>
-
         <div class="px-4 sm:px-6 lg:px-8 pb-16">
             <livewire:admin.pages.sections-builder :page="$page" />
         </div>

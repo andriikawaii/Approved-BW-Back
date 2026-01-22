@@ -1,27 +1,29 @@
 <?php
 
+// app/Models/Testimonial.php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Testimonial extends Model
 {
     protected $fillable = [
-        'author',
-        'text',
-        'rating',
-        'service_id',
-        'town_id',
+        'author_name',
+        'author_position',
+        'company',
+        'content',
+        'is_active',
+        'sort_order',
     ];
 
-    public function service(): BelongsTo
-    {
-        return $this->belongsTo(Service::class);
-    }
+    protected $casts = [
+        'is_active' => 'boolean',
+        'sort_order' => 'integer',
+    ];
 
-    public function town(): BelongsTo
+    public function scopeActive($query)
     {
-        return $this->belongsTo(Town::class);
+        return $query->where('is_active', true);
     }
 }

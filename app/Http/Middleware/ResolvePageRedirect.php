@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Models\Redirect;
+use App\Support\Paths\RedirectPathNormalizer;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -11,56 +12,46 @@ class ResolvePageRedirect
 {
     public function handle(Request $request, Closure $next): Response
     {
-        // parametar iz rute: /api/pages/{path}
+        // API route: /api/pages/{path}
         $path = (string) $request->route('path', '');
 
-        $from = $this->normalizePath($path);
+        $from = RedirectPathNormalizer::from($path);
 
-        // "/" obično ne redirectuješ iz API-a
+        // "/" nikad ne redirectuj iz CMS API-ja
         if ($from === '/') {
             return $next($request);
         }
 
         $redirect = Redirect::query()
-            ->select(['id', 'to_path', 'status_code', 'is_active'])
             ->where('from_path', $from)
             ->where('is_active', true)
-            ->first();
+            ->first(['id', 'to_path', 'status_code']);
 
         if (!$redirect) {
             return $next($request);
         }
 
-        $to = $this->normalizePath((string) $redirect->to_path);
+        $to = $redirect->to_path;
 
-        // loop protection
+        // 🔒 loop protection
         if ($to === $from) {
             return $next($request);
         }
 
-        // hits (opciono)
+        // 🔢 hits
         $redirect->increment('hits');
 
-        // Redirect na API rutu koja vraća JSON (frontend fetch prati redirect)
-        return redirect()->route(
-            'api.pages.show',
-            ['path' => ltrim($to, '/')],
-            (int) $redirect->status_code
-        );
-    }
-
-    private function normalizePath(string $path): string
-    {
-        $path = trim($path);
-
-        // pazi: ako je prazan path, tretiraj kao "/"
-        if ($path === '') {
-            return '/';
+        // 🌍 full URL redirect
+        if (preg_match('#^https?://#i', $to)) {
+            return redirect()->away($to, (int) $redirect->status_code);
         }
 
-        $path = '/' . ltrim($path, '/');
+        // 🧠 internal path redirect (API-friendly)
+        $normalizedTo = RedirectPathNormalizer::from($to);
 
-        // "/" ostaje "/", ostalo skini trailing slash
-        return $path === '/' ? '/' : rtrim($path, '/');
+        return redirect(
+            '/api/pages/' . ltrim($normalizedTo, '/'),
+            (int) $redirect->status_code
+        );
     }
 }
