@@ -21,6 +21,13 @@ class RedirectObserver
 
     public function updated(Redirect $redirect): void
     {
+        $dirty = array_keys($redirect->getDirty());
+        sort($dirty);
+
+        if ($dirty === ['hits']) {
+            return;
+        }
+
         $this->forgetCache($redirect);
 
         $originalFrom = $redirect->getOriginal('from_path');
