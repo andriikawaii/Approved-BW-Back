@@ -9,6 +9,8 @@ use Livewire\Component;
 
 class Edit extends Component
 {
+    private const MAX_REDIRECT_DEPTH = 10;
+
     public Redirect $redirect;
 
     public string $from_path = '';
@@ -81,6 +83,52 @@ class Edit extends Component
                 'Ovo pravi redirect loop (već postoji reverse redirect).'
             );
             return false;
+        }
+
+        if ($this->createsRedirectLoop()) {
+            $this->addError(
+                'to_path',
+                'Ovo pravi redirect chain loop.'
+            );
+            return false;
+        }
+
+        return true;
+    }
+
+    protected function createsRedirectLoop(): bool
+    {
+        if (preg_match('#^https?://#i', $this->to_path)) {
+            return false;
+        }
+
+        $visited = [
+            $this->from_path => true,
+        ];
+
+        $current = RedirectPathNormalizer::from($this->to_path);
+
+        for ($depth = 0; $depth < self::MAX_REDIRECT_DEPTH; $depth++) {
+            if (isset($visited[$current])) {
+                return true;
+            }
+
+            $visited[$current] = true;
+
+            $redirect = Redirect::query()
+                ->where('from_path', $current)
+                ->whereKeyNot($this->redirect->id)
+                ->first(['to_path']);
+
+            if (!$redirect) {
+                return false;
+            }
+
+            if (preg_match('#^https?://#i', $redirect->to_path)) {
+                return false;
+            }
+
+            $current = RedirectPathNormalizer::from($redirect->to_path);
         }
 
         return true;

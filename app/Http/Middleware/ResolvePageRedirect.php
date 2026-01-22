@@ -10,6 +10,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ResolvePageRedirect
 {
+    private const MAX_REDIRECT_DEPTH = 10;
+
     public function handle(Request $request, Closure $next): Response
     {
         // API route: /api/pages/{path}
@@ -22,19 +24,9 @@ class ResolvePageRedirect
             return $next($request);
         }
 
-        $redirect = Redirect::query()
-            ->where('from_path', $from)
-            ->where('is_active', true)
-            ->first(['id', 'to_path', 'status_code']);
+        [$redirect, $normalizedTo] = $this->resolveRedirectChain($from);
 
         if (!$redirect) {
-            return $next($request);
-        }
-
-        $to = $redirect->to_path;
-
-        // 🔒 loop protection
-        if ($to === $from) {
             return $next($request);
         }
 
@@ -42,16 +34,63 @@ class ResolvePageRedirect
         $redirect->increment('hits');
 
         // 🌍 full URL redirect
-        if (preg_match('#^https?://#i', $to)) {
-            return redirect()->away($to, (int) $redirect->status_code);
+        if (preg_match('#^https?://#i', $redirect->to_path)) {
+            return redirect()->away($redirect->to_path, (int) $redirect->status_code);
         }
 
         // 🧠 internal path redirect (API-friendly)
-        $normalizedTo = RedirectPathNormalizer::from($to);
-
         return redirect(
             '/api/pages/' . ltrim($normalizedTo, '/'),
             (int) $redirect->status_code
         );
+    }
+
+    private function resolveRedirectChain(string $from): array
+    {
+        $visited = [$from => true];
+        $current = $from;
+        $firstRedirect = null;
+        $firstNormalizedTo = null;
+
+        for ($depth = 0; $depth < self::MAX_REDIRECT_DEPTH; $depth++) {
+            $redirect = Redirect::query()
+                ->where('from_path', $current)
+                ->where('is_active', true)
+                ->first(['id', 'to_path', 'status_code']);
+
+            if (!$redirect) {
+                break;
+            }
+
+            if (!$firstRedirect) {
+                $firstRedirect = $redirect;
+                if (!preg_match('#^https?://#i', $redirect->to_path)) {
+                    $firstNormalizedTo = RedirectPathNormalizer::from($redirect->to_path);
+                }
+            }
+
+            if (preg_match('#^https?://#i', $redirect->to_path)) {
+                break;
+            }
+
+            $normalizedTo = RedirectPathNormalizer::from($redirect->to_path);
+
+            if (isset($visited[$normalizedTo])) {
+                return [null, null];
+            }
+
+            $visited[$normalizedTo] = true;
+            $current = $normalizedTo;
+        }
+
+        if (!$firstRedirect) {
+            return [null, null];
+        }
+
+        if (count($visited) > self::MAX_REDIRECT_DEPTH) {
+            return [null, null];
+        }
+
+        return [$firstRedirect, $firstNormalizedTo];
     }
 }

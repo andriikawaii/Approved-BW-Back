@@ -9,6 +9,14 @@ class PageResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
+        $baseSchema = $this->schema_type
+            ? ['@type' => $this->schema_type]
+            : [];
+        $schemaOverrides = is_array($this->schema_overrides)
+            ? $this->schema_overrides
+            : [];
+        $schema = array_replace_recursive($baseSchema, $schemaOverrides);
+
         return [
             'id'        => $this->id,
             'full_path' => $this->full_path,
@@ -18,9 +26,7 @@ class PageResource extends JsonResource
                 'title'       => $this->seo_title ?: null,
                 'description' => $this->seo_description ?: null,
                 'canonical'   => $this->canonical_url ?: null,
-                'schema'      => $this->schema_type
-                    ? ['@type' => $this->schema_type]
-                    : null,
+                'schema'      => $schema !== [] ? $schema : null,
             ],
 
             'context' => [
