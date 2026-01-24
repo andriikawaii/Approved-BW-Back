@@ -2,22 +2,27 @@
 
 namespace App\Livewire\Admin\Pages;
 
+use App\Http\Controllers\Api\PageController as ApiPageController;
 use App\Models\MediaAsset;
 use App\Models\Page;
 use App\Models\Section;
 use App\Support\Sections\SectionRegistry;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Livewire\Component;
-use App\Http\Controllers\Api\PageController as ApiPageController;
 
 class SectionsBuilder extends Component
 {
     public Page $page;
 
+    /** @var array<int, array> */
     public array $sections = [];
+
     public string $newSectionType = '';
 
+    public array $sectionRegistry = [];
+    public array $sectionOptions = [];
     protected $listeners = [
         'media-selected' => 'setMedia',
     ];
@@ -26,14 +31,18 @@ class SectionsBuilder extends Component
     {
         $this->page = $page->load('sections');
 
+        // registry
+        $this->sectionRegistry = SectionRegistry::types();
+
+        // EXISTING SECTIONS FROM DB ✅
         $this->sections = $this->page->sections
             ->sortBy('sort_order')
             ->values()
-            ->map(fn (Section $section) => [
-                'id'        => $section->id,
-                'type'      => $section->type,
-                'data'      => $section->data ?? [],
-                'is_active' => (bool) $section->is_active,
+            ->map(fn (Section $s) => [
+                'id'        => $s->id,
+                'type'      => $s->type,
+                'data'      => $s->data ?? [],
+                'is_active' => (bool) $s->is_active,
             ])
             ->toArray();
     }
@@ -43,38 +52,24 @@ class SectionsBuilder extends Component
         return config("page-template-sections.{$this->page->template_key}.allowed", []);
     }
 
-    protected function requiredTypes(): array
-    {
-        return config("page-template-sections.{$this->page->template_key}.required", []);
-    }
-
-    protected function isRequiredSection(string $type): bool
-    {
-        return in_array($type, $this->requiredTypes(), true);
-    }
-
     protected function ensureAllowed(string $type): void
     {
-        if (!in_array($type, $this->allowedTypes(), true)) {
+        if (! in_array($type, $this->allowedTypes(), true)) {
             throw ValidationException::withMessages([
-                'sections' => "Section type '{$type}' is not allowed for template '{$this->page->template_key}'.",
+                'sections' => "Section '{$type}' not allowed for this template.",
             ]);
         }
 
-        if (!SectionRegistry::exists($type)) {
+        if (! SectionRegistry::exists($type)) {
             throw ValidationException::withMessages([
-                'sections' => "Section type '{$type}' is not registered.",
+                'sections' => "Section '{$type}' not registered.",
             ]);
         }
     }
 
-    protected function normalizeData(string $type, array $data): array
-    {
-        return array_replace_recursive(
-            SectionRegistry::defaultsFor($type),
-            $data
-        );
-    }
+    // =====================
+    // ACTIONS
+    // =====================
 
     public function addSection(): void
     {
@@ -82,13 +77,12 @@ class SectionsBuilder extends Component
             'newSectionType' => 'required|string',
         ]);
 
-        $type = $this->newSectionType;
-        $this->ensureAllowed($type);
+        $this->ensureAllowed($this->newSectionType);
 
         $this->sections[] = [
             'id'        => null,
-            'type'      => $type,
-            'data'      => SectionRegistry::defaultsFor($type),
+            'type'      => $this->newSectionType,
+            'data'      => SectionRegistry::defaultsFor($this->newSectionType),
             'is_active' => true,
         ];
 
@@ -97,7 +91,7 @@ class SectionsBuilder extends Component
 
     public function duplicateSection(int $index): void
     {
-        if (!isset($this->sections[$index])) return;
+        if (! isset($this->sections[$index])) return;
 
         $copy = $this->sections[$index];
         $copy['id'] = null;
@@ -105,192 +99,126 @@ class SectionsBuilder extends Component
         array_splice($this->sections, $index + 1, 0, [$copy]);
     }
 
-    public function resetSection(int $index): void
-    {
-        if (!isset($this->sections[$index])) return;
-
-        $type = $this->sections[$index]['type'];
-        $this->sections[$index]['data'] = SectionRegistry::defaultsFor($type);
-    }
-
     public function deleteSection(int $index): void
     {
-        $type = $this->sections[$index]['type'] ?? '';
-
-        if ($this->isRequiredSection($type)) {
-            $this->addError('sections', "Section '{$type}' is required.");
-            return;
-        }
-
         unset($this->sections[$index]);
         $this->sections = array_values($this->sections);
     }
 
     public function moveUp(int $index): void
     {
-        if ($index <= 0) return;
+        if ($index === 0) return;
 
-        [$this->sections[$index - 1], $this->sections[$index]]
-            = [$this->sections[$index], $this->sections[$index - 1]];
+        [$this->sections[$index - 1], $this->sections[$index]] =
+            [$this->sections[$index], $this->sections[$index - 1]];
     }
 
     public function moveDown(int $index): void
     {
         if ($index >= count($this->sections) - 1) return;
 
-        [$this->sections[$index + 1], $this->sections[$index]]
-            = [$this->sections[$index], $this->sections[$index + 1]];
+        [$this->sections[$index + 1], $this->sections[$index]] =
+            [$this->sections[$index], $this->sections[$index + 1]];
     }
 
     public function toggleActive(int $index): void
     {
-        if (!isset($this->sections[$index])) return;
-
         $this->sections[$index]['is_active'] =
-            !((bool) ($this->sections[$index]['is_active'] ?? true));
-    }
-
-    // HERO
-    public function addHeroImage(int $sectionIndex): void
-    {
-        if (!isset($this->sections[$sectionIndex])) return;
-
-        $this->sections[$sectionIndex]['data']['images'] ??= [];
-        $this->sections[$sectionIndex]['data']['images'][] = '';
-    }
-
-    public function removeHeroImage(int $sectionIndex, int $imageIndex): void
-    {
-        $images = $this->sections[$sectionIndex]['data']['images'] ?? [];
-        if (!isset($images[$imageIndex])) return;
-
-        unset($images[$imageIndex]);
-        $this->sections[$sectionIndex]['data']['images'] = array_values($images);
-    }
-
-    public function addHeroImageFromMedia(int $sectionIndex, int $mediaId): void
-    {
-        if (!isset($this->sections[$sectionIndex])) return;
-
-        $media = MediaAsset::find($mediaId);
-        if (!$media) return;
-
-        $url = $media->url ?? ('/storage/' . ltrim($media->file_path, '/'));
-
-        $this->sections[$sectionIndex]['data']['images'] ??= [];
-        $this->sections[$sectionIndex]['data']['images'][] = $url;
-    }
-
-    // TRUST
-    public function addTrustItem(int $sectionIndex): void
-    {
-        $this->sections[$sectionIndex]['data']['items'] ??= [];
-        $this->sections[$sectionIndex]['data']['items'][] = [
-            'icon'  => 'shield',
-            'label' => '',
-        ];
-    }
-
-    public function removeTrustItem(int $sectionIndex, int $itemIndex): void
-    {
-        $items = $this->sections[$sectionIndex]['data']['items'] ?? [];
-        if (!isset($items[$itemIndex])) return;
-
-        unset($items[$itemIndex]);
-        $this->sections[$sectionIndex]['data']['items'] = array_values($items);
-    }
-
-    // SERVICES
-    public function addServiceItem(int $sectionIndex): void
-    {
-        $this->sections[$sectionIndex]['data']['items'] ??= [];
-        $this->sections[$sectionIndex]['data']['items'][] = [
-            'title'       => '',
-            'description' => '',
-            'image'       => '',
-        ];
-    }
-
-    public function removeServiceItem(int $sectionIndex, int $itemIndex): void
-    {
-        $items = $this->sections[$sectionIndex]['data']['items'] ?? [];
-        if (!isset($items[$itemIndex])) return;
-
-        unset($items[$itemIndex]);
-        $this->sections[$sectionIndex]['data']['items'] = array_values($items);
-    }
-
-    public function setServiceItemImageFromMedia(int $sectionIndex, int $itemIndex, int $mediaId): void
-    {
-        $media = MediaAsset::find($mediaId);
-        if (!$media) return;
-
-        $url = $media->url ?? ('/storage/' . ltrim($media->file_path, '/'));
-        $this->sections[$sectionIndex]['data']['items'][$itemIndex]['image'] = $url;
+            ! ($this->sections[$index]['is_active'] ?? true);
     }
 
     public function setMedia(int $index, int $mediaId): void
     {
-        if (!isset($this->sections[$index])) return;
         $this->sections[$index]['data']['media_asset_id'] = $mediaId;
     }
+
+    protected function groupedSections(): array
+    {
+        $types = SectionRegistry::types();
+        $allowed = null;
+
+        $groups = [
+            'Hero / Above the fold' => ['hero', 'hero_slider'],
+            'Content' => ['rich_text', 'image_gallery', 'before_after'],
+            'Conversion' => ['cta_block', 'lead_form'],
+            'Trust & Proof' => ['trust_bar', 'testimonials', 'logo_strip'],
+            'Services' => ['services_grid', 'service_includes', 'pricing_table'],
+            'Process & Timeline' => ['process_steps', 'timeline_block'],
+            'Location & SEO' => ['local_context', 'service_area_links', 'town_list', 'map_embed'],
+            'Case Studies' => [
+                'case_study_header',
+                'case_study_meta',
+                'case_study_body',
+                'case_study_gallery',
+            ],
+        ];
+
+        $result = [];
+
+        foreach ($groups as $label => $keys) {
+            foreach ($keys as $key) {
+                if (isset($types[$key]) && (is_null($allowed) || in_array($key, $allowed, true))) {
+                    $result[$label][$key] = $types[$key];
+                }
+            }
+        }
+
+        return $result;
+    }
+
+    // =====================
+    // SAVE
+    // =====================
 
     public function save(): void
     {
         DB::transaction(function () {
-            $existing = Section::where('page_id', $this->page->id)->get()->keyBy('id');
-            $keepIds = [];
 
-            foreach ($this->sections as $order => &$payload) {
-                $type = $payload['type'] ?? null;
-                if (!$type) continue;
+            Section::where('page_id', $this->page->id)->delete();
 
-                $this->ensureAllowed($type);
+            foreach ($this->sections as $order => $section) {
 
-                $data = $this->normalizeData($type, (array) ($payload['data'] ?? []));
+                $type = $section['type'];
 
-                validator($data, SectionRegistry::rulesFor($type))->validate();
-
-                $attributes = [
-                    'type'       => $type,
-                    'data'       => $data,
-                    'sort_order' => $order,
-                    'is_active'  => (bool) ($payload['is_active'] ?? true),
-                ];
-
-                if (!empty($payload['id']) && $existing->has($payload['id'])) {
-                    $model = $existing[$payload['id']];
-                    $model->update($attributes);
-                } else {
-                    $model = new Section($attributes);
-                    $model->page_id = $this->page->id;
-                    $model->save();
-                    $payload['id'] = $model->id;
+                // 1. sigurnost
+                if (! SectionRegistry::exists($type)) {
+                    throw ValidationException::withMessages([
+                        'sections' => "Unknown section type: {$type}",
+                    ]);
                 }
 
-                $keepIds[] = $model->id;
-            }
+                // 2. VALIDACIJA PODATAKA
+                $rules = SectionRegistry::rulesFor($type);
 
-            Section::where('page_id', $this->page->id)
-                ->when($keepIds, fn ($q) => $q->whereNotIn('id', $keepIds))
-                ->delete();
+                validator(
+                    $section['data'] ?? [],
+                    $rules,
+                    [],
+                    collect($rules)->mapWithKeys(fn ($_, $k) => [$k => ucfirst(str_replace('_', ' ', $k))])->toArray()
+                )->validate();
+
+                // 3. UPIS
+                Section::create([
+                    'page_id'    => $this->page->id,
+                    'type'       => $type,
+                    'data'       => $section['data'],
+                    'is_active'  => (bool) $section['is_active'],
+                    'sort_order' => $order,
+                ]);
+            }
         });
 
-        $this->page->refresh();
-
-        // ✅ ISPRAVNO: invalidate API cache key
         ApiPageController::forgetCacheForPath($this->page->full_path);
 
         session()->flash('success', 'Sections saved successfully.');
     }
 
+
     public function render()
     {
         return view('livewire.admin.pages.sections-builder', [
-            'allowedSections' => $this->allowedTypes(),
-            'sectionRegistry' => config('sections'),
-            'mediaAssets'     => MediaAsset::orderByDesc('created_at')
-                ->get(['id', 'file_name', 'file_path']),
+            'groupedSections' => $this->groupedSections(),
+            'sectionRegistry' => SectionRegistry::types(),
         ]);
     }
 }
