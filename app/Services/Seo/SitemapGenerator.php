@@ -12,7 +12,7 @@ class SitemapGenerator
 
         $pages = Page::query()
             ->select(['full_path', 'updated_at', 'canonical_url'])
-            ->where('status', 'published')
+            ->publicVisible()
             ->orderBy('full_path')
             ->get();
 
