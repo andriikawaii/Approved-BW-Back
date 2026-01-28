@@ -8,7 +8,6 @@ use App\Models\Page;
 use App\Models\Section;
 use App\Support\Sections\SectionRegistry;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Livewire\Component;
 
@@ -19,22 +18,26 @@ class SectionsBuilder extends Component
     /** @var array<int, array> */
     public array $sections = [];
 
-    public string $newSectionType = '';
+    /** @var array<int, bool> */
+    public array $collapsed = [];
 
-    public array $sectionRegistry = [];
-    public array $sectionOptions = [];
-    protected $listeners = [
-        'media-selected' => 'setMedia',
-    ];
+    public ?string $newSectionType = null;
 
+    // Media picker state
+    public bool $showMediaModal = false;
+    public ?int $mediaTargetIndex = null;
+    public ?string $mediaTargetField = null;
+    public ?int $mediaTargetRepeaterIdx = null;
+    public ?string $mediaTargetRepeaterSubfield = null;
+    public string $mediaSearch = '';
+
+    /* --------------------------------------------
+     | MOUNT
+     |--------------------------------------------*/
     public function mount(Page $page): void
     {
         $this->page = $page->load('sections');
 
-        // registry
-        $this->sectionRegistry = SectionRegistry::types();
-
-        // EXISTING SECTIONS FROM DB ✅
         $this->sections = $this->page->sections
             ->sortBy('sort_order')
             ->values()
@@ -45,39 +48,24 @@ class SectionsBuilder extends Component
                 'is_active' => (bool) $s->is_active,
             ])
             ->toArray();
+
+        $this->collapsed = array_fill(0, count($this->sections), true);
     }
 
-    protected function allowedTypes(): array
-    {
-        return config("page-template-sections.{$this->page->template_key}.allowed", []);
-    }
-
-    protected function ensureAllowed(string $type): void
-    {
-        if (! in_array($type, $this->allowedTypes(), true)) {
-            throw ValidationException::withMessages([
-                'sections' => "Section '{$type}' not allowed for this template.",
-            ]);
-        }
-
-        if (! SectionRegistry::exists($type)) {
-            throw ValidationException::withMessages([
-                'sections' => "Section '{$type}' not registered.",
-            ]);
-        }
-    }
-
-    // =====================
-    // ACTIONS
-    // =====================
-
+    /* --------------------------------------------
+     | BASIC ACTIONS
+     |--------------------------------------------*/
     public function addSection(): void
     {
         $this->validate([
             'newSectionType' => 'required|string',
         ]);
 
-        $this->ensureAllowed($this->newSectionType);
+        if (! SectionRegistry::exists($this->newSectionType)) {
+            throw ValidationException::withMessages([
+                'newSectionType' => 'Unknown section type.',
+            ]);
+        }
 
         $this->sections[] = [
             'id'        => null,
@@ -86,39 +74,25 @@ class SectionsBuilder extends Component
             'is_active' => true,
         ];
 
-        $this->newSectionType = '';
-    }
-
-    public function duplicateSection(int $index): void
-    {
-        if (! isset($this->sections[$index])) return;
-
-        $copy = $this->sections[$index];
-        $copy['id'] = null;
-
-        array_splice($this->sections, $index + 1, 0, [$copy]);
+        $this->collapsed[] = false;
+        $this->newSectionType = null;
     }
 
     public function deleteSection(int $index): void
     {
-        unset($this->sections[$index]);
-        $this->sections = array_values($this->sections);
+        unset($this->sections[$index], $this->collapsed[$index]);
+
+        $this->sections  = array_values($this->sections);
+        $this->collapsed = array_values($this->collapsed);
     }
 
-    public function moveUp(int $index): void
+    public function duplicateSection(int $index): void
     {
-        if ($index === 0) return;
+        $copy = $this->sections[$index];
+        $copy['id'] = null;
 
-        [$this->sections[$index - 1], $this->sections[$index]] =
-            [$this->sections[$index], $this->sections[$index - 1]];
-    }
-
-    public function moveDown(int $index): void
-    {
-        if ($index >= count($this->sections) - 1) return;
-
-        [$this->sections[$index + 1], $this->sections[$index]] =
-            [$this->sections[$index], $this->sections[$index + 1]];
+        array_splice($this->sections, $index + 1, 0, [$copy]);
+        array_splice($this->collapsed, $index + 1, 0, [false]);
     }
 
     public function toggleActive(int $index): void
@@ -127,49 +101,125 @@ class SectionsBuilder extends Component
             ! ($this->sections[$index]['is_active'] ?? true);
     }
 
+    public function toggleCollapse(int $index): void
+    {
+        $this->collapsed[$index] = ! ($this->collapsed[$index] ?? true);
+    }
+
+    /* --------------------------------------------
+     | ORDERING (↑ ↓)
+     |--------------------------------------------*/
+    public function moveUp(int $index): void
+    {
+        if ($index === 0) return;
+
+        [$this->sections[$index - 1], $this->sections[$index]] =
+            [$this->sections[$index], $this->sections[$index - 1]];
+
+        [$this->collapsed[$index - 1], $this->collapsed[$index]] =
+            [$this->collapsed[$index], $this->collapsed[$index - 1]];
+    }
+
+    public function moveDown(int $index): void
+    {
+        if ($index >= count($this->sections) - 1) return;
+
+        [$this->sections[$index + 1], $this->sections[$index]] =
+            [$this->sections[$index], $this->sections[$index + 1]];
+
+        [$this->collapsed[$index + 1], $this->collapsed[$index]] =
+            [$this->collapsed[$index], $this->collapsed[$index + 1]];
+    }
+
+    /* --------------------------------------------
+     | MEDIA PICKER
+     |--------------------------------------------*/
+    public function openMediaPicker(int $index, string $field, ?int $repeaterIdx = null, ?string $subfield = null): void
+    {
+        $this->mediaTargetIndex = $index;
+        $this->mediaTargetField = $field;
+        $this->mediaTargetRepeaterIdx = $repeaterIdx;
+        $this->mediaTargetRepeaterSubfield = $subfield;
+        $this->mediaSearch = '';
+        $this->showMediaModal = true;
+    }
+
+    public function closeMediaPicker(): void
+    {
+        $this->showMediaModal = false;
+        $this->mediaTargetIndex = null;
+        $this->mediaTargetField = null;
+        $this->mediaTargetRepeaterIdx = null;
+        $this->mediaTargetRepeaterSubfield = null;
+        $this->mediaSearch = '';
+    }
+
+    public function selectMedia(int $mediaId): void
+    {
+        $media = MediaAsset::find($mediaId);
+        if (! $media) return;
+
+        $path = $media->url;
+        $idx = $this->mediaTargetIndex;
+        $field = $this->mediaTargetField;
+
+        if ($this->mediaTargetRepeaterIdx !== null && $this->mediaTargetRepeaterSubfield !== null) {
+            $this->sections[$idx]['data'][$field][$this->mediaTargetRepeaterIdx][$this->mediaTargetRepeaterSubfield] = $path;
+        } else {
+            $this->sections[$idx]['data'][$field] = $path;
+        }
+
+        $this->closeMediaPicker();
+    }
+
     public function setMedia(int $index, int $mediaId): void
     {
         $this->sections[$index]['data']['media_asset_id'] = $mediaId;
     }
 
-    protected function groupedSections(): array
+    /* --------------------------------------------
+     | REPEATER
+     |--------------------------------------------*/
+    public function addRepeaterItem(int $index, string $field): void
     {
-        $types = SectionRegistry::types();
-        $allowed = null;
+        $defaults = SectionRegistry::defaultsFor($this->sections[$index]['type']);
 
-        $groups = [
-            'Hero / Above the fold' => ['hero', 'hero_slider'],
-            'Content' => ['rich_text', 'image_gallery', 'before_after'],
-            'Conversion' => ['cta_block', 'lead_form'],
-            'Trust & Proof' => ['trust_bar', 'testimonials', 'logo_strip'],
-            'Services' => ['services_grid', 'service_includes', 'pricing_table'],
-            'Process & Timeline' => ['process_steps', 'timeline_block'],
-            'Location & SEO' => ['local_context', 'service_area_links', 'town_list', 'map_embed'],
-            'Case Studies' => [
-                'case_study_header',
-                'case_study_meta',
-                'case_study_body',
-                'case_study_gallery',
-            ],
-        ];
+        $existing = $this->sections[$index]['data'][$field] ?? [];
+        if (! is_array($existing)) $existing = [];
 
-        $result = [];
-
-        foreach ($groups as $label => $keys) {
-            foreach ($keys as $key) {
-                if (isset($types[$key]) && (is_null($allowed) || in_array($key, $allowed, true))) {
-                    $result[$label][$key] = $types[$key];
-                }
+        // Determine template from defaults or existing items
+        $template = null;
+        if (! empty($defaults[$field]) && is_array($defaults[$field])) {
+            $first = reset($defaults[$field]);
+            if (is_array($first)) {
+                $template = array_map(fn ($v) => is_array($v) ? array_map(fn () => null, $v) : null, $first);
             }
         }
 
-        return $result;
+        // Fallback: use first existing item as template
+        if ($template === null && ! empty($existing)) {
+            $first = reset($existing);
+            if (is_array($first)) {
+                $template = array_map(fn ($v) => is_array($v) ? array_map(fn () => null, $v) : null, $first);
+            }
+        }
+
+        $existing[] = $template ?? '';
+        $this->sections[$index]['data'][$field] = array_values($existing);
     }
 
-    // =====================
-    // SAVE
-    // =====================
+    public function removeRepeaterItem(int $index, string $field, int $itemIndex): void
+    {
+        $items = $this->sections[$index]['data'][$field] ?? [];
+        if (! is_array($items)) return;
 
+        unset($items[$itemIndex]);
+        $this->sections[$index]['data'][$field] = array_values($items);
+    }
+
+    /* --------------------------------------------
+     | SAVE
+     |--------------------------------------------*/
     public function save(): void
     {
         DB::transaction(function () {
@@ -178,31 +228,11 @@ class SectionsBuilder extends Component
 
             foreach ($this->sections as $order => $section) {
 
-                $type = $section['type'];
-
-                // 1. sigurnost
-                if (! SectionRegistry::exists($type)) {
-                    throw ValidationException::withMessages([
-                        'sections' => "Unknown section type: {$type}",
-                    ]);
-                }
-
-                // 2. VALIDACIJA PODATAKA
-                $rules = SectionRegistry::rulesFor($type);
-
-                validator(
-                    $section['data'] ?? [],
-                    $rules,
-                    [],
-                    collect($rules)->mapWithKeys(fn ($_, $k) => [$k => ucfirst(str_replace('_', ' ', $k))])->toArray()
-                )->validate();
-
-                // 3. UPIS
                 Section::create([
                     'page_id'    => $this->page->id,
-                    'type'       => $type,
-                    'data'       => $section['data'],
-                    'is_active'  => (bool) $section['is_active'],
+                    'type'       => $section['type'],
+                    'data'       => $section['data'] ?? [],
+                    'is_active'  => (bool) ($section['is_active'] ?? true),
                     'sort_order' => $order,
                 ]);
             }
@@ -213,12 +243,24 @@ class SectionsBuilder extends Component
         session()->flash('success', 'Sections saved successfully.');
     }
 
-
     public function render()
     {
+        $mediaItems = collect();
+        if ($this->showMediaModal) {
+            $query = MediaAsset::where('mime_type', 'like', 'image/%');
+            if ($this->mediaSearch) {
+                $query->where(function ($q) {
+                    $q->where('file_name', 'like', "%{$this->mediaSearch}%")
+                      ->orWhere('alt_text', 'like', "%{$this->mediaSearch}%")
+                      ->orWhere('title', 'like', "%{$this->mediaSearch}%");
+                });
+            }
+            $mediaItems = $query->orderByDesc('created_at')->limit(60)->get();
+        }
+
         return view('livewire.admin.pages.sections-builder', [
-            'groupedSections' => $this->groupedSections(),
             'sectionRegistry' => SectionRegistry::types(),
+            'mediaItems' => $mediaItems,
         ]);
     }
 }

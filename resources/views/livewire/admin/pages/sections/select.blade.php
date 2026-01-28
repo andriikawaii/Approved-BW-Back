@@ -4,9 +4,10 @@
 @endphp
 
 <select
-    wire:model.defer="sections.{{ $index }}.data.{{ $field }}"
-    class="w-full rounded-lg border px-3 py-2 bg-white dark:bg-zinc-800"
+    wire:model.live="sections.{{ $index }}.data.{{ $field }}"
+    class="w-full rounded-md border border-zinc-700 bg-zinc-800 px-3 py-2 text-sm text-white"
 >
+    <option value="">-- Select --</option>
     @foreach ($options as $opt)
         <option value="{{ $opt }}">{{ ucfirst($opt) }}</option>
     @endforeach
