@@ -7,6 +7,7 @@ use App\Models\MediaAsset;
 use App\Models\Page;
 use App\Models\Section;
 use App\Support\Sections\SectionRegistry;
+use App\Support\Sections\SectionValidator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use Livewire\Component;
@@ -22,6 +23,11 @@ class SectionsBuilder extends Component
     public array $collapsed = [];
 
     public ?string $newSectionType = null;
+
+    // UI state
+    public ?int $confirmingDelete = null;
+    public bool $showAddPanel = false;
+    public string $addPanelSearch = '';
 
     // Media picker state
     public bool $showMediaModal = false;
@@ -55,15 +61,32 @@ class SectionsBuilder extends Component
     /* --------------------------------------------
      | BASIC ACTIONS
      |--------------------------------------------*/
-    public function addSection(): void
+    public function addSection(?string $type = null): void
     {
+        if ($type !== null) {
+            $this->newSectionType = $type;
+        }
+
         $this->validate([
             'newSectionType' => 'required|string',
         ]);
 
+        // ✅ SECURITY: Validate section type exists in registry
         if (! SectionRegistry::exists($this->newSectionType)) {
             throw ValidationException::withMessages([
                 'newSectionType' => 'Unknown section type.',
+            ]);
+        }
+
+        // ✅ SECURITY: Validate section type is allowed for this template
+        $allowed = config("page-template-sections.{$this->page->template_key}.allowed", []);
+
+        if (!empty($allowed) && !in_array($this->newSectionType, $allowed, true)) {
+            $templateLabel = \Illuminate\Support\Str::headline($this->page->template_key);
+            $sectionLabel = SectionRegistry::labelFor($this->newSectionType);
+
+            throw ValidationException::withMessages([
+                'newSectionType' => "Section '{$sectionLabel}' is not allowed for template '{$templateLabel}'.",
             ]);
         }
 
@@ -76,6 +99,17 @@ class SectionsBuilder extends Component
 
         $this->collapsed[] = false;
         $this->newSectionType = null;
+        $this->showAddPanel = false;
+    }
+
+    public function confirmDelete(int $index): void
+    {
+        $this->confirmingDelete = $index;
+    }
+
+    public function cancelDelete(): void
+    {
+        $this->confirmingDelete = null;
     }
 
     public function deleteSection(int $index): void
@@ -84,6 +118,7 @@ class SectionsBuilder extends Component
 
         $this->sections  = array_values($this->sections);
         $this->collapsed = array_values($this->collapsed);
+        $this->confirmingDelete = null;
     }
 
     public function duplicateSection(int $index): void
@@ -222,11 +257,60 @@ class SectionsBuilder extends Component
      |--------------------------------------------*/
     public function save(): void
     {
-        DB::transaction(function () {
+        // ✅ SECURITY: Validate required sections exist and are active
+        $required = config("page-template-sections.{$this->page->template_key}.required", []);
 
+        if (!empty($required)) {
+            $activeSectionTypes = array_map(
+                fn($section) => ($section['is_active'] ?? true) ? $section['type'] : null,
+                $this->sections
+            );
+            $activeSectionTypes = array_filter($activeSectionTypes);
+
+            foreach ($required as $requiredType) {
+                if (!in_array($requiredType, $activeSectionTypes, true)) {
+                    $label = SectionRegistry::labelFor($requiredType);
+                    session()->flash('error', "Required section '{$label}' is missing or inactive.");
+                    return;
+                }
+            }
+        }
+
+        // ✅ LOCKED COPY: Validate CTA text per BuiltWell spec v3.3
+        foreach ($this->sections as $index => $section) {
+            if (!($section['is_active'] ?? true)) {
+                continue; // Skip inactive sections
+            }
+
+            $errors = SectionValidator::validate($section['type'], $section['data'] ?? []);
+
+            if (!empty($errors)) {
+                $sectionLabel = SectionRegistry::labelFor($section['type']);
+                $errorMessage = sprintf(
+                    'Section "%s" (#%d) has invalid CTA text: %s',
+                    $sectionLabel,
+                    $index + 1,
+                    implode(' ', $errors)
+                );
+
+                session()->flash('error', $errorMessage);
+                return;
+            }
+        }
+
+        DB::transaction(function () {
             Section::where('page_id', $this->page->id)->delete();
 
             foreach ($this->sections as $order => $section) {
+                // ✅ SECURITY: Skip sections with unknown types (fallback)
+                if (!SectionRegistry::exists($section['type'])) {
+                    \Log::warning("Unknown section type '{$section['type']}' for page {$this->page->id}, skipping.", [
+                        'page_id' => $this->page->id,
+                        'page_path' => $this->page->full_path,
+                        'section_type' => $section['type'],
+                    ]);
+                    continue;
+                }
 
                 Section::create([
                     'page_id'    => $this->page->id,
@@ -258,9 +342,47 @@ class SectionsBuilder extends Component
             $mediaItems = $query->orderByDesc('created_at')->limit(60)->get();
         }
 
+        // Build grouped section catalog for the add-section panel
+        $allTypes = SectionRegistry::types();
+        $allowed = config("page-template-sections.{$this->page->template_key}.allowed", []);
+
+        $categoryMap = [
+            'Hero'          => ['hero', 'hero_slider'],
+            'Content'       => ['rich_text', 'local_context'],
+            'Social Proof'  => ['trust_bar', 'testimonials', 'project_highlights', 'logo_strip', 'before_after'],
+            'Services'      => ['services_grid', 'service_includes', 'pricing_table', 'timeline_block', 'process_steps', 'service_area_links'],
+            'CTA & Forms'   => ['cta_block', 'lead_form'],
+            'Media'         => ['image_gallery', 'map_embed'],
+            'Location'      => ['areas_we_serve_cards', 'town_list'],
+            'Case Studies'  => ['case_study_header', 'case_study_meta', 'case_study_body', 'case_study_gallery'],
+            'Other'         => ['faq_list'],
+        ];
+
+        $groupedSections = [];
+        foreach ($categoryMap as $category => $types) {
+            $items = [];
+            foreach ($types as $type) {
+                if (! isset($allTypes[$type])) continue;
+                $meta = $allTypes[$type];
+                $isAllowed = empty($allowed) || in_array($type, $allowed, true);
+                $items[] = [
+                    'type'        => $type,
+                    'label'       => $meta['label'],
+                    'description' => $meta['description'] ?? '',
+                    'allowed'     => $isAllowed,
+                ];
+            }
+            if (! empty($items)) {
+                $groupedSections[$category] = $items;
+            }
+        }
+
         return view('livewire.admin.pages.sections-builder', [
-            'sectionRegistry' => SectionRegistry::types(),
-            'mediaItems' => $mediaItems,
+            'sectionRegistry' => $allTypes,
+            'groupedSections' => $groupedSections,
+            'allowedTypes'    => $allowed,
+            'requiredTypes'   => config("page-template-sections.{$this->page->template_key}.required", []),
+            'mediaItems'      => $mediaItems,
         ]);
     }
 }

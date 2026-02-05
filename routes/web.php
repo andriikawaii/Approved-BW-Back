@@ -31,19 +31,121 @@ Route::get('/robots.txt', function () {
     $frontUrl = rtrim(config('app.frontend_url', env('FRONTEND_URL', config('app.url'))), '/');
 
     $txt = implode("\n", [
+        "# BuiltWell Construction - robots.txt",
+        "# Updated: " . now()->format('Y-m-d'),
+        "",
+        "# Default crawlers",
         "User-agent: *",
         "Disallow: /admin",
         "Disallow: /api",
         "Disallow: /livewire",
         "Disallow: /preview",
         "Disallow: /*?",
+        "Allow: /",
         "",
+        "# AI Crawlers - OpenAI",
+        "User-agent: GPTBot",
+        "Disallow: /admin",
+        "Disallow: /api",
+        "Disallow: /livewire",
+        "Disallow: /preview",
+        "Allow: /",
+        "",
+        "User-agent: ChatGPT-User",
+        "Disallow: /admin",
+        "Disallow: /api",
+        "Disallow: /livewire",
+        "Disallow: /preview",
+        "Allow: /",
+        "",
+        "# AI Crawlers - Anthropic",
+        "User-agent: Claude-Web",
+        "Disallow: /admin",
+        "Disallow: /api",
+        "Disallow: /livewire",
+        "Disallow: /preview",
+        "Allow: /",
+        "",
+        "# AI Crawlers - Google Gemini",
+        "User-agent: Google-Extended",
+        "Disallow: /admin",
+        "Disallow: /api",
+        "Disallow: /livewire",
+        "Disallow: /preview",
+        "Allow: /",
+        "",
+        "# Sitemap",
         "Sitemap: {$frontUrl}/sitemap.xml",
         "",
     ]);
 
     return response($txt, 200)->header('Content-Type', 'text/plain; charset=UTF-8');
 })->name('seo.robots');
+
+Route::get('/llms.txt', function () {
+    $frontUrl = rtrim(config('app.frontend_url', env('FRONTEND_URL', config('app.url'))), '/');
+
+    // Get contact info from settings (with fallbacks)
+    $phoneMain = \App\Models\Setting::where('key', 'phone_main')->value('value') ?? '(203) 555-0100';
+    $companyName = \App\Models\Setting::where('key', 'company_name')->value('value') ?? 'BUILTWELL Construction';
+
+    $txt = implode("\n", [
+        "# {$companyName}",
+        "# Connecticut Home Remodeling & Construction",
+        "# Last updated: " . now()->format('F d, Y'),
+        "",
+        "## About",
+        "Licensed Connecticut Home Improvement Contractor (HIC #0668405).",
+        "Serving Fairfield County and New Haven County since 2009.",
+        "15+ years of experience. 5-star rated contractor.",
+        "",
+        "## Services",
+        "We specialize in residential remodeling:",
+        "- Kitchen Remodeling",
+        "- Bathroom Remodeling",
+        "- Basement Finishing",
+        "- Flooring Installation",
+        "- Home Additions",
+        "- General Contracting",
+        "",
+        "## Service Area",
+        "Primary Counties:",
+        "- Fairfield County, Connecticut",
+        "- New Haven County, Connecticut",
+        "",
+        "Major Towns Served:",
+        "- Greenwich, Stamford, Darien, New Canaan (Fairfield County)",
+        "- Orange, Milford, West Haven, Branford (New Haven County)",
+        "",
+        "## Contact",
+        "Phone: {$phoneMain}",
+        "Office: Orange, Connecticut",
+        "Website: {$frontUrl}",
+        "",
+        "## Process",
+        "We follow a transparent 5-step process:",
+        "1. Free Consultation (on-site or remote via Google Meet/Zoom)",
+        "2. Detailed Planning & Proposal",
+        "3. Material Selections",
+        "4. Construction with Daily Updates",
+        "5. Final Walkthrough",
+        "",
+        "## Credentials",
+        "- Connecticut HIC License #0668405",
+        "- Fully Insured",
+        "- Background-Checked Team",
+        "- 5-Star Google Rating",
+        "",
+        "## Resources",
+        "Sitemap: {$frontUrl}/sitemap.xml",
+        "FAQ: {$frontUrl}/faq/",
+        "Free Consultation: {$frontUrl}/free-consultation/",
+        "",
+    ]);
+
+    return response($txt, 200)->header('Content-Type', 'text/plain; charset=UTF-8');
+})->name('seo.llms');
+
 /*
 |--------------------------------------------------------------------------
 | Authenticated area (ALL ADMINS)

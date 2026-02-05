@@ -19,7 +19,137 @@ class PageObserver
     }
     public function saving(Page $page): void
     {
+        // Normalize path
         $page->full_path = PathNormalizer::normalize($page->full_path);
+
+        // Auto-assign and validate schema_type
+        $this->autoAssignSchema($page);
+        $this->validateSchema($page);
+    }
+
+    /**
+     * Auto-assign schema_type based on page type
+     *
+     * @param Page $page
+     * @return void
+     */
+    protected function autoAssignSchema(Page $page): void
+    {
+        // Skip if user manually set schema_type to null (intentional override)
+        if ($page->isDirty('schema_type') && $page->schema_type === null) {
+            return;
+        }
+
+        // Auto-assign based on page type
+        $schemaType = match ($page->type) {
+            'service_global', 'service_county', 'service_town' => 'Service',
+            'county_hub' => 'Place',
+            'office' => 'LocalBusiness',
+            'faq' => 'FAQPage',
+            default => null,
+        };
+
+        // Only set if not already set or if page type changed
+        if ($schemaType && ($page->schema_type === null || $page->isDirty('type'))) {
+            $page->schema_type = $schemaType;
+        }
+    }
+
+    /**
+     * Validate schema_type rules (BuiltWell v3.3 LOCKED)
+     *
+     * @param Page $page
+     * @return void
+     * @throws \Exception if validation fails
+     */
+    protected function validateSchema(Page $page): void
+    {
+        if (!$page->schema_type) {
+            return; // No schema to validate
+        }
+
+        switch ($page->schema_type) {
+            case 'FAQPage':
+                $this->validateFaqPage($page);
+                break;
+
+            case 'LocalBusiness':
+                $this->validateLocalBusiness($page);
+                break;
+
+            case 'Service':
+                $this->validateService($page);
+                break;
+
+            case 'Place':
+                $this->validatePlace($page);
+                break;
+        }
+    }
+
+    /**
+     * Validate FAQPage schema (LOCKED: only /faq/ pages)
+     */
+    protected function validateFaqPage(Page $page): void
+    {
+        if (!str_contains($page->full_path, '/faq')) {
+            throw new \Exception(
+                "FAQPage schema can only be used on pages with '/faq' in the URL path. " .
+                "Current path: {$page->full_path}"
+            );
+        }
+    }
+
+    /**
+     * Validate LocalBusiness schema (LOCKED: only Orange office)
+     */
+    protected function validateLocalBusiness(Page $page): void
+    {
+        $allowedPaths = [
+            '/new-haven-county/orange-ct/',
+            '/new-haven-county/orange-ct',
+        ];
+
+        $normalizedPath = rtrim($page->full_path, '/') . '/';
+
+        if (!in_array($normalizedPath, $allowedPaths, true)) {
+            throw new \Exception(
+                "LocalBusiness schema can ONLY be used on the Orange office page " .
+                "(/new-haven-county/orange-ct/). Current path: {$page->full_path}"
+            );
+        }
+    }
+
+    /**
+     * Validate Service schema (should be on service pages)
+     */
+    protected function validateService(Page $page): void
+    {
+        $validTypes = ['service_global', 'service_county', 'service_town'];
+
+        if (!in_array($page->type, $validTypes, true)) {
+            throw new \Exception(
+                "Service schema should only be used on service pages " .
+                "(service_global, service_county, service_town). " .
+                "Current page type: {$page->type}"
+            );
+        }
+    }
+
+    /**
+     * Validate Place schema (should be on county/town pages)
+     */
+    protected function validatePlace(Page $page): void
+    {
+        $validTypes = ['county_hub', 'service_county', 'service_town'];
+
+        if (!in_array($page->type, $validTypes, true)) {
+            throw new \Exception(
+                "Place schema should only be used on location pages " .
+                "(county_hub, service_county, service_town). " .
+                "Current page type: {$page->type}"
+            );
+        }
     }
     public function updated(Page $page): void
     {
