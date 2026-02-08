@@ -2,6 +2,11 @@
 
 namespace App\Http\Resources;
 
+use App\Services\BreadcrumbBuilder;
+use App\Services\CtaResolver;
+use App\Services\FooterTemplateResolver;
+use App\Services\PhoneResolver;
+use App\Services\SchemaBuilder;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -22,28 +27,24 @@ class PageResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
-        // Build schema object
-        $baseSchema = $this->schema_type
-            ? ['@type' => $this->schema_type]
-            : [];
-
-        $schemaOverrides = is_array($this->schema_overrides)
-            ? $this->schema_overrides
-            : [];
-
-        $schema = array_replace_recursive($baseSchema, $schemaOverrides);
+        $breadcrumbs = BreadcrumbBuilder::build($this->resource);
+        $schemas = SchemaBuilder::build($this->resource);
 
         // ===== BUILTWELL v3.3 CONTRACT-COMPLIANT RESPONSE =====
         return [
             'id'       => $this->id,
-            'slug'     => $this->full_path,  // ✅ FIXED: renamed from full_path
+            'slug'     => $this->full_path,
             'template' => $this->template_key,
+
+            'phones' => PhoneResolver::resolve($this->resource),
+            'footer' => FooterTemplateResolver::resolve($this->resource),
+            'breadcrumbs' => $breadcrumbs,
 
             'seo' => [
                 'title'       => $this->seo_title ?: null,
                 'description' => $this->seo_description ?: null,
                 'canonical'   => $this->canonical_url ?: null,
-                'schema'      => $schema !== [] ? $schema : null,
+                'schemas'     => $schemas,
             ],
 
             // ✅ FIXED: sections at root level, filtered & sorted
@@ -54,8 +55,8 @@ class PageResource extends JsonResource
                 ->map(fn ($s) => [
                     'id'        => $s->id,
                     'type'      => $s->type,
-                    'data'      => $s->data ?? [],           // Raw data (no transformation)
-                    'is_active' => true,                      // Always true (filtered above)
+                    'data'      => CtaResolver::resolve($this->resource, $s->data ?? [], $s->type),
+                    'is_active' => true,
                 ])
                 ->all(),
         ];

@@ -1,0 +1,3811 @@
+BUILTWELL CT — TECHNICAL
+SPECIFICATION (v3.3)
+Purpose: The single source of truth for building the BuiltWell CT website Version: . —
+FINAL Validated:  Google & AI Search Best Practices Last Updated: January ,
+Total Pages:
+IMPORTANT: This document incorporates all updates from the FINAL SYSTEM CHANGE
+LOG. All rules marked (LOCKED) are non-negotiable and apply sitewide.
+QUICK REFERENCE CHEAT SHEET (1-
+Page Summary)
+Phone Rules
+Address Rules
+CTA Format (LOCKED)
+Plain Text
+Page Type Phone(s) Shown
+Global pages (home, about, services, contact,
+FAQ)
+BOTH phones labeled
+Fairfield County pages () - only
+New Haven County pages () - only
+Location Show Address?
+Orange page ONLY ✅YES — A Boston Post Road, Orange, CT
+
+All other pages ❌NO — never show street address
+Button: Schedule a Free Consultation
+ — OR —
+Button: Get a Free Estimate
+Subtext: On-site or remote (Google Meet or Zoom)
+Booking Widgets: Remote → Calendly | In-Person → Google Calendar (see PART )
+Texting Widget: Custom-built, already on staging (see PART )
+Team Terminology (LOCKED)
+Footer Templates
+Linking Rules (LOCKED)
+❌NEVER ✅ALWAYS
+"Stamford Service Area Team" "Fairfield County Service Area Team"
+Template Used On Content
+A Global pages Both phones, no address
+B Fairfield pages
+"Fairfield County Service Area
+Team" + () -
+C New Haven pages
+"Served from our Orange, CT
+office" + () -
+D Orange page ONLY Full address + hours + map
+Direction Allowed?
+Service×Town → Global Service ✅YES
+Global Service → Service×Town ❌NO
+Global Service → County Hubs ✅YES
+Schema Rules
+-Step Process (LOCKED)
+. Consultation → . Planning → . Selections → . Build → . Walkthrough
+Owner Name
+• Appears ONLY on /about/ page
+• Never on service pages, town pages, case studies, or footers
+TABLE OF CONTENTS
+. Company & Brand Information
+. Location & Phone Logic (LOCKED)
+. URL Structure & Navigation (UPDATED)
+. GBP Landing Page Strategy (NEW)
+. Complete Sitemap ( URLs) (UPDATED)
+. Content Templates ( Types) + E-E-A-T Requirements (NEW)
+. Pricing Reference Data
+. Meta & Schema Templates (EXPANDED)
+. Output Format Specifications
+. Case Studies Data ( Total — Complete)
+Town Hub → Service×Town ✅YES
+Schema Type Where Applied
+LocalBusiness Orange page ONLY
+FAQPage /faq/ page ONLY
+Service Service×town pages
+. FAQ Content & Strategy (LOCKED)
+. Internal Linking Rules (EXPANDED — Hub-and-Spoke Model)
+. Breadcrumb Navigation (NEW)
+. Anchor Text Guidelines
+. Image & Alt Text Guidelines
+. Duplicate Content Prevention Rules
+. CTA Standards (LOCKED) + Booking & Texting Widget Implementation (NEW)
+. Process Standardization (LOCKED)
+. Build Priority Order (UPDATED)
+. GMB Configuration
+. Future Expansion Guide
+. Developer Checklist + Technical SEO
+. AI Search Optimization (NEW) — llms.txt, robots.txt for AI crawlers
+PART 1: COMPANY & BRAND
+INFORMATION
+Company Facts
+Item Value
+Company Name BuiltWell
+Tagline The Last Contractor You'll Hire
+Service Area
+Fairfield County & New Haven County,
+Connecticut
+Headquarters
+Orange, CT (address shown ONLY on Orange
+page)
+Fairfield County Phone (203) 919-9616
+New Haven County Phone (203) 466-9148
+CT HIC License #
+Owner Name Rule (LOCKED)
+Core Services
+Primary ( Core Services — Have Service×Town Pages):
+. Kitchen Remodeling
+. Bathroom Remodeling
+. Basement Finishing
+. Flooring
+Secondary ( Services — Global Pages Only, No Town Pages): . Remodeling Design &
+Planning . Comfort & Accessibility Remodeling . Home Additions . Interior Painting .
+Interior Carpentry . Attic Conversions . Decks & Porches
+Brand Voice
+• Confident but not arrogant
+• Professional but approachable
+• Direct but friendly
+• Quality-focused but practical
+• Local and invested
+Language Rules
+DO Use:
+• Quality, premium, well-crafted
+• Personalized, custom
+Rule Detail
+Owner name appears ONLY on /about/ page
+Remove owner name from
+Service pages, town pages, case studies,
+footers, schema (except About)
+• Experienced, skilled
+• Homeowners, families
+• "You" and "your"
+• Specific numbers (timelines, costs)
+DO NOT Use:
+• Luxury, exclusive, elite, high-end (as primary descriptors)
+• Affluent, upscale
+• Cheap, budget, affordable
+• Founding year or "new company" references
+• Owner name (except on About page)
+PART 2: LOCATION & PHONE LOGIC
+(LOCKED)
+Location Model (FINAL)
+New Haven County
+Fairfield County
+Item Value
+Office Orange, CT — ONLY real public office
+Address shown ONLY on /new-haven-county/orange-ct/
+Full address A Boston Post Road, Orange, CT
+Phone (203) 466-9148
+LocalBusiness schema ONLY on Orange page
+Item Value
+Terminology Rule (LOCKED)
+Link "Fairfield County Service Area Team" to: /fairfield-county/
+This rule applies sitewide with NO exceptions.
+Phone + Address Display Rules (LOCKED)
+A) Global Pages
+• Show BOTH phones, clearly labeled
+• No map, no street address in footer
+• Allowed: "Headquartered in Orange, CT"
+B) Orange Office Page ONLY
+• Full address: A Boston Post Road, Orange, CT
+• Google Map: YES
+• Hours: Mon–Fri am–pm, Sat am–pm
+• Phone: () - ONLY
+• LocalBusiness schema: YES
+C) County/Town/Service×Town Pages
+• ONE phone only (based on county)
+• No address, no map
+Model Service Area Business (SAB)
+Address shown NEVER — no Stamford address anywhere
+Phone (203) 919-9616
+Location equivalent /fairfield-county/
+❌NEVER Use ✅ALWAYS Use
+"Stamford Service Area Team" "Fairfield County Service Area Team"
+Required service-area lines:
+Fairfield pages:
+New Haven pages:
+Town Lists
+FAIRFIELD COUNTY — Phone: () -
+Tier  (Hub + Service×Town Pages): Greenwich, Westport, Darien, New Canaan,
+Stamford, Norwalk, Fairfield, Ridgefield
+Tier  (Text Only): Old Greenwich, Cos Cob, Riverside, Rowayton, Bethel, Bridgeport,
+Brookfield, Danbury, Easton, Monroe, New Fairfield, Newtown, Redding, Shelton, Sherman,
+Stratford, Trumbull, Weston, Wilton
+NEW HAVEN COUNTY — Phone: () -
+Tier  (Hub + Service×Town Pages): Orange, New Haven, Hamden, Branford, Guilford,
+Madison, Woodbridge, Milford
+Tier  (Text Only): West Haven, East Haven, North Haven, Cheshire, Ansonia, Beacon Falls,
+Bethany, Derby, Meriden, Middlebury, Naugatuck, North Branford, Oxford, Prospect,
+Seymour, Southbury, Wallingford, Waterbury, Wolcott
+PART 3: URL STRUCTURE &
+NAVIGATION (UPDATED)
+Key URL Changes from Original
+The following URL changes have been made to simplify the structure:
+Served by our Fairfield County Service Area Team (Link to /fairfield-county/)
+Served from our Orange, CT office (Link to /new-haven-county/orange-ct/)
+Original URL New URL Reason
+/fairfield-county/ /fairfield-county/
+Shorter, cleaner URLs
+perform better
+Navigation Menu Structure
+The main navigation is clean and simple:
+Plain Text
+Areas We Serve ▾
+├── Fairfield County
+└── New Haven County
+Users click on a county to visit the County Hub page, which lists all  towns served with
+links.
+PART 4: GBP LANDING PAGE STRATEGY
+(NEW)
+Each Google Business Profile (GBP) must link to the most relevant page:
+/new-haven-county/ /new-haven-county/
+Removed unnecessary /areaswe-serve/ prefix
+/fairfield-county/greenwich-ct/ /fairfield-county/greenwich-ct/
+Consistent with county URL
+change
+GBP Listing Business Type Landing Page URL Why
+New Haven County Physical Office
+/new-havencounty/orange-ct/
+This is the only page
+with the physical
+address
+Fairfield County
+Service Area
+Business (SAB)
+/fairfield-county/
+SABs should link to
+the broadest
+relevant page
+covering the service
+area
+PART 5: COMPLETE SITEMAP (106 Pages)
+(UPDATED)
+Page Count Summary
+Complete URL List with Page Titles
+Core Pages ()
+Category Count
+Core pages
+Services hub +  service pages
+Geographic hubs
+Town hub pages  (reduced from )
+Service×Town pages ( × )
+Case studies (hub + )
+Homeowner Hub + FAQ
+Utility pages
+TOTAL
+# Page Title URL Footer
+ Homepage / A
+ About Us /about/ A
+ Portfolio /portfolio/ A
+ Reviews /reviews/ A
+ Contact /contact/ A
+ Free Consultation /free-consultation/ A
+Service Pages ()
+Services Hub ()
+Primary Service Pages () — Have Service×Town Pages
+Secondary Service Pages () — Global Pages Only
+ Our Process /process/ A
+ Financing Options /financing/ A
+ Warranty /warranty/ A
+ Careers /careers/ A
+ Privacy Policy /privacy-policy/ A
+ Terms of Service /terms/ A
+ Thank You /thank-you/ A
+# Page Title URL Footer
+ Our Services /services/ A
+# Page Title URL Footer
+ Kitchen Remodeling /kitchen-remodeling/ A
+
+Bathroom
+Remodeling
+/bathroomremodeling/
+A
+ Basement Finishing /basement-finishing/ A
+ Flooring /flooring/ A
+# Page Title URL Footer
+Geographic Hub Pages ()
+Town Hub Pages () — STRATEGIC TOWNS ONLY
+Why only  Town Hubs? Based on research into the December  Google update, thin or
+templated location pages are now penalized. We have reduced Town Hub pages to only the
+most strategic markets where we can create genuinely unique, high-quality content.
+Fairfield County Town Hubs ()
+
+Remodeling Design
+& Planning
+/remodeling-designplanning/
+A
+
+Comfort &
+Accessibility
+Remodeling
+/comfort-accessibilityremodeling/
+A
+ Home Additions /home-additions/ A
+ Interior Painting /interior-painting/ A
+ Interior Carpentry /interior-carpentry/ A
+ Attic Conversions /attic-conversions/ A
+ Decks & Porches /decks-porches/ A
+# Page Title URL Footer
+ Areas We Serve /areas-we-serve/ A
+ Fairfield County /fairfield-county/ B
+ New Haven County /new-haven-county/ C
+# Page Title URL Footer Notes
+ Greenwich, CT
+/fairfieldcounty/greenwichct/
+B
+Highest wealth,
+largest market
+New Haven County Town Hubs ()
+Towns WITHOUT Dedicated Hub Pages ()
+These towns still have Service×Town pages, but no standalone Town Hub page:
+• Fairfield County: Darien, New Canaan, Stamford, Norwalk, Fairfield, Ridgefield
+• New Haven County: Hamden, Branford, Guilford, Woodbridge, Milford
+Service×Town Pages ()
+All  towns get Service×Town pages for the  primary services.
+Kitchen Remodeling in [Town] ( pages)
+ Westport, CT
+/fairfieldcounty/westportct/
+B
+Affluent coastal
+market
+# Page Title URL Footer Notes
+
+Orange, CT
+(Office)
+/new-havencounty/orange-ct/
+D
+GBP Landing
+Page —
+Physical Office
+ New Haven, CT
+/new-havencounty/newhaven-ct/
+C Hub city effect
+ Madison, CT
+/new-havencounty/madisonct/
+C
+Wealthiest in
+New Haven
+County
+# Page Title URL Footer
+
+Kitchen Remodeling
+in Greenwich, CT
+/kitchenremodeling/greenwichct/
+B
+ Kitchen Remodeling
+in Westport, CT
+/kitchenremodeling/westportB
+c
+t
+/
+
+
+Kit
+c
+h
+e
+n
+R
+e
+m
+o
+d
+e
+lin
+g in Darien, CT
+/
+kit
+c
+h
+e
+n
+-
+r
+e
+m
+o
+d
+e
+lin
+g
+/
+d
+a
+rie
+n
+-
+c
+t
+/
+B
+
+
+Kit
+c
+h
+e
+n
+R
+e
+m
+o
+d
+e
+lin
+g in New Canaan, CT
+/
+kit
+c
+h
+e
+n
+-
+r
+e
+m
+o
+d
+e
+lin
+g
+/
+n
+e
+w
+-
+c
+a
+n
+a
+a
+n
+-
+c
+t
+/
+B
+
+
+Kit
+c
+h
+e
+n
+R
+e
+m
+o
+d
+e
+lin
+g in Stamford, CT
+/
+kit
+c
+h
+e
+n
+-
+r
+e
+m
+o
+d
+e
+lin
+g
+/
+s
+t
+a
+m
+f
+o
+r
+d
+-
+c
+t
+/
+B
+
+
+Kit
+c
+h
+e
+n
+R
+e
+m
+o
+d
+e
+lin
+g in Norwalk, CT
+/
+kit
+c
+h
+e
+n
+-
+r
+e
+m
+o
+d
+e
+lin
+g
+/
+n
+o
+r
+w
+a
+l
+k
+-
+c
+t
+/
+B
+
+
+Kit
+c
+h
+e
+n
+R
+e
+m
+o
+d
+e
+lin
+g in Fairfield, CT
+/
+kit
+c
+h
+e
+n
+-
+r
+e
+m
+o
+d
+e
+lin
+g
+/
+f
+air
+fi
+e
+l
+d
+-
+c
+t
+/
+B
+
+
+Kit
+c
+h
+e
+n
+R
+e
+m
+o
+d
+e
+lin
+g in Ridgefield, CT
+/
+kit
+c
+h
+e
+n
+-
+r
+e
+m
+o
+d
+e
+lin
+g
+/
+rid
+g
+e
+fi
+e
+l
+d
+-
+c
+t
+/
+B
+
+
+Kit
+c
+h
+e
+n
+R
+e
+m
+o
+d
+e
+lin
+g in Orange, CT
+/
+kit
+c
+h
+e
+n
+-
+r
+e
+m
+o
+d
+e
+lin
+g
+/
+o
+r
+a
+n
+g
+e
+-
+c
+t
+/
+C
+
+
+Kit
+c
+h
+e
+n
+R
+e
+m
+o
+d
+e
+lin
+g in New Haven, CT
+/
+kit
+c
+h
+e
+n
+-
+r
+e
+m
+o
+d
+e
+lin
+g
+/
+n
+e
+w
+-
+h
+a
+v
+e
+n
+-
+c
+t
+/
+C
+
+
+Kit
+c
+h
+e
+n
+R
+e
+m
+o
+d
+e
+lin
+g in Hamden, CT
+/
+kit
+c
+h
+e
+n
+-
+r
+e
+m
+o
+d
+e
+lin
+g
+/
+h
+a
+m
+d
+e
+n
+-
+c
+t
+/
+C
+
+
+Kit
+c
+h
+e
+n
+R
+e
+m
+o
+d
+e
+lin
+g in Branford, CT
+/
+kit
+c
+h
+e
+n
+-
+r
+e
+m
+o
+d
+e
+lin
+g
+/
+b
+r
+a
+n
+f
+o
+r
+d
+-
+c
+t
+/
+C
+
+
+Kit
+c
+h
+e
+n
+R
+e
+m
+o
+d
+e
+lin
+g in Guilford, CT
+/
+kit
+c
+h
+e
+n
+-
+r
+e
+m
+o
+d
+e
+lin
+g
+/
+g
+uil
+f
+o
+r
+d
+-
+c
+t
+/
+C
+
+
+Kit
+c
+h
+e
+n
+R
+e
+m
+o
+d
+e
+lin
+g in Madison, CT
+/
+kit
+c
+h
+e
+n
+-
+r
+e
+m
+o
+d
+e
+lin
+g
+/
+m
+a
+dis
+o
+n
+-
+c
+t
+/
+C
+
+
+Kit
+c
+h
+e
+n
+R
+e
+m
+o
+d
+e
+lin
+g in Woodbridge, CT
+/
+kit
+c
+h
+e
+n
+-
+r
+e
+m
+o
+d
+e
+lin
+g
+/
+w
+o
+o
+d
+b
+rid
+g
+e
+-
+c
+t
+/
+C
+
+
+Kit
+c
+h
+e
+n
+R
+e
+m
+o
+d
+e
+lin
+g in Milford, CT
+/
+kit
+c
+h
+e
+n
+-
+r
+e
+m
+o
+d
+e
+lin
+g
+/
+mil
+f
+o
+r
+d
+-
+c
+t
+/
+C
+Bathroom Remodeling in [Town] ( pages)
+# Page Title URL Footer
+
+Bathroom
+Remodeling in
+Greenwich, CT
+/bathroomremodeling/greenwichct/
+B
+
+Bathroom
+Remodeling in
+Westport, CT
+/bathroomremodeling/westportct/
+B
+
+Bathroom
+Remodeling in
+Darien, CT
+/bathroomremodeling/darien-ct/
+B
+
+Bathroom
+Remodeling in New
+Canaan, CT
+/bathroomremodeling/new-canaanct/
+B
+
+Bathroom
+Remodeling in
+Stamford, CT
+/bathroomremodeling/stamfordct/
+B
+
+Bathroom
+Remodeling in
+Norwalk, CT
+/bathroomremodeling/norwalk-ct/
+B
+
+Bathroom
+Remodeling in
+Fairfield, CT
+/bathroomremodeling/fairfield-ct/
+B
+
+Bathroom
+Remodeling in
+Ridgefield, CT
+/bathroomremodeling/ridgefieldct/
+B
+
+Bathroom
+Remodeling in
+Orange, CT
+/bathroomremodeling/orange-ct/
+C
+
+Bathroom
+Remodeling in New
+Haven, CT
+/bathroomremodeling/new-havenct/
+C
+Basement Finishing in [Town] ( pages)
+
+Bathroom
+Remodeling in
+Hamden, CT
+/bathroomremodeling/hamden-ct/
+C
+
+Bathroom
+Remodeling in
+Branford, CT
+/bathroomremodeling/branford-ct/
+C
+
+Bathroom
+Remodeling in
+Guilford, CT
+/bathroomremodeling/guilford-ct/
+C
+
+Bathroom
+Remodeling in
+Madison, CT
+/bathroomremodeling/madison-ct/
+C
+
+Bathroom
+Remodeling in
+Woodbridge, CT
+/bathroomremodeling/woodbridgect/
+C
+
+Bathroom
+Remodeling in
+Milford, CT
+/bathroomremodeling/milford-ct/
+C
+# Page Title URL Footer
+
+Basement Finishing
+in Greenwich, CT
+/basementfinishing/greenwich-ct/
+B
+
+Basement Finishing
+in Westport, CT
+/basementfinishing/westport-ct/
+B
+
+Basement Finishing
+in Darien, CT
+/basementfinishing/darien-ct/
+B
+
+Basement Finishing
+in New Canaan, CT
+/basementfinishing/new-canaanct/
+B
+
+Basement Finishing
+in Stamford, CT
+/basementfinishing/stamford-ct/
+B
+Flooring in [Town] ( pages)
+
+Basement Finishing
+in Norwalk, CT
+/basementfinishing/norwalk-ct/
+B
+
+Basement Finishing
+in Fairfield, CT
+/basementfinishing/fairfield-ct/
+B
+
+Basement Finishing
+in Ridgefield, CT
+/basementfinishing/ridgefield-ct/
+B
+
+Basement Finishing
+in Orange, CT
+/basementfinishing/orange-ct/
+C
+
+Basement Finishing
+in New Haven, CT
+/basementfinishing/new-haven-ct/
+C
+
+Basement Finishing
+in Hamden, CT
+/basementfinishing/hamden-ct/
+C
+
+Basement Finishing
+in Branford, CT
+/basementfinishing/branford-ct/
+C
+
+Basement Finishing
+in Guilford, CT
+/basementfinishing/guilford-ct/
+C
+
+Basement Finishing
+in Madison, CT
+/basementfinishing/madison-ct/
+C
+
+Basement Finishing
+in Woodbridge, CT
+/basementfinishing/woodbridgect/
+C
+
+Basement Finishing
+in Milford, CT
+/basementfinishing/milford-ct/
+C
+# Page Title URL Footer
+
+Flooring in
+Greenwich, CT
+/flooring/greenwich-ct/ B
+
+Flooring in Westport,
+CT
+/flooring/westport-ct/ B
+ Flooring in Darien, CT /flooring/darien-ct/ B
+Case Studies ()
+
+Flooring in New
+Canaan, CT
+/flooring/new-canaanct/
+B
+
+Flooring in Stamford,
+CT
+/flooring/stamford-ct/ B
+
+Flooring in Norwalk,
+CT
+/flooring/norwalk-ct/ B
+
+Flooring in Fairfield,
+CT
+/flooring/fairfield-ct/ B
+
+Flooring in
+Ridgefield, CT
+/flooring/ridgefield-ct/ B
+
+Flooring in Orange,
+CT
+/flooring/orange-ct/ C
+
+Flooring in New
+Haven, CT
+/flooring/new-havenct/
+C
+
+Flooring in Hamden,
+CT
+/flooring/hamden-ct/ C
+
+Flooring in Branford,
+CT
+/flooring/branford-ct/ C
+
+Flooring in Guilford,
+CT
+/flooring/guilford-ct/ C
+
+Flooring in Madison,
+CT
+/flooring/madison-ct/ C
+
+Flooring in
+Woodbridge, CT
+/flooring/woodbridgect/
+C
+
+Flooring in Milford,
+CT
+/flooring/milford-ct/ C
+# Page Title URL Footer
+ Case Studies /case-studies/ A
+Resource & Utility Pages ()
+PART 6: CONTENT TEMPLATES
+E-E-A-T Content Requirements ( Best Practice) (NEW)
+Every page must include elements that demonstrate Experience, Expertise,
+Authoritativeness, and Trust (E-E-A-T). This is critical for both Google rankings and AI search
+visibility.
+
+Case Study: Whole
+Home Restoration in
+Hamden
+/case-studies/wholehome-restorationhamden/
+C
+
+Case Study:
+Basement Finishing
+in Darien
+/case-studies/basementfinishing-darien/
+B
+
+Case Study:
+Bathroom
+Remodeling in
+Westport
+/casestudies/bathroomremodeling-westport/
+B
+
+Case Study: Kitchen
+Remodeling in New
+Canaan
+/case-studies/kitchenremodeling-newcanaan/
+B
+
+Case Study: Kitchen
+Remodeling in
+Milford
+/case-studies/kitchenremodeling-milford/
+C
+# Page Title URL Footer
+ Homeowner Hub /homeowner-hub/ A
+ FAQ /faq/ A
+ Sitemap /sitemap/ A
+Minimum E-E-A-T Content Per Page Type:
+Global Service Page — Section Order (LOCKED))
+. Hero: H + -sentence direct answer + CTA
+. What's included
+. Cost in Connecticut (table)
+E-E-A-T Signal How to Implement Required On
+Experience
+Include at least  project
+photo or mini case study from
+the specific location/service
+Service×Town pages, Town
+Hubs
+Expertise
+Reference team credentials,
+years of experience,
+specialized training
+About page, Service pages
+Authoritativeness
+Display CT HIC License
+#, mention industry
+affiliations
+Footer (all pages), About page
+Trust
+Feature location-specific
+testimonials, display review
+ratings, show real project
+photos
+All customer-facing pages
+Page Type Required E-E-A-T Elements
+Service×Town
+ local testimonial,  project photo from that
+town/county, HIC license in footer
+Town Hub
+- local testimonials, + project photos from
+that area, "Serving [Town] since..." statement
+Global Service
++ testimonials, + before/after photos, team
+expertise statement
+Case Study
+Full project details, client testimonial, multiple
+photos, timeline, cost transparency
+. Timeline in Connecticut (mention lead times)
+. -step process (hover cards)
+. Service area block (links only to hubs — NO town links)
+. Before / After projects + reviews
+.  FAQs (no schema)
+. Final CTA
+CRITICAL: Global service pages do NOT link to individual service×town pages.
+Service×Town Page Structure
+• H with town name
+• Unique intro paragraph (town-specific)
+• Cost table
+• What's included
+• -step process
+• Local context section (unique per town)
+• Link UP to global service page
+•  FAQs (no schema)
+• CTA with county phone
+Secondary Service Page Template ( Services)
+Secondary services (Design, Accessibility, Additions, Painting, Carpentry, Attic, Decks)
+follow a simplified template:
+Section Order:
+. Hero: H + -sentence definition + CTA
+. What's included (- paragraphs)
+. Cost range in Connecticut (simple table or paragraph)
+. When to consider this service
+. How it works with other services (cross-links to primary services)
+. Service area block (links to county hubs)
+.  FAQs (no schema)
+. Final CTA
+Word Count: - words Phone: Both Footer: Template A (Global)
+Cross-linking examples:
+• Interior Painting → links to Kitchen Remodeling, Bathroom Remodeling
+• Interior Carpentry → links to Basement Finishing, Kitchen Remodeling
+• Comfort & Accessibility → links to Bathroom Remodeling
+PART 7: PRICING REFERENCE DATA
+Kitchen Remodeling — CT -
+Timeline: - weeks (custom cabinets add - weeks lead time)
+Bathroom Remodeling — CT -
+Level Price Range What's Included
+Basic/Minor $25,000 – $50,000
+Cabinet refacing, new
+counters, appliances, paint
+Mid-Range $50,000 – $90,000
+New cabinets, countertops,
+flooring, appliances, lighting
+High-End $90,000 – $150,000+
+Custom cabinets, layout
+changes, premium appliances
+Fairfield Luxury $150,000 – $250,000+
+Full custom, structural
+changes, imported materials
+Level Price Range What's Included
+Basic $15,000 – $25,000
+New fixtures, vanity, flooring,
+paint
+Mid-Range $25,000 – $55,000
+Full gut, new tile, shower/tub,
+vanity, lighting
+Timeline: - weeks
+Basement Finishing — CT -
+Per Square Foot: $ – $ Timeline: - weeks
+Flooring — CT -
+High-End $55,000 – $80,000+
+Custom tile, walk-in shower,
+premium fixtures
+Luxury/Expansion $80,000 – $120,000+
+Layout changes, spa features,
+expansion
+Level Price Range What's Included
+Basic $25,000 – $45,000
+Framing, drywall, basic
+flooring, lighting, paint
+Mid-Range $45,000 – $70,000
+Multiple rooms, upgraded
+flooring, bathroom rough-in
+High-End $70,000 – $100,000+
+Full bathroom, wet bar,
+custom built-ins
+Type Installed Cost/sq ft Best For
+LVP $6 – $14
+Basements, kitchens, hightraffic
+Hardwood (Solid) $12 – $25
+Living rooms, dining rooms,
+bedrooms
+Engineered Hardwood $8 – $18
+Basements, moisture-prone
+areas
+Tile $12 – $25
+Bathrooms, kitchens,
+entryways
+Carpet $4 – $12
+Bedrooms, basement rec
+rooms
+Timeline: - days
+Secondary Services — CT -
+PART 8: META & SCHEMA TEMPLATES
+Meta Title Templates (Under  chars)
+Service Typical Cost Range Timeline
+Remodeling Design &
+Planning
+$2,500 – $15,000 - weeks
+Comfort & Accessibility $5,000 – $50,000 - weeks
+Home Additions $ – $/sq ft - weeks
+Interior Painting $ – $/sq ft - days
+Interior Carpentry $ – $/hour Varies
+Attic Conversions $50,000 – $150,000 - weeks
+Decks & Porches $15,000 – $75,000 - weeks
+Page Type Template
+Homepage Home Remodeling Connecticut | BuiltWell
+Global Service {Service} in Connecticut | BuiltWell
+Service×Town {Service} in {Town}, CT | BuiltWell
+Town Hub Home Remodeling {Town}, CT | BuiltWell
+County Hub Home Remodeling {County} CT | BuiltWell
+Case Study {Project Title} | BuiltWell Case Study
+FAQ FAQ - Connecticut Remodeling | BuiltWell
+Meta Description Templates (Under  chars)
+Schema Rules (EXPANDED for )
+Required Schema by Page Type:
+Page Type Template
+Global Service
+Professional {service} in Connecticut. Quality
+craftsmanship, clear communication. Fairfield:
+() - | New Haven: () -
+Service×Town
+{Service} in {Town}, CT. {Cost range}. Quality
+work, clear communication. Call {county
+phone} for free estimate.
+Town Hub
+Home remodeling in {Town}, CT — kitchen,
+bathroom, basement, flooring. Call {county
+phone} for free consultation.
+Schema Type Where Applied Notes
+HomeAndConstructionBusiness Orange page ONLY
+More specific than
+LocalBusiness; includes full
+NAP, hours, geo coordinates
+Organization Homepage
+Basic company info, logo,
+social links
+Service Service×Town pages
+Include areaServed property
+with town/county
+FAQPage /faq/ page ONLY  questions with answers
+Person About page (OPTIONAL)
+Only add once owner is
+building personal authority;
+skip for now
+Review / AggregateRating Reviews page (FUTURE)
+Add once + Google reviews
+collected; skip for launch
+New Schema Requirements ( Best Practice):
+. Complete HomeAndConstructionBusiness Schema (Orange Page ONLY):
+This is the ONLY page with LocalBusiness/HomeAndConstructionBusiness schema:
+JSON
+{
+ "@context": "https://schema.org",
+ "@type": "HomeAndConstructionBusiness",
+ "name": "BuiltWell",
+ "description": "Kitchen remodeling, bathroom remodeling, basement
+finishing, and flooring services in Fairfield and New Haven Counties,
+Connecticut.",
+ "url": "https://buildwellct.com/new-haven-county/orange-ct/",
+ "telephone": "(203 ) 466-9148",
+ "address": {
+ "@type": "PostalAddress",
+ "streetAddress": "206A Boston Post Road",
+ "addressLocality": "Orange",
+ "addressRegion": "CT",
+ "postalCode": "06477",
+ "addressCountry": "US"
+ },
+ "geo": {
+ "@type": "GeoCoordinates",
+ "latitude": "41.2784",
+ "longitude": "-73.0257"
+ },
+ "openingHoursSpecification": [
+ {
+ "@type": "OpeningHoursSpecification",
+ "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+ "opens": "08:00",
+ "closes": "17:00"
+ },
+ {
+ "@type": "OpeningHoursSpecification",
+ "dayOfWeek": "Saturday",
+ "opens": "08:00",
+ "closes": "15:00"
+ }
+BreadcrumbList All pages
+Helps Google understand site
+hierarchy
+ ],
+ "priceRange": "$$$$",
+ "image": "https://buildwellct.com/images/logo.png",
+ "areaServed": [
+ {
+ "@type": "County",
+ "name": "Fairfield County",
+ "containedInPlace": {
+ "@type": "State",
+ "name": "Connecticut"
+ }
+ },
+ {
+ "@type": "County",
+ "name": "New Haven County",
+ "containedInPlace": {
+ "@type": "State",
+ "name": "Connecticut"
+ }
+ }
+ ],
+ "hasCredential": {
+ "@type": "EducationalOccupationalCredential",
+ "credentialCategory": "license",
+ "name": "CT Home Improvement Contractor License",
+ "recognizedBy": {
+ "@type": "Organization",
+ "name": "State of Connecticut"
+ },
+ "identifier": "#0668405"
+ },
+ "knowsAbout": [
+ "Kitchen Remodeling",
+ "Bathroom Remodeling",
+ "Basement Finishing",
+ "Flooring Installation",
+ "Home Additions",
+ "Interior Painting"
+ ],
+ "sameAs": [
+ "https://www.facebook.com/builtwellct",
+ "https://www.instagram.com/builtwellct"
+ ]
+}
+Note: Update geo coordinates, image URL, and sameAs social links with actual values
+before launch.
+. areaServed Property (Required on County Hub Pages ):
+JSON
+{
+ "@type": "HomeAndConstructionBusiness",
+ "areaServed": [
+ {
+ "@type": "County",
+ "name": "Fairfield County",
+ "containedInPlace": {
+ "@type": "State",
+ "name": "Connecticut"
+ }
+ }
+ ]
+}
+. Person Schema (OPTIONAL — Skip for Launch):
+Person schema is optional and should only be added once:
+• The owner is actively building personal authority (blog posts, videos, speaking)
+• Reviews mention the owner by name
+• The owner wants to be the "face" of the company
+For now: Skip Person schema. Focus on business-level schema.
+. AggregateRating Schema (FUTURE — Add After + Reviews):
+Do NOT add AggregateRating schema until BuiltWell has at least  Google reviews.
+Once reviews are collected, add to /reviews/ page:
+JSON
+{
+ "@type": "AggregateRating",
+ "ratingValue": "[ACTUAL RATING]",
+ "reviewCount": "[ACTUAL COUNT]",
+ "bestRating": "5"
+}
+Note: Using fake or placeholder ratings violates Google guidelines and can result in
+penalties.
+PART 9: OUTPUT FORMAT
+When generating content, output in this structure:
+Plain Text
+=============================================================================
+===
+PAGE: [Page Name]
+URL: [Full URL path]
+TEMPLATE: [Template number/type]
+COUNTY: [Fairfield / New Haven / Global]
+=============================================================================
+===
+[META]
+Title: [50-60 characters]
+Description: [150-160 characters]
+-----------------------------------------------------------------------------
+---
+[SCHEMA]
+{JSON-LD schema if applicable}
+-----------------------------------------------------------------------------
+---
+[CONTENT]
+H1: [Main heading]
+[Section content organized by H2s]
+-----------------------------------------------------------------------------
+---
+[INTERNAL LINKS]
+• [URL] — [anchor text]
+-----------------------------------------------------------------------------
+---
+[CTA]
+Heading: [CTA heading]
+Button: Schedule a Free Consultation OR Get a Free Estimate
+Subtext: On-site or remote (Google Meet or Zoom)
+Phone: [Correct phone(s)]
+-----------------------------------------------------------------------------
+---
+[FOOTER TEMPLATE]
+[A / B / C / D]
+=============================================================================
+===
+PART 10: CASE STUDIES (5 Total —
+Complete Content)
+Case Study : Whole-Home Restoration — Hamden
+URL: /case-studies/whole-home-restoration-hamden/ Phone: () - Footer:
+Template C
+The Challenge: A Hamden family returned from vacation to find significant water damage
+throughout their first floor. A burst pipe had gone undetected for days, destroying
+hardwood floors in the living room and dining room, soaking through drywall in multiple
+rooms, and damaging the first-floor bathroom. The homeowners were overwhelmed —
+they had three kids, both worked full-time, and suddenly needed to coordinate multiple
+contractors while living in a damaged home.
+Our Approach: We took over the entire project so they could focus on their family. First, we
+completed all necessary demo — removing damaged flooring, cutting out wet drywall, and
+ensuring everything was properly dried. Then we rebuilt systematically: new drywall
+throughout affected areas, a complete bathroom renovation (the damage gave them the
+Field Value
+Location Hamden, CT
+Type Post-Disaster Multi-Service Restoration
+Services
+Flooring, interior painting, bathroom
+remodeling, drywall
+Timeline  weeks
+excuse to finally update the s pink tile), new luxury vinyl plank flooring in the living and
+dining rooms, and fresh paint throughout the first floor. We coordinated directly with their
+insurance adjuster to document everything properly.
+The Results: Five weeks after we started, the family had a first floor that looked better than
+before the damage. The new LVP flooring is waterproof (lesson learned), the bathroom
+finally has the clean, modern look they'd wanted for years, and the fresh paint brightened
+up the entire space.
+Links TO this case study from:
+• /case-studies/
+• /bathroom-remodeling/
+• /flooring/
+• /bathroom-remodeling/hamden-ct/
+• /flooring/hamden-ct/
+• /new-haven-county/ (County Hub)
+Case Study : Basement Finishing — Darien
+URL: /case-studies/basement-finishing-darien/ Phone: () - Footer: Template B
+The Challenge: A Darien couple with two teenagers had  square feet of unfinished
+basement space that had been "on the list" for years. With both kids now in high school and
+needing their own space — plus the parents wanting a dedicated home office — the time
+"We were devastated when we saw the damage. BuiltWell took everything off our plate.
+They dealt with the insurance company, kept us updated every day, and turned a disaster
+into an upgrade. I actually like our house better now." — The Martins, Hamden
+Field Value
+Location Darien, CT
+Type Full Basement Finishing
+Services Basement finishing, flooring, egress window
+Timeline  weeks
+Square Footage  sq ft
+had finally come. The basement had typical Connecticut challenges: some moisture history,
+low ceilings in spots, and only one small window.
+Our Approach: We started with moisture mitigation — installing a sump pump and
+addressing some minor foundation seepage before any finishing work began. The layout
+divided the space into three zones: a large rec room for the teenagers with built-in shelving
+for gaming equipment, a private home office with a door, and a small workout area. We
+installed an egress window to meet code and bring in natural light. Flooring was luxury
+vinyl plank throughout — the best choice for below-grade spaces in Connecticut. Drop
+ceiling with recessed lighting kept everything accessible while maximizing headroom.
+The Results: The family gained  square feet of functional living space. The teenagers
+finally have room to hang out with friends without taking over the main living areas. The
+home office has become the most productive workspace in the house. And the moisture
+issues that had kept them from finishing the basement for years? Completely resolved.
+Links TO this case study from:
+• /case-studies/
+• /basement-finishing/
+• /flooring/
+• /basement-finishing/darien-ct/
+• /flooring/darien-ct/
+• /fairfield-county/ (County Hub)
+Case Study : Bathroom Remodeling — Westport
+URL: /case-studies/bathroom-remodeling-westport/ Phone: () - Footer:
+Template B
+"We should have done this ten years ago. The kids practically live down there now, which
+means the rest of the house stays clean. And my office? Best decision we made during
+COVID." — Steve R., Darien
+Field Value
+Location Westport, CT
+Type Master Bathroom Renovation
+Services Full bathroom remodel
+Timeline  weeks
+The Challenge: A Westport homeowner had a master bathroom that was "builder grade"
+from  — functional but dated. Beige everything, a basic tub/shower combo, laminate
+countertops, and fluorescent lighting. She wanted a spa-like retreat: walk-in shower, double
+vanity, better lighting, and finishes that felt elevated without being trendy.
+Our Approach: We gutted the bathroom to the studs, which let us reconfigure the layout
+slightly. The tub/shower combo became a spacious walk-in shower with frameless glass, a
+rain showerhead, and floor-to-ceiling tile in a soft gray. We added a freestanding soaking
+tub under the window — a splurge she'd wanted for years. The single vanity became a "
+double vanity with quartz countertops and undermount sinks. New sconce lighting on
+either side of the mirrors replaced the harsh overhead fluorescent. Heated floors (a must in
+Connecticut winters) completed the spa feel.
+The Results: The bathroom went from forgettable to the favorite room in the house. The
+walk-in shower is used daily; the soaking tub is a weekend ritual. The double vanity ended
+the morning traffic jam. And the heated floors? She says she'll never have a bathroom
+without them again.
+Links TO this case study from:
+• /case-studies/
+• /bathroom-remodeling/
+• /bathroom-remodeling/westport-ct/
+• /fairfield-county/westport-ct/
+Case Study : Kitchen Remodeling — New Canaan
+URL: /case-studies/kitchen-remodeling-new-canaan/ Phone: () - Footer:
+Template B
+"I'd been looking at bathroom inspiration photos for literally years. BuiltWell helped me
+figure out what would actually work in my space and budget. Four weeks of construction,
+and now I have the bathroom I've been dreaming about." — Jennifer M., Westport
+Field Value
+Location New Canaan, CT
+Type Full Kitchen Renovation
+Services Kitchen remodeling, flooring
+The Challenge: A New Canaan family had a kitchen that didn't match how they lived. The
+layout was closed off from the family room — a wall separated the two spaces, making the
+cook feel isolated. The cabinets were dark and dated, counter space was limited, and the
+appliances were mismatched hand-me-downs from the previous owners. They wanted an
+open concept kitchen that worked for both everyday family dinners and entertaining.
+Our Approach: The first major decision was removing the wall between the kitchen and
+family room. Our structural engineer confirmed we could do it with a properly sized beam.
+This immediately transformed how the space felt. New white shaker cabinets with softclose everything. A large island with seating for four became the new hub — homework
+happens there, guests gather there, and it doubles as prep space. Quartz countertops
+throughout, subway tile backsplash, and new stainless appliances (finally matching). We
+ran new hardwood flooring to match the family room, visually connecting the two spaces.
+The Results: The kitchen is now the center of the home instead of a separate room. The
+cook can talk to kids doing homework or guests in the family room while prepping dinner.
+The island has become everyone's favorite spot. And the sight lines from kitchen to
+backyard make the whole first floor feel twice as big.
+Links TO this case study from:
+• /case-studies/
+• /kitchen-remodeling/
+• /flooring/
+• /kitchen-remodeling/new-canaan-ct/
+• /fairfield-county/ (County Hub)
+Case Study : Kitchen Remodeling + Flooring — Milford
+URL: /case-studies/kitchen-remodeling-milford/ Phone: () - Footer: Template C
+Timeline  weeks
+"We lived with that closed-off kitchen for eight years because we thought opening it up
+would be too complicated. BuiltWell made it straightforward. Now we can't imagine how
+we lived before." — The Chens, New Canaan
+Field Value
+Location Milford, CT
+The Challenge: Ivana Petrovic had lived in her Milford home for over fifteen years. The
+kitchen still had its original s oak cabinets — that orangey-golden oak that dates a
+house instantly. Laminate countertops with visible seams were peeling at the edges. The
+vinyl flooring had worn through in high-traffic areas. A small peninsula blocked sightlines to
+the dining room and made the kitchen feel cramped. Ivana wanted a complete
+transformation — a bright, modern kitchen that felt open and connected to the rest of the
+house.
+Our Approach: We started with a consultation at her home to understand her cooking
+habits, storage needs, and design preferences. Ivana wanted white shaker cabinets, quartz
+countertops, and new flooring that would flow from the kitchen into the adjacent dining
+area. The project included removing the peninsula that blocked sightlines, installing new
+cabinetry with soft-close drawers and pull-out shelves, quartz countertops with an
+undermount sink, a classic subway tile backsplash, updated pendant lighting over where
+the peninsula used to be, and luxury vinyl plank flooring throughout the kitchen and dining
+room. We coordinated all permits with the Town of Milford and kept Ivana updated daily
+throughout the six-week project.
+The Results: A bright, functional kitchen that Ivana says she actually enjoys cooking in
+now. The white cabinets reflect light and make the space feel larger. The new flooring ties
+the kitchen and dining room together and makes the entire first floor feel cohesive. The
+open sightline where the peninsula used to be? She says that's her favorite part.
+Links TO this case study from:
+• /case-studies/
+• /kitchen-remodeling/
+• /flooring/
+• /kitchen-remodeling/milford-ct/
+• /flooring/milford-ct/
+Type Kitchen Remodeling + Flooring
+Services Full kitchen remodel, LVP flooring
+Timeline  weeks
+Client Ivana Petrovic
+"I put this off for years because I thought it would be a nightmare. BuiltWell made it easy.
+They showed up when they said they would, cleaned up every day, and the kitchen
+turned out better than I imagined." — Ivana P., Milford
+• /new-haven-county/ (County Hub)
+PART 11: FAQ STRATEGY (LOCKED)
+FAQ Distribution
+Rule: Never apply FAQPage schema outside /faq/.
+/faq/ Page —  FAQs (Full Content)
+Q: How much does a kitchen remodel cost in Connecticut? A: Kitchen remodels in
+Connecticut typically cost between $, and $,. A basic refresh with new
+countertops and cabinet refacing starts around $,-$,. Mid-range renovations
+with new cabinets, countertops, flooring, and appliances run $,-$,. High-end
+kitchen remodels with custom cabinets, layout changes, and premium finishes cost
+$,-$,+. In Fairfield County towns like Greenwich and Westport, luxury kitchens
+can exceed $,.
+Q: How much does a bathroom remodel cost in CT? A: Bathroom remodels in
+Connecticut range from $, to $,+ depending on scope. Basic updates with new
+fixtures, vanity, and flooring cost $,-$,. Full bathroom renovations with new tile,
+shower/tub, and quality finishes run $,-$,. High-end master bathroom remodels
+with custom tile, walk-in showers, and premium fixtures cost $,-$,+.
+Q: How long does basement finishing take? A: Basement finishing in Connecticut
+typically takes - weeks from start to completion. Simple projects with one open room
+take - weeks. Standard finishing with multiple rooms takes - weeks. Complex projects
+with bathrooms or wet bars may take -+ weeks.
+Page Type FAQ Count FAQPage Schema
+/faq/ page  ✅YES
+Global service pages  ❌NO
+Service×Town pages  ❌NO
+Secondary service pages  ❌NO
+Q: Do I need a permit for remodeling in Connecticut? A: Yes, most remodeling projects
+in Connecticut require permits. Kitchen and bathroom remodels involving plumbing,
+electrical, or structural changes need permits. Basement finishing requires permits in all CT
+towns. BuiltWell handles all permit applications and coordinates inspections.
+Q: How much does flooring cost per square foot in Connecticut? A: Flooring installation
+in Connecticut costs $-$ per square foot including materials and labor. LVP costs
+$-$/sq ft installed. Hardwood runs $-$/sq ft. Tile costs $-$/sq ft.
+Q: What is the best flooring for basements in Connecticut? A: The best flooring for
+Connecticut basements is luxury vinyl plank (LVP) or tile due to moisture resistance. LVP is
+waterproof, durable, and costs $-$/sq ft installed. Avoid solid hardwood and carpet in
+basements.
+Q: How do I choose a remodeling contractor in Connecticut? A: Verify their CT HIC
+license, confirm insurance, read reviews, and get - written estimates. Red flags include no
+physical address, pressure to sign immediately, unusually low estimates, and large upfront
+payment demands.
+Q: How long does a kitchen remodel take in Connecticut? A: Kitchen remodels typically
+take - weeks. Basic refreshes take - weeks. Standard renovations take - weeks. Full
+remodels with layout changes take - weeks. Custom cabinets add - weeks lead time.
+Q: Does a bathroom remodel increase home value in Connecticut? A: Yes, bathroom
+remodels typically return -% of the investment at resale. Updated bathrooms help
+Connecticut homes sell faster and can be deciding factors for buyers.
+Q: What is included in basement finishing? A: Basement finishing includes framing,
+insulation, drywall, electrical, lighting, flooring, and ceiling. Common additions include
+bathroom rough-in, egress windows, and HVAC modifications. BuiltWell includes permits,
+inspections, and final walkthrough.
+Kitchen Remodeling —  FAQs (Global Page)
+. Do I need a permit for a kitchen remodel in Connecticut?
+. How long does a kitchen remodel take in CT (including cabinet lead times)?
+. Can you do the design remotely before the on-site visit?
+. Can I stay in my home during a kitchen remodel?
+. What's included in a BuiltWell kitchen remodel?
+Bathroom Remodeling —  FAQs (Global Page)
+. Do I need a permit for a bathroom remodel in Connecticut?
+. How long does a bathroom remodel take?
+. Can I keep using my bathroom during remodeling?
+. What's the difference between a bathroom refresh and a full remodel?
+. Do you install walk-in showers and tubs?
+Basement Finishing —  FAQs (Global Page)
+. Do I need a permit to finish my basement in Connecticut?
+. How do you handle moisture issues in Connecticut basements?
+. Do I need an egress window for my finished basement?
+. What flooring works best in a Connecticut basement?
+. Can you add a bathroom to my finished basement?
+Flooring —  FAQs (Global Page)
+. What's the best flooring for Connecticut homes?
+. How long does flooring installation take?
+. Can you install flooring over my existing floors?
+. What's the difference between solid and engineered hardwood?
+. Do you move furniture during flooring installation?
+PART 12: INTERNAL LINKING RULES
+(EXPANDED — HUB-AND-SPOKE
+MODEL)
+The Core Principle: Hub-and-Spoke
+Our internal linking follows a Hub-and-Spoke model:
+• Spokes link to Hubs: Lower-level, specific pages (Spokes) link UP to higher-level,
+broader pages (Hubs). This funnels authority upwards.
+• Hubs link to Spokes: Hub pages distribute authority back DOWN to the specific pages,
+helping them rank for long-tail keywords.
+Anti-Cannibalization Rules
+Detailed Linking Rules with URL Examples
+Rule : Service-in-Town Pages → Main Service Page (Spoke to Hub)
+Every Service-in-Town page MUST link back up to its parent Main Service page.
+Rule : County Hub Pages → Town & Service-in-Town Pages (Hub to
+Spokes)
+Direction Allowed? Reason
+Service×Town → Global
+Service ✅YES Establishes topic hierarchy
+Global Service →
+Service×Town ❌NO Prevents doorway clustering
+Global Service → County Hubs ✅YES Geographic authority
+Global Service → /areas-weserve/ ✅YES Service area signals
+Town Hub → Service×Town ✅YES Local service links
+Town Hub → Global Service
+(fallback) ✅YES
+When service×town doesn't
+exist
+From (Spoke) To (Hub) Anchor Text Example
+/kitchen-remodeling/greenwichct/
+/kitchen-remodeling/
+"View our main kitchen
+remodeling services"
+/bathroom-remodeling/westportct/
+/bathroom-remodeling/
+"Learn more about our
+bathroom remodeling
+process"
+/basement-finishing/darien-ct/ /basement-finishing/
+"Explore our basement
+finishing services"
+/flooring/new-haven-ct/ /flooring/ "See all flooring options"
+County Hub pages MUST link down to all relevant pages within that county.
+Rule : Town Hub Pages → Service-in-Town Pages (Hub to Spokes)
+Your  strategic Town Hub pages MUST link to the  Service-in-Town pages for that specific
+town.
+Rule : Main Service Pages → County Hubs (Hub to Hub)
+Your main service pages should link to the County Hub pages.
+From (Hub) To (Spoke) Anchor Text Example
+/fairfield-county/ /fairfield-county/greenwich-ct/
+"Greenwich" (in a list of
+towns)
+/fairfield-county/
+/kitchen-remodeling/greenwichct/
+"Kitchen remodeling in
+Greenwich"
+/new-haven-county/ /new-haven-county/orange-ct/ "Visit our Orange office"
+From (Hub) To (Spoke) Anchor Text Example
+/fairfield-county/greenwich-ct/
+/kitchen-remodeling/greenwichct/
+"Explore our Greenwich
+kitchen remodeling projects"
+/fairfield-county/greenwich-ct/
+/bathroomremodeling/greenwich-ct/
+"Bathroom remodeling for
+Greenwich homes"
+/fairfield-county/greenwich-ct/
+/basement-finishing/greenwichct/
+"Basement finishing in
+Greenwich"
+/fairfield-county/greenwich-ct/ /flooring/greenwich-ct/
+"Flooring services in
+Greenwich"
+From (Hub) To (Hub) Anchor Text Example
+/kitchen-remodeling/ /fairfield-county/
+"We offer kitchen remodeling
+services throughout Fairfield
+County"
+/kitchen-remodeling/ /new-haven-county/
+"Serving homeowners across
+New Haven County"
+Linking Matrix by Page Type
+Team/Office Interlinking (LOCKED)
+Fairfield County pages — every page includes:
+PART 13: BREADCRUMB NAVIGATION
+(NEW)
+Breadcrumb Examples by Page Type
+/bathroom-remodeling/ /fairfield-county/ "Our Fairfield County team"
+Page Type Links TO
+Homepage
+County hubs,  core services, case studies hub,
+contact
+Global Service
+/areas-we-serve/, county hubs, FAQ, related
+case study
+County Hub  town hubs, global services, /areas-we-serve/
+Town Hub  service×town pages, county hub, /services/
+Service×Town
+Global service (UP), town hub, county hub, case
+study
+Case Study Global service, town hub, /case-studies/
+Served by our Fairfield County Service Area Team Link to: /fairfield-county/ New Haven
+County pages — every page includes: Served from our Orange, CT office Link to: /newhaven-county/orange-ct/
+Page Type Example URL Breadcrumb Trail
+Homepage / Home
+PART 14: ANCHOR TEXT GUIDELINES
+Anchor Text Strategy
+Use natural, varied anchor text — not exact-match keyword stuffing.
+Recommended Anchor Text Patterns
+Main Service /kitchen-remodeling/
+Home > Services > Kitchen
+Remodeling
+Secondary Service /home-additions/
+Home > Services > Home
+Additions
+County Hub /fairfield-county/
+Home > Areas We Serve >
+Fairfield County
+Town Hub /fairfield-county/greenwich-ct/
+Home > Areas We Serve >
+Fairfield County > Greenwich
+Service-in-Town
+/kitchen-remodeling/greenwichct/
+Home > Services > Kitchen
+Remodeling > Greenwich, CT
+Office Page /new-haven-county/orange-ct/
+Home > Areas We Serve >
+New Haven County > Orange
+(Our Office)
+Case Study
+/case-studies/kitchen-remodelingmilford/
+Home > Case Studies >
+Kitchen Remodeling in Milford
+Link Type Good Examples Avoid
+Service×Town → Global
+Service
+"Learn more about our
+kitchen remodeling process" /
+"kitchen remodeling
+services" / "our approach to
+kitchen renovations"
+"kitchen remodeling
+Connecticut" (exact match)
+Rules
+. Vary anchor text — Don't use identical anchors across multiple pages
+. Use natural language — Write for humans, not algorithms
+. Include brand occasionally — "BuiltWell's kitchen remodeling" is fine
+. Town name is okay — "Greenwich" or "in Greenwich" is natural
+. Avoid exact-match keyword anchors — "basement finishing Darien CT" looks spammy
+Anchor Text Distribution (Approximate)
+PART 15: IMAGE & ALT TEXT
+GUIDELINES (NEW)
+Town Hub → Service×Town
+"kitchen remodeling in
+Greenwich" / "Greenwich
+kitchen services" / "kitchen
+renovations for Greenwich
+homeowners"
+Same anchor text on every
+town page
+County Hub → Town Hub
+"Greenwich" / "remodeling in
+Greenwich" / "Greenwich, CT"
+"Greenwich CT home
+remodeling contractor"
+Global Service → County Hub
+"Fairfield County" / "our
+Fairfield County team" /
+"homeowners in Fairfield
+County"
+Keyword-stuffed anchors
+Type Percentage
+Branded ("BuiltWell", "our team") %
+Natural/Generic ("learn more", "our services") %
+Partial Match ("kitchen remodeling services") %
+Location ("Greenwich", "in Fairfield County") %
+Exact Match % — avoid
+Image File Naming Convention
+Format: {service}-{descriptor}-{location}-{number}.jpg
+Examples:
+• kitchen-remodeling-white-cabinets-greenwich-.jpg
+• bathroom-remodel-walk-in-shower-westport-before.jpg
+• basement-finishing-home-office-darien-after.jpg
+• flooring-lvp-installation-milford-.jpg
+Rules:
+• Lowercase only
+• Hyphens between words (no underscores or spaces)
+• Include location when project-specific
+• Use "before" / "after" for comparison images
+• Sequential numbers for multiple images of same project
+Alt Text Guidelines
+Format: Descriptive, includes location when relevant, under  characters
+Good Examples:
+Image Alt Text
+Kitchen after photo
+"Completed kitchen remodel with white shaker
+cabinets and quartz countertops in Greenwich,
+CT"
+Bathroom before photo
+"Dated s bathroom with pink tile before
+renovation in Westport"
+Basement rec room
+"Finished basement with LVP flooring and
+recessed lighting in Darien home"
+Team working
+"BuiltWell crew installing hardwood flooring in
+New Canaan kitchen"
+Office exterior
+"BuiltWell office at A Boston Post Road in
+Orange, Connecticut"
+Rules:
+. Describe what's in the image — Don't keyword stuff
+. Include location when it's a project photo
+. Include service type naturally
+. Before/after labels — Include "before renovation" or "after remodel"
+. Keep under  characters — Screen readers cut off longer text
+. Don't start with "Image of" — Just describe the content
+Image Requirements by Page Type
+Image Optimization
+Page Type Required Images
+Homepage Hero image,  service thumbnails
+Global Service Hero, - project examples, process icons
+Service×Town
+- local project images (or generic service
+images)
+Town Hub Town-relevant image or map
+Case Study Before/after gallery (- images), detail shots
+About Office photo, team photo (optional)
+Setting Requirement
+Format WebP with JPG fallback
+Max file size KB for hero images, KB for thumbnails
+Dimensions
+Hero: x, Thumbnails: x,
+Gallery: x
+Lazy loading Yes, except above-the-fold images
+PART 16: DUPLICATE CONTENT
+PREVENTION
+Unique Content Requirements
+Every service×town page MUST have:
+• Unique H with town name
+• Unique intro paragraph (town-specific angle)
+• Unique local context section (- sentences about THIS town)
+• Correct team reference (county-specific)
+• Correct county phone in CTA
+Intro Variations by Town Character
+Example Intro Variations (Kitchen Remodeling)
+Greenwich:
+Character Type Towns Angle
+Affluent
+Greenwich, Westport, Darien,
+New Canaan
+Quality expectations,
+attention to detail, designforward
+Mixed Stamford, Norwalk, Fairfield
+Urban and suburban, variety
+of projects, diverse homes
+Value-focused Hamden, New Haven, Milford
+Practical updates, fair pricing,
+family homes
+Shoreline Guilford, Madison, Branford
+Coastal considerations,
+moisture awareness, beach
+proximity
+Rural/Spacious Ridgefield, Woodbridge
+Larger properties, more
+space, private settings
+Our Home Base Orange
+Local expertise, office nearby,
+community connection
+Stamford:
+Hamden:
+Guilford:
+Orange:
+Local Context Section Examples
+Each town hub and service×town page needs - sentences of genuine local context.
+Examples:
+Greenwich:
+Milford:
+Ridgefield:
+"Greenwich homeowners expect exceptional quality — in craftsmanship, materials, and
+communication. BuiltWell delivers kitchen remodeling that meets those expectations,
+whether you're in backcountry or near the Avenue."
+"From downtown condos to suburban colonials, Stamford kitchens come in all shapes
+and sizes. BuiltWell provides kitchen remodeling for the full range — practical updates for
+busy families or complete transformations for those ready for a change."
+"Looking to update your Hamden kitchen without breaking the bank? BuiltWell helps
+Hamden families get quality kitchen remodeling at fair prices — no luxury markup, just
+honest work."
+"Shoreline homes in Guilford have unique character — and unique considerations.
+BuiltWell understands what works for Guilford kitchens, from humidity-resistant
+materials to layouts that make the most of natural light."
+"We're headquartered right here in Orange, so we know the community well. Our office is
+just minutes from your home, making communication easy throughout your kitchen
+remodeling project."
+"Greenwich homes range from historic estates in backcountry to newer construction in
+Riverside. Many kitchens we see were last updated in the s or early s and are
+ready for a refresh. The Town of Greenwich building department is thorough — we handle
+all permits and inspections."
+"Milford offers everything from beach cottages near Walnut Beach to larger homes in the
+northern part of town. Kitchen styles vary widely, and we work with all of them. Our
+Orange office is just  minutes away, making site visits and communication easy."
+PART 17: CTA STANDARDS (LOCKED)
+Primary CTA Options (Choose One Per Page)
+Both are acceptable. Be consistent within a page.
+Required Subtext (LOCKED)
+This subtext appears under EVERY primary CTA button.
+Phone Display Rules
+CTA Placement
+"Ridgefield's larger lots and spacious homes often mean bigger kitchens with room for
+islands and eat-in areas. Many homes here are colonials or contemporaries built in the
+s-s — prime candidates for kitchen updates that modernize without losing
+character."
+Button Text When to Use
+Schedule a Free Consultation Default — works everywhere
+Get a Free Estimate Alternative — good for service pages
+On-site or remote (Google Meet or Zoom)
+Page Type Phones Shown
+Global pages Both phones, labeled by county
+Fairfield County pages () - only
+New Haven County pages () - only
+Location CTA Type
+CTA Examples
+Global Page CTA:
+Plain Text
+Ready to Start Your Project?
+[Schedule a Free Consultation]
+On-site or remote (Google Meet or Zoom)
+Fairfield County: (203) 919-9616
+New Haven County: (203) 466-9148
+Fairfield County Page CTA:
+Plain Text
+Get a Free Kitchen Remodeling Estimate in Greenwich
+[Get a Free Estimate]
+On-site or remote (Google Meet or Zoom)
+Call: (203) 919-9616
+New Haven County Page CTA:
+Plain Text
+Ready to Transform Your Milford Kitchen?
+[Schedule a Free Consultation]
+On-site or remote (Google Meet or Zoom)
+Call: (203) 466-9148
+Booking Widget Implementation (NEW)
+Hero section Primary button + subtext + phone(s)
+After major sections Text link or secondary button
+Bottom of page Primary button + subtext + phone(s)
+Sticky header (if used) Phone number as click-to-call
+When users click the CTA button, the booking experience differs based on consultation type:
+Remote Consultations — Calendly Widget
+Use Case: Online inspections via Google Meet or Zoom Why Calendly: Full-featured
+scheduling with automatic video conferencing links, timezone handling, and buffer times
+between calls.
+Implementation:
+• Embed Calendly inline widget or popup on /free-consultation/ page
+• Create separate Calendly event type for "Remote Consultation (Video Call)"
+• Auto-generate Google Meet or Zoom link upon booking
+• Set availability windows based on team schedule
+• Include pre-consultation questionnaire (project type, scope, timeline)
+Calendly Event Settings:
+In-Person Consultations — Google Calendar Sync
+Consultation Type Widget Implementation
+Remote (Online Inspection) Calendly
+Embed Calendly booking
+widget for video call
+scheduling
+In-Person (On-Site Visit) Google Calendar
+Simpler Google Calendar sync
+widget for in-person
+appointments
+Setting Value
+Duration  minutes
+Buffer before  minutes
+Buffer after  minutes
+Location Google Meet (auto-generated)
+Confirmation email Include video link + what to prepare
+Use Case: On-site visits to homeowner's property Why Google Calendar: Simpler
+integration, familiar interface, allows for travel time blocking.
+Implementation:
+• Use Google Calendar Appointment Scheduling or simpler booking form
+• Sync with team's Google Calendar for availability
+• Require address input for on-site visits
+• Block travel time automatically based on location (Fairfield vs New Haven County)
+• Send calendar invite with confirmation details
+Google Calendar Settings:
+/free-consultation/ Page Flow
+Plain Text
+1. User lands on /free-consultation/
+2. User selects consultation type:
+ [ ] Remote (Video Call) — "Perfect for initial discussions and virtual
+walkthroughs"
+ [ ] In-Person (On-Site Visit) — "We'll come to your home to assess the
+project"
+3. Based on selection:
+ - Remote → Calendly widget loads
+ - In-Person → Google Calendar booking form loads
+4. User completes booking
+5. Confirmation email sent with appropriate details
+Developer Notes
+• Both widgets should be lazy-loaded to avoid impacting page speed
+• Mobile-responsive booking experience required
+Setting Value
+Duration - minutes (includes travel buffer)
+Location Customer's address (required field)
+Travel buffer Auto-calculate based on county
+Confirmation Calendar invite + email with what to expect
+• Track booking source (which page CTA was clicked) for analytics
+• Consider A/B testing button text: "Schedule a Free Consultation" vs "Book Your Free
+Consultation"
+Texting Widget (Custom Built)
+A custom-built texting widget is already implemented on the staging site. This provides an
+additional contact method for visitors who prefer text communication.
+Texting Widget Placement
+Texting Widget Features
+• Real-time text messaging with team
+• Automatic routing based on county (if applicable)
+• Message history preservation
+• Mobile-optimized interface
+Phone Numbers for Texting
+Note: Texting widget code is already on staging. Migrate to production during launch.
+Location Display
+All pages Floating widget (bottom right corner)
+Mobile Tap-to-text functionality
+County Phone Number
+Fairfield County (203) 919-9616
+New Haven County (203) 466-9148
+PART 18: PROCESS STANDARDIZATION
+(LOCKED)
+-Step Process (Exact)
+Step Name Short Description Expanded Description
+ Consultation
+We visit your home
+or meet via Zoom
+We'll discuss your
+goals, assess the
+space, and answer
+questions. In-person
+or video call — your
+choice.
+ Planning
+Detailed scope,
+timeline, and
+proposal
+You'll receive a clear
+proposal with
+exactly what's
+included, how long it
+will take, and what it
+costs. No surprises.
+ Selections
+We help you choose
+materials and
+finishes
+We guide you
+through material
+choices — cabinets,
+countertops, tile,
+flooring — with
+options at different
+price points.
+ Build
+Our crews complete
+with daily
+communication
+Construction begins.
+You'll get daily
+updates and a clean
+job site. We show up
+when we say we will.
+ Walkthrough
+Final review together
+before done
+We walk through
+everything together.
+If anything needs
+attention, we
+address it before
+calling the project
+complete.
+Display Rules (LOCKED)
+Where Process Appears
+PART 19: BUILD PRIORITY ORDER
+(NEW)
+Phase : Foundation (Launch-Critical)
+Build these first — required for site launch.
+Rule Requirement
+Step count Exactly  — no variations
+Display format Hover cards or clickable tiles (not plain list)
+Copy style Short, owner-voice, conversational
+Remote mention Include "or meet via Zoom" in Consultation step
+Icons Optional — simple, consistent style
+Page Type Process Section?
+Homepage Yes — abbreviated
+Global Service Pages Yes — full
+Service×Town Pages Yes — full
+/process/ page Yes — expanded with details
+Town Hubs No
+County Hubs No
+Priority Page URL
+Phase  Total:  pages
+Phase : Town Hub Pages ( Strategic Towns Only)
+Only  Town Hub pages are created — for the most strategic markets.
+ Homepage /
+ About /about/
+ Contact /contact/
+ Services Hub /services/
+ Kitchen Remodeling (Global) /kitchen-remodeling/
+
+Bathroom Remodeling
+(Global)
+/bathroom-remodeling/
+ Basement Finishing (Global) /basement-finishing/
+ Flooring (Global) /flooring/
+ Areas We Serve Hub /areas-we-serve/
+ Orange Office Page
+/new-haven-county/orangect/
+ Fairfield County Hub /fairfield-county/
+ New Haven County Hub /new-haven-county/
+ FAQ /faq/
+ Process /process/
+ Case Studies Hub /case-studies/
+Priority Town County URL Why Selected
+ Greenwich Fairfield
+/fairfieldcounty/greenwi
+ch-ct/
+Highest wealth,
+largest market
+ Westport Fairfield
+/fairfieldcounty/westpor
+t-ct/
+Affluent coastal
+market
+Note: Orange (/new-haven-county/orange-ct/) is built in Phase  as the Office Page.
+Phase  Total:  pages ( cumulative)
+Phase : Service×Town — Kitchen First
+Kitchen remodeling service×town pages — highest search volume.
+Phase  Total:  pages ( cumulative)
+Phase : Service×Town — Bathroom
+Phase  Total:  pages ( cumulative)
+Phase : Service×Town — Basement & Flooring
+ New Haven New Haven
+/new-havencounty/newhaven-ct/
+Hub city effect
+ Madison New Haven
+/new-havencounty/madison
+-ct/
+Wealthiest in
+New Haven
+County
+Priority Pages
+- Kitchen Remodeling ×  Fairfield towns
+- Kitchen Remodeling ×  New Haven towns
+Priority Pages
+- Bathroom Remodeling ×  Fairfield towns
+- Bathroom Remodeling ×  New Haven towns
+Priority Pages
+- Basement Finishing ×  towns
+Phase  Total:  pages ( cumulative)
+Phase : Case Studies & Secondary
+Phase  Total:  pages ( total)
+PART 20: FOOTER TEMPLATES (FINAL)
+Template A — Global Pages
+Plain Text
+BuiltWell
+CT HIC License #0668405
+Fairfield County: (203) 919-9616
+New Haven County: (203) 466-9148
+Used on: Homepage, About, Services Hub, global service pages, Contact, Process, FAQ,
+Homeowner Hub, Case Studies Hub, utility pages
+Template B — Fairfield County Pages
+Plain Text
+- Flooring ×  towns
+Priority Pages
+-  Case Study pages
+-  Secondary service pages
+-
+Remaining pages (Homeowner Hub, Warranty,
+Portfolio, Reviews, Financing, Free
+Consultation, Careers, Privacy Policy, Terms,
+Thank You, Sitemap)
+BuiltWell — Serving {Town}, CT
+Fairfield County Service Area Team
+(203) 919-9616
+CT HIC #0668405
+Used on: Fairfield County Hub,  Fairfield town hubs,  Fairfield service×town pages,
+Fairfield case studies
+Template C — New Haven County Pages
+Plain Text
+BuiltWell — Serving {Town}, CT
+Served from our Orange, CT office
+(203) 466-9148
+CT HIC #0668405
+Used on: New Haven County Hub,  New Haven town hubs (not Orange),  New Haven
+service×town pages, New Haven case studies
+Template D — Orange Office Page ONLY
+Plain Text
+BuiltWell — Orange, CT Office
+206A Boston Post Road, Orange, CT 06477
+(203) 466-9148
+Mon–Fri: 8am–5pm | Sat: 8am–3pm
+CT HIC #0668405
+Used on: /new-haven-county/orange-ct/ ONLY
+PART 21: GMB CONFIGURATION
+Orange — Real Physical Location
+Setting Value
+Business Name BuiltWell
+Stamford — Service Area Business (SAB )
+LOCKED RULES — QUICK REFERENCE
+Category Home Improvement Contractor
+Address A Boston Post Road, Orange, CT
+Address Display ✅VISIBLE
+Phone (203) 466-9148
+Website
+https://buildwellct.com/new-havencounty/orange-ct/
+Hours Mon–Fri am–pm, Sat am–pm
+Setting Value
+Business Name BuiltWell
+Category Home Improvement Contractor
+Address Display ❌HIDDEN (SAB mode)
+Service Areas
+Greenwich, Westport, Darien, New Canaan,
+Stamford, Norwalk, Fairfield, Ridgefield + Tier
+towns
+Phone (203) 919-9616
+Website https://buildwellct.com/fairfield-county/
+# Rule
+ ❌Never use "Stamford Service Area Team" →
+✅Use "Fairfield County Service Area Team"
+ Owner name appears ONLY on /about/
+ FAQPage schema ONLY on /faq/
+PART 22: FUTURE EXPANSION GUIDE
+(NEW)
+Adding Hartford County
+When you're ready to expand to Hartford County, follow these steps:
+. Create a new County Hub page: /hartford-county/
+. Add "Hartford County" to:
+• The /areas-we-serve/ page
+• The main navigation dropdown
+. Create Service×Town pages for the top - towns in Hartford County (e.g., Hartford,
+West Hartford, Simsbury, Glastonbury)
+. Optionally create - Town Hub pages for the most strategic towns
+. Set up a new GBP for Hartford County (SAB model, linking to /hartford-county/ )
+. Add a new phone number for Hartford County
+
+Global service pages do NOT link to
+service×town pages
+ Process is exactly  steps
+
+CTA button: "Schedule a Free Consultation" OR
+"Get a Free Estimate"
+
+CTA subtext: "On-site or remote (Google Meet
+or Zoom )"
+ LocalBusiness schema ONLY on Orange page
+ Address shown ONLY on Orange page
+
+Service×town pages link UP to global service
+pages
+PART 23: DEVELOPER CHECKLIST
+(NEW)
+Pre-Launch Checklist
+Structure & Content
+All  pages implemented with correct URL structure
+Navigation menu shows only "Fairfield County" and "New Haven County" under "Areas
+We Serve"
+GBP landing pages correctly configured:
+New Haven County GBP → /new-haven-county/orange-ct/
+Fairfield County GBP → /fairfield-county/
+Both phone numbers displayed in header/footer with labels
+Address shown ONLY on /new-haven-county/orange-ct/
+Breadcrumb navigation implemented on all pages
+Schema markup added to all relevant pages
+E-E-A-T elements present on all customer-facing pages
+Technical SEO ( Best Practice) (NEW)
+Core Web Vitals Requirements:
+LCP (Largest Contentful Paint): < . seconds on all pages
+CLS (Cumulative Layout Shift): < . on all pages
+INP (Interaction to Next Paint): < ms on all pages
+Mobile-First Design:
+All pages are fully responsive
+Touch targets are at least x pixels
+Text is readable without zooming (minimum px font)
+No horizontal scrolling on mobile devices
+Page Speed Optimization:
+Google PageSpeed Insights score >  (mobile)
+All images optimized (WebP format preferred)
+Lazy loading implemented for below-fold images
+CSS and JavaScript minified
+Browser caching enabled
+Crawlability & Indexing:
+XML sitemap generated and submitted to Google Search Console
+Robots.txt properly configured
+No orphan pages (all pages linked from at least one other page)
+Canonical tags set correctly on all pages
+ redirects in place for any changed URLs
+Schema Validation:
+All schema markup validated with Google Rich Results Test
+No schema errors or warnings
+HomeAndConstructionBusiness schema on Orange page
+Person schema on About page (OPTIONAL - skip for launch)
+BreadcrumbList schema on all pages
+Security:
+HTTPS enabled on all pages
+SSL certificate valid and not expiring soon
+No mixed content warningses
+Internal linking rules followed (Hub-and-Spoke model)
+Footer templates correctly applied (A, B, C, D)
+HTML sitemap at /sitemap/ generated
+All meta titles under  characters
+All meta descriptions under  characters
+Images optimized (WebP format, lazy loading)
+Mobile responsive design verified
+Page speed optimized
+END OF DEVELOPER BIBLE v3.0 (FINAL)
+PART 24: AI SEARCH OPTIMIZATION
+(NEW)
+This section covers how to optimize BuiltWell CT for AI-powered search engines and LLMbased assistants (ChatGPT, Claude, Perplexity, Google AI Overviews).
+Why AI Search Matters
+AI search is rapidly growing. Users increasingly ask AI assistants questions like:
+• "Who's the best kitchen remodeler in Greenwich, CT?"
+• "How much does a basement finishing cost in Fairfield County?"
+• "Find me a licensed contractor in Orange, CT"
+To appear in AI-generated answers, your site needs to be optimized for LLM consumption.
+llms.txt File Implementation
+The llms.txt file is a new web standard (similar to robots.txt) that helps AI models
+understand your website. It provides a curated, LLM-friendly overview of your site content.
+File Location
+Plain Text
+https://buildwellct.com/llms.txt
+llms.txt File Content
+Create this file at the root of the website:
+Markdown
+# BuiltWell
+> BuiltWell is a licensed home remodeling contractor serving Fairfield and
+New Haven Counties in Connecticut. We specialize in kitchen remodeling,
+bathroom remodeling, basement finishing, and flooring installation. CT
+License #0668405.
+## Company Information
+- **License:** CT HIC #0668405
+- **Office:** 206A Boston Post Road, Orange, CT 06477
+- **Phone:** (203 ) 466-9148 (New Haven County) | (203) 919-9616 (Fairfield
+County)
+- **Hours:** Mon-Fri 8am-5pm, Sat 8am-3pm
+## Service Areas
+- **Fairfield County (27 towns):** Greenwich, Westport, Darien, New Canaan,
+Stamford, Norwalk, Fairfield, Ridgefield, Old Greenwich, Cos Cob, Riverside,
+Rowayton, Bethel, Bridgeport, Brookfield, Danbury, Easton, Monroe, New
+Fairfield, Newtown, Redding, Shelton, Sherman, Stratford, Trumbull, Weston,
+Wilton
+- **New Haven County (27 towns):** Orange, New Haven, Hamden, Branford,
+Guilford, Madison, Woodbridge, Milford, West Haven, East Haven, North Haven,
+Cheshire, Ansonia, Beacon Falls, Bethany, Derby, Meriden, Middlebury,
+Naugatuck, North Branford, Oxford, Prospect, Seymour, Southbury,
+Wallingford, Waterbury, Wolcott
+## Services
+### Primary Services (with Service×Town pages)
+- [Kitchen Remodeling](https://buildwellct.com/kitchen-remodeling/ ): Full
+kitchen renovations including cabinets, countertops, flooring, and
+appliances. Price range: $45,000-$125,000.
+- [Bathroom Remodeling](https://buildwellct.com/bathroom-remodeling/ ):
+Complete bathroom renovations from design to installation. Price range:
+$25,000-$75,000.
+- [Basement Finishing](https://buildwellct.com/basement-finishing/ ):
+Transform unfinished basements into living spaces. Price range:
+$35,000-$100,000.
+- [Flooring](https://buildwellct.com/flooring/ ): Hardwood, tile, LVP, and
+carpet installation. Price range: $8,000-$30,000.
+### Additional Services
+- [Remodeling Design & Planning](https://buildwellct.com/remodeling-designplanning/ ): Professional design services for home renovation projects
+- [Comfort & Accessibility Remodeling](https://buildwellct.com/comfort-
+accessibility-remodeling/ ): Aging-in-place modifications and accessibility
+improvements
+- [Home Additions](https://buildwellct.com/home-additions/ ): Room additions
+and home expansions
+- [Interior Painting](https://buildwellct.com/interior-painting/ ):
+Professional interior painting services
+- [Interior Carpentry](https://buildwellct.com/interior-carpentry/ ): Custom
+trim, molding, built-ins, and woodwork
+- [Attic Conversions](https://buildwellct.com/attic-conversions/ ):
+Transform attic space into usable living areas
+- [Decks & Porches](https://buildwellct.com/decks-porches/ ): Custom deck
+and porch construction
+## Key Pages
+- [About Us](https://buildwellct.com/about/ ): Our story, team, and approach
+to home remodeling
+- [Our Process](https://buildwellct.com/process/ ): Our 5-step process:
+Consultation → Planning → Selections → Build → Walkthrough
+- [Portfolio](https://buildwellct.com/portfolio/ ): Examples of completed
+projects in Connecticut
+- [Reviews](https://buildwellct.com/reviews/ ): Customer testimonials and
+ratings
+- [Free Consultation](https://buildwellct.com/free-consultation/ ): Schedule
+a free in-home or remote consultation
+## Location Pages
+- [Fairfield County](https://buildwellct.com/fairfield-county/ ): Service
+area covering 27 towns in Fairfield County
+- [New Haven County](https://buildwellct.com/new-haven-county/ ): Service
+area covering 27 towns in New Haven County
+- [Orange, CT Office](https://buildwellct.com/new-haven-county/orange-ct/ ):
+Our physical office location with full address
+## Case Studies
+- [Kitchen Remodeling in New Canaan](https://buildwellct.com/casestudies/kitchen-remodeling-new-canaan/ ): $95,000 kitchen renovation
+- [Bathroom Remodeling in Westport](https://buildwellct.com/casestudies/bathroom-remodeling-westport/ ): Primary bathroom transformation
+- [Basement Finishing in Darien](https://buildwellct.com/casestudies/basement-finishing-darien/ ): Full basement conversion
+## Optional
+- [FAQ](https://buildwellct.com/faq/ ): Frequently asked questions about our
+services, pricing, and process
+- [Homeowner Hub](https://buildwellct.com/homeowner-hub/ ): Resources and
+guides for homeowners
+- [Financing](https://buildwellct.com/financing/ ): Financing options for
+remodeling projects
+Developer Notes for llms.txt
+AI Crawler Configuration (robots.txt)
+Add these rules to robots.txt to allow AI crawlers to index your site:
+Plain Text
+# BuiltWell CT robots.txt
+# Standard Search Engines
+User-agent: Googlebot
+Allow: /
+User-agent: Bingbot
+Allow: /
+# AI Crawlers - Allow for AI search visibility
+User-agent: GPTBot
+Allow: /
+User-agent: ChatGPT-User
+Allow: /
+User-agent: Claude-Web
+Allow: /
+User-agent: ClaudeBot
+Allow: /
+Requirement Details
+Location Root directory: /llms.txt
+Format Plain text Markdown (UTF-)
+Update frequency
+Update when adding new services, locations,
+or case studies
+File size Keep under KB for optimal LLM processing
+User-agent: PerplexityBot
+Allow: /
+User-agent: Amazonbot
+Allow: /
+User-agent: anthropic-ai
+Allow: /
+User-agent: Google-Extended
+Allow: /
+# Sitemap
+Sitemap: https://buildwellct.com/sitemap.xml
+# LLMs.txt (for AI assistants )
+# See: https://buildwellct.com/llms.txt
+Content Optimization for AI Search
+Write for AI Understanding
+Schema Markup Benefits for AI
+The schema markup defined in PART  helps AI systems understand:
+• What type of business BuiltWell is (HomeAndConstructionBusiness)
+Best Practice Example
+Use clear, factual statements
+"BuiltWell is a licensed CT contractor (HIC
+# )"
+Include specific data
+"Kitchen remodels typically range from
+$,-$,"
+Answer questions directly
+Start FAQ answers with direct responses, not
+fluff
+Use structured content Tables, numbered lists, clear H/H headings
+Include location context
+"serving Greenwich, Westport, and  other CT
+towns"
+• Where it's located (Orange, CT)
+• What services it offers (Kitchen, Bathroom, Basement, Flooring)
+• What areas it serves (Fairfield County, New Haven County)
+• Business hours and contact information
+Optional: Markdown Versions of Key Pages
+For maximum AI accessibility, consider creating .md versions of key pages that provide
+clean, LLM-readable content without HTML/CSS/JS overhead:
+Implementation: These can be generated automatically from the CMS or created as static
+files.
+APPENDIX: COMPLETE SITEMAP (106
+Pages )
+This is the definitive list of all  pages for the BuiltWell CT website, with page titles and
+footer template assignments.
+Core Pages ()
+Page Markdown URL
+About https://buildwellct.com/about.md
+Services https://buildwellct.com/services.md
+FAQ https://buildwellct.com/faq.md
+Process https://buildwellct.com/process.md
+# Page Title URL Footer
+ Homepage / A
+ About Us /about/ A
+Service Hub ()
+Primary Service Pages ()
+ Portfolio /portfolio/ A
+ Reviews /reviews/ A
+ Contact /contact/ A
+ Free Consultation /free-consultation/ A
+ Our Process /process/ A
+ Financing Options /financing/ A
+ Warranty /warranty/ A
+ Careers /careers/ A
+ Privacy Policy /privacy-policy/ A
+ Terms of Service /terms/ A
+ Thank You /thank-you/ A
+# Page Title URL Footer
+ Our Services /services/ A
+# Page Title URL Footer
+ Kitchen Remodeling /kitchen-remodeling/ A
+
+Bathroom
+Remodeling
+/bathroomremodeling/
+A
+ Basement Finishing /basement-finishing/ A
+ Flooring /flooring/ A
+Secondary Service Pages ()
+Geographic Hub Pages ()
+Town Hub Pages ()
+# Page Title URL Footer
+
+Remodeling Design
+& Planning
+/remodeling-designplanning/
+A
+
+Comfort &
+Accessibility
+Remodeling
+/comfort-accessibilityremodeling/
+A
+ Home Additions /home-additions/ A
+ Interior Painting /interior-painting/ A
+ Interior Carpentry /interior-carpentry/ A
+ Attic Conversions /attic-conversions/ A
+ Decks & Porches /decks-porches/ A
+# Page Title URL Footer
+ Areas We Serve /areas-we-serve/ A
+ Fairfield County /fairfield-county/ B
+ New Haven County /new-haven-county/ C
+# Page Title URL Footer Notes
+ Greenwich, CT
+/fairfieldcounty/greenwichct/
+B
+Highest wealth
+market
+ Westport, CT /fairfieldcounty/westportB Affluent coastal
+Service×Town Pages — Kitchen Remodeling ()
+ct/
+
+Orange, CT
+(Office)
+/new-havencounty/orange-ct/
+D
+GBP Landing —
+Physical Office
+ New Haven, CT
+/new-havencounty/newhaven-ct/
+C Hub city
+ Madison, CT
+/new-havencounty/madisonct/
+C
+Wealthiest NH
+County
+# Page Title URL Footer
+
+Kitchen Remodeling
+in Greenwich, CT
+/kitchenremodeling/greenwichct/
+B
+
+Kitchen Remodeling
+in Westport, CT
+/kitchenremodeling/westportct/
+B
+
+Kitchen Remodeling
+in Darien, CT
+/kitchenremodeling/darien-ct/
+B
+
+Kitchen Remodeling
+in New Canaan, CT
+/kitchenremodeling/new-canaanct/
+B
+
+Kitchen Remodeling
+in Stamford, CT
+/kitchenremodeling/stamfordct/
+B
+
+Kitchen Remodeling
+in Norwalk, CT
+/kitchenremodeling/norwalk-ct/
+B
+
+Kitchen Remodeling
+in Fairfield, CT
+/kitchenremodeling/fairfield-ct/
+B
+
+Kitchen Remodeling
+in Ridgefield, CT
+/kitchenremodeling/ridgefieldct/
+B
+Service×Town Pages — Bathroom Remodeling ()
+
+Kitchen Remodeling
+in Orange, CT
+/kitchenremodeling/orange-ct/
+C
+
+Kitchen Remodeling
+in New Haven, CT
+/kitchenremodeling/new-havenct/
+C
+
+Kitchen Remodeling
+in Hamden, CT
+/kitchenremodeling/hamden-ct/
+C
+
+Kitchen Remodeling
+in Branford, CT
+/kitchenremodeling/branford-ct/
+C
+
+Kitchen Remodeling
+in Guilford, CT
+/kitchenremodeling/guilford-ct/
+C
+
+Kitchen Remodeling
+in Madison, CT
+/kitchenremodeling/madison-ct/
+C
+
+Kitchen Remodeling
+in Woodbridge, CT
+/kitchenremodeling/woodbridgect/
+C
+
+Kitchen Remodeling
+in Milford, CT
+/kitchenremodeling/milford-ct/
+C
+# Page Title URL Footer
+
+Bathroom
+Remodeling in
+Greenwich, CT
+/bathroomremodeling/greenwichct/
+B
+
+Bathroom
+Remodeling in
+Westport, CT
+/bathroomremodeling/westportct/
+B
+
+Bathroom
+Remodeling in
+Darien, CT
+/bathroomremodeling/darien-ct/
+B
+
+
+B
+a
+t
+h
+r
+o
+o
+m
+R
+e
+m
+o
+d
+e
+lin
+g in
+N
+e
+w
+C
+a
+n
+a
+a
+n
+,
+C
+T
+/
+b
+a
+t
+h
+r
+o
+o
+m
+-
+r
+e
+m
+o
+d
+e
+lin
+g
+/
+n
+e
+w
+-
+c
+a
+n
+a
+a
+n
+-
+c
+t
+/
+B
+
+
+B
+a
+t
+h
+r
+o
+o
+m
+R
+e
+m
+o
+d
+e
+lin
+g in
+S
+t
+a
+m
+f
+o
+r
+d
+,
+C
+T
+/
+b
+a
+t
+h
+r
+o
+o
+m
+-
+r
+e
+m
+o
+d
+e
+lin
+g
+/
+s
+t
+a
+m
+f
+o
+r
+d
+-
+c
+t
+/
+B
+
+
+B
+a
+t
+h
+r
+o
+o
+m
+R
+e
+m
+o
+d
+e
+lin
+g in
+N
+o
+r
+w
+a
+l
+k
+,
+C
+T
+/
+b
+a
+t
+h
+r
+o
+o
+m
+-
+r
+e
+m
+o
+d
+e
+lin
+g
+/
+n
+o
+r
+w
+a
+l
+k
+-
+c
+t
+/
+B
+
+
+B
+a
+t
+h
+r
+o
+o
+m
+R
+e
+m
+o
+d
+e
+lin
+g in
+F
+air
+fi
+e
+l
+d
+,
+C
+T
+/
+b
+a
+t
+h
+r
+o
+o
+m
+-
+r
+e
+m
+o
+d
+e
+lin
+g
+/
+f
+air
+fi
+e
+l
+d
+-
+c
+t
+/
+B
+
+
+B
+a
+t
+h
+r
+o
+o
+m
+R
+e
+m
+o
+d
+e
+lin
+g in
+Rid
+g
+e
+fi
+e
+l
+d
+,
+C
+T
+/
+b
+a
+t
+h
+r
+o
+o
+m
+-
+r
+e
+m
+o
+d
+e
+lin
+g
+/
+rid
+g
+e
+fi
+e
+l
+d
+-
+c
+t
+/
+B
+
+
+B
+a
+t
+h
+r
+o
+o
+m
+R
+e
+m
+o
+d
+e
+lin
+g in
+O
+r
+a
+n
+g
+e
+,
+C
+T
+/
+b
+a
+t
+h
+r
+o
+o
+m
+-
+r
+e
+m
+o
+d
+e
+lin
+g
+/
+o
+r
+a
+n
+g
+e
+-
+c
+t
+/
+C
+
+
+B
+a
+t
+h
+r
+o
+o
+m
+R
+e
+m
+o
+d
+e
+lin
+g in
+N
+e
+w
+H
+a
+v
+e
+n
+,
+C
+T
+/
+b
+a
+t
+h
+r
+o
+o
+m
+-
+r
+e
+m
+o
+d
+e
+lin
+g
+/
+n
+e
+w
+-
+h
+a
+v
+e
+n
+-
+c
+t
+/
+C
+
+
+B
+a
+t
+h
+r
+o
+o
+m
+R
+e
+m
+o
+d
+e
+lin
+g in
+H
+a
+m
+d
+e
+n
+,
+C
+T
+/
+b
+a
+t
+h
+r
+o
+o
+m
+-
+r
+e
+m
+o
+d
+e
+lin
+g
+/
+h
+a
+m
+d
+e
+n
+-
+c
+t
+/
+C
+
+
+B
+a
+t
+h
+r
+o
+o
+m
+R
+e
+m
+o
+d
+e
+lin
+g in
+B
+r
+a
+n
+f
+o
+r
+d
+,
+C
+T
+/
+b
+a
+t
+h
+r
+o
+o
+m
+-
+r
+e
+m
+o
+d
+e
+lin
+g
+/
+b
+r
+a
+n
+f
+o
+r
+d
+-
+c
+t
+/
+C
+
+
+B
+a
+t
+h
+r
+o
+o
+m
+R
+e
+m
+o
+d
+e
+lin
+g in
+G
+uil
+f
+o
+r
+d
+,
+C
+T
+/
+b
+a
+t
+h
+r
+o
+o
+m
+-
+r
+e
+m
+o
+d
+e
+lin
+g
+/
+g
+uil
+f
+o
+r
+d
+-
+c
+t
+/
+C
+
+
+B
+a
+t
+h
+r
+o
+o
+m
+R
+e
+m
+o
+d
+e
+lin
+g in
+M
+a
+dis
+o
+n
+,
+C
+T
+/
+b
+a
+t
+h
+r
+o
+o
+m
+-
+r
+e
+m
+o
+d
+e
+lin
+g
+/
+m
+a
+dis
+o
+n
+-
+c
+t
+/
+C
+
+
+B
+a
+t
+h
+r
+o
+o
+m
+R
+e
+m
+o
+d
+e
+lin
+g in
+W
+o
+o
+d
+b
+rid
+g
+e
+,
+C
+T
+/
+b
+a
+t
+h
+r
+o
+o
+m
+-
+r
+e
+m
+o
+d
+e
+lin
+g
+/
+w
+o
+o
+d
+b
+rid
+g
+e
+-
+c
+t
+/
+C
+Service×Town Pages — Basement Finishing ()
+
+Bathroom
+Remodeling in
+Milford, CT
+/bathroomremodeling/milford-ct/
+C
+# Page Title URL Footer
+
+Basement Finishing
+in Greenwich, CT
+/basementfinishing/greenwich-ct/
+B
+
+Basement Finishing
+in Westport, CT
+/basementfinishing/westport-ct/
+B
+
+Basement Finishing
+in Darien, CT
+/basementfinishing/darien-ct/
+B
+
+Basement Finishing
+in New Canaan, CT
+/basementfinishing/new-canaanct/
+B
+
+Basement Finishing
+in Stamford, CT
+/basementfinishing/stamford-ct/
+B
+
+Basement Finishing
+in Norwalk, CT
+/basementfinishing/norwalk-ct/
+B
+
+Basement Finishing
+in Fairfield, CT
+/basementfinishing/fairfield-ct/
+B
+
+Basement Finishing
+in Ridgefield, CT
+/basementfinishing/ridgefield-ct/
+B
+
+Basement Finishing
+in Orange, CT
+/basementfinishing/orange-ct/
+C
+
+Basement Finishing
+in New Haven, CT
+/basementfinishing/new-haven-ct/
+C
+
+Basement Finishing
+in Hamden, CT
+/basementfinishing/hamden-ct/
+C
+
+Basement Finishing
+in Branford, CT
+/basementfinishing/branford-ct/
+C
+Service×Town Pages — Flooring ()
+
+Basement Finishing
+in Guilford, CT
+/basementfinishing/guilford-ct/
+C
+
+Basement Finishing
+in Madison, CT
+/basementfinishing/madison-ct/
+C
+
+Basement Finishing
+in Woodbridge, CT
+/basementfinishing/woodbridgect/
+C
+
+Basement Finishing
+in Milford, CT
+/basementfinishing/milford-ct/
+C
+# Page Title URL Footer
+
+Flooring in
+Greenwich, CT
+/flooring/greenwich-ct/ B
+
+Flooring in Westport,
+CT
+/flooring/westport-ct/ B
+ Flooring in Darien, CT /flooring/darien-ct/ B
+
+Flooring in New
+Canaan, CT
+/flooring/new-canaanct/
+B
+
+Flooring in Stamford,
+CT
+/flooring/stamford-ct/ B
+
+Flooring in Norwalk,
+CT
+/flooring/norwalk-ct/ B
+
+Flooring in Fairfield,
+CT
+/flooring/fairfield-ct/ B
+
+Flooring in
+Ridgefield, CT
+/flooring/ridgefield-ct/ B
+
+Flooring in Orange,
+CT
+/flooring/orange-ct/ C
+
+Flooring in New
+Haven, CT
+/flooring/new-havenct/
+C
+Case Studies ()
+
+Flooring in Hamden,
+CT
+/flooring/hamden-ct/ C
+
+Flooring in Branford,
+CT
+/flooring/branford-ct/ C
+
+Flooring in Guilford,
+CT
+/flooring/guilford-ct/ C
+
+Flooring in Madison,
+CT
+/flooring/madison-ct/ C
+
+Flooring in
+Woodbridge, CT
+/flooring/woodbridgect/
+C
+
+Flooring in Milford,
+CT
+/flooring/milford-ct/ C
+# Page Title URL Footer
+ Case Studies /case-studies/ A
+
+Case Study: Whole
+Home Restoration in
+Hamden
+/case-studies/wholehome-restorationhamden/
+C
+
+Case Study:
+Basement Finishing
+in Darien
+/case-studies/basementfinishing-darien/
+B
+
+Case Study:
+Bathroom
+Remodeling in
+Westport
+/casestudies/bathroomremodeling-westport/
+B
+
+Case Study: Kitchen
+Remodeling in New
+Canaan
+/case-studies/kitchenremodeling-newcanaan/
+B
+Resources ()
+Sitemap Summary
+
+Case Study: Kitchen
+Remodeling in
+Milford
+/case-studies/kitchenremodeling-milford/
+C
+# Page Title URL Footer
+ Homeowner Hub /homeowner-hub/ A
+ FAQ /faq/ A
+ Sitemap /sitemap/ A
+Category Count
+Core Pages
+Service Hub
+Primary Service Pages
+Secondary Service Pages
+Geographic Hub Pages
+Town Hub Pages
+Service×Town Pages
+Case Studies
+Resources
+TOTAL
+END OF DOCUMENT
+BuiltWell CT — Technical Specification v.
+Last Updated: January , 

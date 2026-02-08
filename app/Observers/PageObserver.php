@@ -44,7 +44,7 @@ class PageObserver
         $schemaType = match ($page->type) {
             'service_global', 'service_county', 'service_town' => 'Service',
             'county_hub' => 'Place',
-            'office' => 'LocalBusiness',
+            'office' => 'HomeAndConstructionBusiness',
             'faq' => 'FAQPage',
             default => null,
         };
@@ -73,8 +73,8 @@ class PageObserver
                 $this->validateFaqPage($page);
                 break;
 
-            case 'LocalBusiness':
-                $this->validateLocalBusiness($page);
+            case 'HomeAndConstructionBusiness':
+                $this->validateHomeAndConstructionBusiness($page);
                 break;
 
             case 'Service':
@@ -101,20 +101,15 @@ class PageObserver
     }
 
     /**
-     * Validate LocalBusiness schema (LOCKED: only Orange office)
+     * Validate HomeAndConstructionBusiness schema (LOCKED: only Orange office)
      */
-    protected function validateLocalBusiness(Page $page): void
+    protected function validateHomeAndConstructionBusiness(Page $page): void
     {
-        $allowedPaths = [
-            '/new-haven-county/orange-ct/',
-            '/new-haven-county/orange-ct',
-        ];
-
         $normalizedPath = rtrim($page->full_path, '/') . '/';
 
-        if (!in_array($normalizedPath, $allowedPaths, true)) {
+        if ($normalizedPath !== '/new-haven-county/orange-ct/') {
             throw new \Exception(
-                "LocalBusiness schema can ONLY be used on the Orange office page " .
+                "HomeAndConstructionBusiness schema can ONLY be used on the Orange office page " .
                 "(/new-haven-county/orange-ct/). Current path: {$page->full_path}"
             );
         }

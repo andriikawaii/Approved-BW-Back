@@ -50,15 +50,13 @@
                 Pages
             </flux:sidebar.item>
 
-            {{-- Sections Library (P1) --}}
+            @role('super_admin')
             <flux:sidebar.item icon="squares-plus" :href="route('admin.sections.index')" wire:navigate>
-                Sections
+                Section Library
             </flux:sidebar.item>
 
-            {{-- Templates / Rules (Locked) --}}
-            @role('super_admin')
             <flux:sidebar.item icon="shield-check" :href="route('admin.rules.index')" wire:navigate>
-                Rules (Locked)
+                Content Rules
             </flux:sidebar.item>
             @endrole
         </flux:sidebar.group>
@@ -94,12 +92,12 @@
         </flux:sidebar.group>
 
         {{-- SEO (P0) --}}
+        @role('seo_manager|super_admin')
         <flux:sidebar.group heading="SEO" class="mt-4">
             <flux:sidebar.item icon="arrow-path" :href="route('admin.redirects.index')" wire:navigate>
                 Redirects
             </flux:sidebar.item>
 
-            @role('seo_manager|super_admin')
             <flux:sidebar.item icon="globe-alt" :href="route('admin.seo.sitemap')" wire:navigate>
                 Sitemap (XML)
             </flux:sidebar.item>
@@ -119,8 +117,8 @@
             <flux:sidebar.item icon="adjustments-horizontal" :href="route('admin.settings.general')" wire:navigate>
                 SEO Settings
             </flux:sidebar.item>
-            @endrole
         </flux:sidebar.group>
+        @endrole
 
         {{-- OPS (P0/P1) --}}
         <flux:sidebar.group heading="Ops" class="mt-4">
@@ -154,13 +152,15 @@
 
     {{-- ================= FOOTER LINKS ================= --}}
     <flux:sidebar.nav>
-        <flux:sidebar.item icon="folder-git-2" href="https://github.com/laravel/livewire-starter-kit" target="_blank">
-            Repository
+        <flux:sidebar.item icon="globe-alt" href="{{ config('app.frontend_url', '/') }}" target="_blank">
+            View Website
         </flux:sidebar.item>
 
-        <flux:sidebar.item icon="book-open-text" href="https://laravel.com/docs/starter-kits#livewire" target="_blank">
-            Documentation
+        @role('super_admin')
+        <flux:sidebar.item icon="folder-git-2" href="https://github.com/petar2020/builtwell-backend" target="_blank">
+            Repository
         </flux:sidebar.item>
+        @endrole
     </flux:sidebar.nav>
 
     <x-desktop-user-menu class="hidden lg:block" :name="auth()->user()->name" />

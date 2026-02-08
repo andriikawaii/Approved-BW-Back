@@ -7,6 +7,7 @@ use App\Models\MediaAsset;
 use App\Models\Page;
 use App\Models\Section;
 use App\Support\Sections\SectionRegistry;
+use App\Support\Sections\ContentPolicyValidator;
 use App\Support\Sections\SectionValidator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
@@ -296,6 +297,14 @@ class SectionsBuilder extends Component
                 session()->flash('error', $errorMessage);
                 return;
             }
+        }
+
+        // ✅ LOCKED: Content policy validation (owner name, forbidden terms, link direction)
+        $policyErrors = ContentPolicyValidator::validate($this->page, $this->sections);
+
+        if (!empty($policyErrors)) {
+            session()->flash('error', implode(' | ', $policyErrors));
+            return;
         }
 
         DB::transaction(function () {

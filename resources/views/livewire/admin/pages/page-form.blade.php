@@ -68,8 +68,8 @@
     <div class="card">
         <h3>Schema</h3>
 
-        <input wire:model.defer="page.schema_type" placeholder="LocalBusiness" />
-        <textarea wire:model.defer="page.schema_overrides" placeholder='{"@type":"LocalBusiness"}'></textarea>
+        <input wire:model.defer="page.schema_type" placeholder="e.g. Service, FAQPage" />
+        <textarea wire:model.defer="page.schema_overrides" placeholder='{"name":"Custom override"}'></textarea>
     </div>
 
     {{-- CONTENT --}}

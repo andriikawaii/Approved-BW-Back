@@ -226,8 +226,12 @@ Route::middleware(['auth', 'role:super_admin|editor|seo_manager'])->group(functi
         */
         Route::middleware('role:seo_manager|super_admin')->group(function () {
 
-            // Redirects (postojeće)
-            Route::get('/redirects', Admin\Redirects\Index::class)->name('redirects.index');
+            // Redirects
+            Route::prefix('redirects')->name('redirects.')->group(function () {
+                Route::get('/', Admin\Redirects\Index::class)->name('index');
+                Route::get('/create', Admin\Redirects\Create::class)->name('create');
+                Route::get('/{redirect}/edit', Admin\Redirects\Edit::class)->name('edit');
+            });
 
             // SEO tools (novo)
             Route::prefix('seo')->name('seo.')->group(function () {

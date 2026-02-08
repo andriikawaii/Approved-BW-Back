@@ -11,6 +11,7 @@ class County extends Model
         'name',
         'slug',
         'state_code',
+        'phone',
         'is_active',
     ];
 
