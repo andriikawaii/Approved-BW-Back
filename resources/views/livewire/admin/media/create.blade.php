@@ -19,14 +19,21 @@
         {{-- File Upload Section --}}
         <div class="border-b border-gray-200 dark:border-zinc-700 bg-gray-50 dark:bg-zinc-800/50 p-6">
             <div class="text-center">
-                <label for="file-upload" class="cursor-pointer">
-                    <div
-                        class="relative mx-auto mb-4"
-                        x-data="{ dragging: false }"
-                        @dragover.prevent="dragging = true"
-                        @dragleave.prevent="dragging = false"
-                        @drop.prevent="dragging = false"
-                    >
+                <input
+                    id="file-upload"
+                    type="file"
+                    wire:model="file"
+                    class="hidden"
+                    accept=".jpg,.jpeg,.png,.gif,.pdf,.doc,.docx"
+                >
+                <div
+                    class="relative mx-auto mb-4"
+                    x-data="{ dragging: false }"
+                    @dragover.prevent="dragging = true"
+                    @dragleave.prevent="dragging = false"
+                    @drop.prevent="dragging = false"
+                >
+                        <label for="file-upload" class="block cursor-pointer h-full">
                         <div class="h-48 w-48 mx-auto rounded-2xl border-2 border-dashed
                                    transition-all duration-300
                                    @if($file) border-blue-500 bg-blue-50 dark:bg-blue-900/30 @else border-gray-300 dark:border-zinc-600 bg-gray-50 dark:bg-zinc-700/50 @endif
@@ -35,7 +42,7 @@
                                        "border-blue-500 bg-blue-50 dark:bg-blue-900/30": dragging || @entangle("file"),
                         "border-gray-300 dark:border-zinc-600 bg-gray-50 dark:bg-zinc-700/50": !(dragging || @entangle("file"))
                         }'">
-                        <div class="h-full w-full rounded-2xl flex flex-col items-center justify-center p-4">
+                        <div class="h-full w-full rounded-2xl flex flex-col items-center justify-center p-4 pointer-events-none">
                             <div class="flex flex-col items-center justify-center text-center">
                                 <svg class="h-10 w-10 text-gray-400 dark:text-zinc-500 mb-3 transition-colors duration-300
                                                @if($file) text-blue-500 dark:text-blue-400 @endif
@@ -56,16 +63,10 @@
                                     PNG, JPG, GIF, PDF up to 10MB
                                 </p>
                             </div>
-                            <input
-                                id="file-upload"
-                                type="file"
-                                wire:model="file"
-                                class="hidden"
-                                accept=".jpg,.jpeg,.png,.gif,.pdf,.doc,.docx"
-                            >
                         </div>
                     </div>
-            </div>
+                        </label>
+                </div>
 
             @if($file)
                 <div class="mt-4">
@@ -88,7 +89,6 @@
                     </div>
                 </div>
                 @endif
-                </label>
 
                 @error('file')
                 <div class="mt-2 text-sm text-rose-600 dark:text-rose-400 font-medium">

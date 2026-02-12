@@ -10,9 +10,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 // PUBLIC (published + published_at)
-Route::get('/pages/{path}', [PageController::class, 'show'])
+Route::get('/pages/{path?}', [PageController::class, 'show'])
     ->where('path', '.*')
-    ->middleware('page.redirect') // redirect pre resolve-a
+    ->middleware('page.redirect')
     ->name('api.pages.show');
 
 // PREVIEW (draft + published, bez cache)

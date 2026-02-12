@@ -37,6 +37,8 @@ class SectionsBuilder extends Component
     public ?int $mediaTargetRepeaterIdx = null;
     public ?string $mediaTargetRepeaterSubfield = null;
     public string $mediaSearch = '';
+    public array $selectedMediaIds = [];
+    public bool $isMultiSelectMode = false;
 
     /* --------------------------------------------
      | MOUNT
@@ -177,6 +179,17 @@ class SectionsBuilder extends Component
         $this->mediaTargetRepeaterIdx = $repeaterIdx;
         $this->mediaTargetRepeaterSubfield = $subfield;
         $this->mediaSearch = '';
+        $this->selectedMediaIds = [];
+
+        // Multi-select mode: when opening for a repeater field without a specific item
+        // (used for bulk-adding multiple items like hero slider slides)
+        $this->isMultiSelectMode = ($repeaterIdx === null && $subfield === null) &&
+                                   isset($this->sections[$index]) &&
+                                   isset($this->sections[$index]['data'][$field]) &&
+                                   is_array($this->sections[$index]['data'][$field]) &&
+                                   is_array($this->sections[$index]['data'][$field][0] ?? null) &&
+                                   isset($this->sections[$index]['data'][$field][0]['image']);
+
         $this->showMediaModal = true;
     }
 
@@ -188,22 +201,78 @@ class SectionsBuilder extends Component
         $this->mediaTargetRepeaterIdx = null;
         $this->mediaTargetRepeaterSubfield = null;
         $this->mediaSearch = '';
+        $this->selectedMediaIds = [];
+        $this->isMultiSelectMode = false;
     }
 
     public function selectMedia(int $mediaId): void
     {
-        $media = MediaAsset::find($mediaId);
-        if (! $media) return;
+        if ($this->isMultiSelectMode) {
+            // Toggle selection in multi-select mode
+            if (in_array($mediaId, $this->selectedMediaIds, true)) {
+                $this->selectedMediaIds = array_values(array_diff($this->selectedMediaIds, [$mediaId]));
+            } else {
+                $this->selectedMediaIds[] = $mediaId;
+            }
+        } else {
+            // Single selection mode
+            $media = MediaAsset::find($mediaId);
+            if (! $media) return;
 
-        $path = $media->url;
+            $path = $media->url;
+            $idx = $this->mediaTargetIndex;
+            $field = $this->mediaTargetField;
+
+            if ($idx === null || $field === null) return;
+
+            // Clone-and-reassign so Livewire's dirty-tracking catches the deep mutation
+            $sections = $this->sections;
+
+            if ($this->mediaTargetRepeaterIdx !== null && $this->mediaTargetRepeaterSubfield !== null) {
+                $sections[$idx]['data'][$field][$this->mediaTargetRepeaterIdx][$this->mediaTargetRepeaterSubfield] = $path;
+            } else {
+                $sections[$idx]['data'][$field] = $path;
+            }
+
+            $this->sections = $sections;
+            $this->closeMediaPicker();
+        }
+    }
+
+    public function applyMultipleMedia(): void
+    {
+        if (empty($this->selectedMediaIds) || !$this->isMultiSelectMode) return;
+
         $idx = $this->mediaTargetIndex;
         $field = $this->mediaTargetField;
 
-        if ($this->mediaTargetRepeaterIdx !== null && $this->mediaTargetRepeaterSubfield !== null) {
-            $this->sections[$idx]['data'][$field][$this->mediaTargetRepeaterIdx][$this->mediaTargetRepeaterSubfield] = $path;
-        } else {
-            $this->sections[$idx]['data'][$field] = $path;
+        if ($idx === null || $field === null) return;
+
+        $sections = $this->sections;
+        $items = $sections[$idx]['data'][$field] ?? [];
+        if (!is_array($items)) $items = [];
+
+        // Get template from first existing item
+        $template = $items[0] ?? [];
+
+        // Add new items for each selected media
+        foreach ($this->selectedMediaIds as $mediaId) {
+            $media = MediaAsset::find($mediaId);
+            if (!$media) continue;
+
+            // Create new item based on template
+            if (is_array($template)) {
+                $newItem = array_map(fn() => null, $template);
+                $newItem['image'] = $media->url;
+            } else {
+                $newItem = $media->url;
+            }
+
+            $items[] = $newItem;
         }
+
+        $sections[$idx]['data'][$field] = array_values($items);
+        $this->sections = $sections;
 
         $this->closeMediaPicker();
     }
@@ -358,7 +427,7 @@ class SectionsBuilder extends Component
         $categoryMap = [
             'Hero'          => ['hero', 'hero_slider'],
             'Content'       => ['rich_text', 'local_context'],
-            'Social Proof'  => ['trust_bar', 'testimonials', 'project_highlights', 'logo_strip', 'before_after'],
+            'Social Proof'  => ['trust_bar', 'stats_counter', 'testimonials', 'project_highlights', 'logo_strip', 'before_after'],
             'Services'      => ['services_grid', 'service_includes', 'pricing_table', 'timeline_block', 'process_steps', 'service_area_links'],
             'CTA & Forms'   => ['cta_block', 'lead_form'],
             'Media'         => ['image_gallery', 'map_embed'],

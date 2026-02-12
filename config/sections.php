@@ -113,11 +113,20 @@ return [
         'rich_text' => [
             'type' => 'rich_text',
             'label' => 'Rich Text',
-            'description' => 'Flexible text content: eyebrow, title, body, lists, quote.',
+            'description' => 'Flexible text block: eyebrow, title, body, optional image and CTA button.',
             'schema' => [
                 'eyebrow' => 'nullable|string|max:60',
                 'title' => 'nullable|string|max:160',
                 'content' => 'required|string',
+
+                'image' => 'nullable|string|max:255',
+                'image_alt' => 'nullable|string|max:125',
+                'image_position' => 'nullable|in:left,right,top,bottom',
+
+                'cta' => 'nullable|array',
+                'cta.label' => 'nullable|string|max:50',
+                'cta.url' => 'nullable|string|max:255',
+
                 'align' => 'nullable|in:left,center,right',
                 'variant' => 'nullable|in:default,light,dark',
             ],
@@ -125,6 +134,10 @@ return [
                 'eyebrow' => null,
                 'title' => null,
                 'content' => '',
+                'image' => null,
+                'image_alt' => null,
+                'image_position' => 'right',
+                'cta' => ['label' => '', 'url' => ''],
                 'align' => 'left',
                 'variant' => 'default',
             ],
@@ -224,6 +237,33 @@ return [
                     ['icon' => 'star', 'label' => '5-Star Rated Contractor', 'value' => null],
                     ['icon' => 'clock', 'label' => '15+ Years Experience', 'value' => null],
                     ['icon' => 'map', 'label' => 'Fairfield & New Haven Counties', 'value' => null],
+                ],
+            ],
+        ],
+
+        'stats_counter' => [
+            'type' => 'stats_counter',
+            'label' => 'Stats Counter',
+            'description' => 'Key numbers / metrics displayed as large counters (e.g. 24+ Years, 100%).',
+            'schema' => [
+                'title' => 'nullable|string|max:120',
+                'subtitle' => 'nullable|string|max:255',
+                'variant' => 'nullable|in:default,light,dark',
+
+                'items' => 'required|array|min:1|max:6',
+                'items.*.value' => 'required|string|max:20',
+                'items.*.label' => 'required|string|max:60',
+                'items.*.icon' => 'nullable|string|max:60',
+            ],
+            'defaults' => [
+                'title' => null,
+                'subtitle' => null,
+                'variant' => 'default',
+                'items' => [
+                    ['value' => '24+', 'label' => 'Years of Experience', 'icon' => 'clock'],
+                    ['value' => '19+', 'label' => 'Industry Awards', 'icon' => 'trophy'],
+                    ['value' => '100%', 'label' => 'Client Satisfaction', 'icon' => 'star'],
+                    ['value' => '500+', 'label' => 'Projects Completed', 'icon' => 'check'],
                 ],
             ],
         ],

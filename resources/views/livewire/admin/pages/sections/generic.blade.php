@@ -9,34 +9,42 @@
     $groups = ['text' => [], 'media' => [], 'cta' => [], 'repeater' => [], 'other' => []];
 
     foreach ($schema as $field => $rules) {
-        if (str_contains($field, '.*')) continue;
+        if (str_contains($field, '.')) continue;
 
-        // Determine editor type
         if (str_contains($rules, 'boolean')) {
             $editor = 'toggle';
         } elseif (
-            str_contains($field, 'image') ||
-            str_contains($field, 'media') ||
-            str_contains($field, 'cover_') ||
-            str_contains($field, 'logo') ||
-            str_contains($field, 'avatar') ||
-            str_contains($rules, 'file')
+            (
+                str_contains($field, 'image') ||
+                str_contains($field, 'media') ||
+                str_contains($field, 'cover_') ||
+                str_contains($field, 'logo') ||
+                str_contains($field, 'avatar') ||
+                str_contains($rules, 'file')
+            ) && !preg_match('/(_(alt|caption|position))$/', $field)
         ) {
             $editor = 'media';
-        } elseif (str_contains($rules, 'in:')) {
-            $editor = 'select';
         } elseif (str_contains($rules, 'array')) {
-            $editor = 'repeater';
+            // Check if this is a repeater (has field.*.subfield rules) or a single object (field.subfield rules)
+            $isRepeater = false;
+            foreach ($schema as $schemaKey => $schemaRules) {
+                if (str_starts_with($schemaKey, $field . '.*.')) {
+                    $isRepeater = true;
+                    break;
+                }
+            }
+            $editor = $isRepeater ? 'repeater' : 'object';
+        } elseif (preg_match('/(^|\|)in:/', $rules)) {
+            $editor = 'select';
         } else {
             $editor = 'text';
         }
 
-        // Categorize
         if ($editor === 'repeater') {
             $group = 'repeater';
         } elseif ($editor === 'media') {
             $group = 'media';
-        } elseif (str_contains($field, 'cta') || str_contains($field, 'button')) {
+        } elseif ($editor === 'object' || str_contains($field, 'cta') || str_contains($field, 'button')) {
             $group = 'cta';
         } elseif (in_array($editor, ['text', 'select', 'toggle'])) {
             $group = 'text';
@@ -47,7 +55,6 @@
         $groups[$group][$field] = ['rules' => $rules, 'editor' => $editor];
     }
 
-    // Remove empty groups
     $groups = array_filter($groups);
 
     $groupLabels = [
@@ -66,12 +73,13 @@
         'other' => '<path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>',
     ];
 
-    // Helper text mapping
     $fieldHelpers = [
         'eyebrow' => 'Small text above the headline',
         'headline' => 'Main heading for this section',
         'subheadline' => 'Supporting text below the headline',
         'content' => 'Main body content (supports HTML)',
+        'image_alt' => 'Alt text for accessibility',
+        'image_position' => 'Where the image appears relative to text',
         'embed_url' => 'Full embed URL from Google Maps',
         'timeline' => 'e.g. "6-12 weeks"',
         'variant' => 'Visual style variant',
@@ -81,16 +89,16 @@
     ];
 @endphp
 
-<div class="space-y-6">
+<div class="space-y-5">
 
     @forelse ($groups as $groupKey => $fields)
         <div class="space-y-4">
             @if (count($groups) > 1)
-                <div class="flex items-center gap-2 border-b border-zinc-800/60 pb-2">
-                    <svg class="h-3.5 w-3.5 text-zinc-500" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                <div class="flex items-center gap-2 border-b border-gray-200 dark:border-zinc-700/60 pb-2">
+                    <svg class="h-3.5 w-3.5 text-gray-400 dark:text-zinc-500" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
                         {!! $groupIcons[$groupKey] ?? $groupIcons['other'] !!}
                     </svg>
-                    <span class="text-[11px] font-semibold uppercase tracking-wider text-zinc-500">
+                    <span class="text-[11px] font-bold uppercase tracking-wider text-gray-400 dark:text-zinc-500">
                         {{ $groupLabels[$groupKey] ?? Str::headline($groupKey) }}
                     </span>
                 </div>
@@ -98,11 +106,11 @@
 
             @foreach ($fields as $field => $fieldMeta)
                 <div class="space-y-1.5">
-                    <label class="block text-sm font-medium text-zinc-300">
+                    <label class="block text-sm font-medium text-gray-700 dark:text-zinc-300">
                         {{ Str::headline($field) }}
                     </label>
                     @if (isset($fieldHelpers[$field]))
-                        <p class="text-[11px] text-zinc-600">{{ $fieldHelpers[$field] }}</p>
+                        <p class="text-[11px] text-gray-400 dark:text-zinc-500">{{ $fieldHelpers[$field] }}</p>
                     @endif
 
                     @include("livewire.admin.pages.sections.{$fieldMeta['editor']}", [
@@ -115,7 +123,7 @@
             @endforeach
         </div>
     @empty
-        <div class="flex items-center gap-2 rounded-lg bg-zinc-800/30 px-4 py-3 text-sm text-zinc-500">
+        <div class="flex items-center gap-2 rounded-lg bg-gray-50 dark:bg-zinc-800/30 px-4 py-3 text-sm text-gray-400 dark:text-zinc-500">
             <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z"/></svg>
             No editable fields defined for this section.
         </div>

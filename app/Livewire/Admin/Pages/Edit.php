@@ -18,6 +18,8 @@ class Edit extends Component
     public string $full_path;
     public string $status;
 
+    public string $tab = 'builder';
+
     public ?int $service_id = null;
     public ?int $county_id = null;
     public ?int $town_id = null;

@@ -1,14 +1,29 @@
 @php
+    use App\Support\Sections\SectionRegistry;
+
     $raw = $section['data'][$field] ?? [];
     if (!is_array($raw)) $raw = [];
     $items = array_values($raw);
 
-    // Detect if items contain image subfields
+    // Detect if items contain image subfields - check both existing items and schema
     $imageSubfields = [];
     if (!empty($items) && is_array($items[0] ?? null)) {
         foreach (array_keys($items[0]) as $k) {
             if (str_contains($k, 'image') || str_contains($k, 'logo') || str_contains($k, 'avatar') || str_contains($k, 'cover')) {
                 $imageSubfields[] = $k;
+            }
+        }
+    } else {
+        // If no items yet, check the schema to determine what fields should exist
+        $schema = SectionRegistry::rulesFor($section['type']);
+        foreach ($schema as $key => $rules) {
+            if (str_starts_with($key, $field . '.*.')) {
+                $subfield = str_replace($field . '.*.', '', $key);
+                if (str_contains($subfield, 'image') || str_contains($subfield, 'logo') || str_contains($subfield, 'avatar') || str_contains($subfield, 'cover')) {
+                    if (!in_array($subfield, $imageSubfields)) {
+                        $imageSubfields[] = $subfield;
+                    }
+                }
             }
         }
     }
@@ -48,7 +63,14 @@
                 @else
                     {{-- OBJECT ITEM --}}
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        @foreach($item as $k => $v)
+                        @php
+                            // Combine existing item keys with imageSubfields to ensure we show all fields
+                            $allKeys = is_array($item) ? array_unique(array_merge(array_keys($item), $imageSubfields)) : [];
+                        @endphp
+                        @foreach($allKeys as $k)
+                            @php
+                                $v = $item[$k] ?? null;
+                            @endphp
                             <div class="space-y-1 {{ in_array($k, $imageSubfields) ? 'md:col-span-2' : '' }}">
                                 <div class="text-[11px] font-medium text-zinc-500">
                                     {{ \Illuminate\Support\Str::headline($k) }}
@@ -118,13 +140,27 @@
         </div>
     @endforelse
 
-    {{-- ADD ITEM --}}
-    <button type="button"
-        wire:click="addRepeaterItem({{ $index }}, '{{ $field }}')"
-        class="inline-flex items-center gap-1.5 rounded-lg border border-dashed border-zinc-700/60 bg-zinc-800/20 px-3 py-2 text-xs text-zinc-400 transition hover:border-emerald-500/40 hover:bg-emerald-500/5 hover:text-emerald-400"
-    >
-        <svg class="h-3 w-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
-        Add item
-    </button>
+    {{-- ADD ITEM + BULK ADD --}}
+    <div class="flex items-center gap-2">
+        <button type="button"
+            wire:click="addRepeaterItem({{ $index }}, '{{ $field }}')"
+            class="inline-flex items-center gap-1.5 rounded-lg border border-dashed border-zinc-700/60 bg-zinc-800/20 px-3 py-2 text-xs text-zinc-400 transition hover:border-emerald-500/40 hover:bg-emerald-500/5 hover:text-emerald-400"
+        >
+            <svg class="h-3 w-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+            Add item
+        </button>
+
+        {{-- Show bulk add button if this repeater has image subfields --}}
+        @if (!empty($imageSubfields))
+            <button type="button"
+                wire:click="openMediaPicker({{ $index }}, '{{ $field }}')"
+                class="inline-flex items-center gap-1.5 rounded-lg border border-dashed border-purple-700/40 bg-purple-800/10 px-3 py-2 text-xs text-purple-400 transition hover:border-purple-500/60 hover:bg-purple-500/10 hover:text-purple-300"
+                title="Add multiple images from gallery"
+            >
+                <svg class="h-3 w-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5a1.5 1.5 0 001.5-1.5V4.5A1.5 1.5 0 0020.25 3H3.75A1.5 1.5 0 002.25 4.5v15A1.5 1.5 0 003.75 21z"/></svg>
+                Bulk add from gallery
+            </button>
+        @endif
+    </div>
 
 </div>

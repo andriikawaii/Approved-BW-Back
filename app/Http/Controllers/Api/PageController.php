@@ -18,7 +18,7 @@ class PageController extends Controller
      * - published_at <= now() ili null
      * - sa cache-om
      */
-    public function show(string $path): JsonResponse
+    public function show(string $path = ''): JsonResponse
     {
         $fullPath = $this->normalizePath($path);
         $cacheKey = self::cacheKeyForPath($fullPath);
