@@ -282,6 +282,7 @@ return [
                 'items.*.location' => 'nullable|string|max:100',
                 'items.*.quote' => 'required|string|max:500',
                 'items.*.avatar' => 'nullable|string|max:255',
+                'items.*.rating' => 'nullable|integer|min:1|max:5',
                 'items.*.year' => 'nullable|string|max:10',
             ],
             'defaults' => [
@@ -289,7 +290,7 @@ return [
                 'subtitle' => 'Real feedback from homeowners.',
                 'layout' => 'carousel',
                 'items' => [
-                    ['name' => '', 'location' => '', 'quote' => '', 'avatar' => null, 'year' => null],
+                    ['name' => '', 'location' => '', 'quote' => '', 'avatar' => null, 'rating' => 5, 'year' => null],
                 ],
             ],
         ],
@@ -332,6 +333,81 @@ return [
                 'subtitle' => null,
                 'items' => [
                     ['name' => 'Cambria', 'logo' => '', 'url' => null],
+                ],
+            ],
+        ],
+
+        'rich_text_image' => [
+            'type' => 'rich_text_image',
+            'label' => 'Rich Text + Image',
+            'description' => 'Text block with side image and optional pull-quote.',
+            'schema' => [
+                'eyebrow' => 'nullable|string|max:60',
+                'title' => 'nullable|string|max:160',
+                'content' => 'required|string',
+                'image' => 'nullable|string|max:255',
+                'image_alt' => 'nullable|string|max:125',
+                'image_position' => 'nullable|in:left,right',
+                'quote_text' => 'nullable|string|max:500',
+            ],
+            'defaults' => [
+                'eyebrow' => null,
+                'title' => null,
+                'content' => '',
+                'image' => null,
+                'image_alt' => null,
+                'image_position' => 'right',
+                'quote_text' => null,
+            ],
+        ],
+
+        'feature_list_two_column' => [
+            'type' => 'feature_list_two_column',
+            'label' => 'Feature List (Two Column)',
+            'description' => 'Two-column feature layout: left features with descriptions, right bullet list.',
+            'schema' => [
+                'eyebrow' => 'nullable|string|max:60',
+                'title' => 'nullable|string|max:160',
+
+                'left_features' => 'required|array|min:1',
+                'left_features.*.title' => 'required|string|max:80',
+                'left_features.*.description' => 'required|string|max:400',
+
+                'right_bullets' => 'nullable|array',
+                'right_bullets.*' => 'required_with:right_bullets|string|max:120',
+
+                'closing_quote' => 'nullable|string|max:500',
+            ],
+            'defaults' => [
+                'eyebrow' => null,
+                'title' => null,
+                'left_features' => [
+                    ['title' => '', 'description' => ''],
+                ],
+                'right_bullets' => [],
+                'closing_quote' => null,
+            ],
+        ],
+
+        'areas_served' => [
+            'type' => 'areas_served',
+            'label' => 'Areas Served',
+            'description' => 'Counties with expandable town lists.',
+            'schema' => [
+                'title' => 'nullable|string|max:120',
+                'subtitle' => 'nullable|string|max:255',
+
+                'counties' => 'required|array|min:1',
+                'counties.*.name' => 'required|string|max:80',
+                'counties.*.towns' => 'required|array|min:1',
+                'counties.*.towns.*' => 'required|string|max:60',
+            ],
+            'defaults' => [
+                'title' => 'Areas We Serve',
+                'subtitle' => null,
+                'counties' => [
+                    ['name' => 'Fairfield County', 'towns' => ['Greenwich', 'Stamford', 'Norwalk']],
+                    ['name' => 'New Haven County', 'towns' => ['New Haven', 'Orange', 'Milford']],
                 ],
             ],
         ],
@@ -746,6 +822,508 @@ return [
                 ],
                 'submit_label' => 'Book Free Consultation',
                 'consent_text' => 'By submitting, you agree to receive calls or texts from BUILTWELL.',
+            ],
+        ],
+
+        // ---------------------------------------------------------------------
+        // ABOUT / GENERAL PURPOSE
+        // ---------------------------------------------------------------------
+
+        'page_hero' => [
+            'type' => 'page_hero',
+            'label' => 'Page Hero',
+            'description' => 'Interior page hero with eyebrow, title, subtitle and background image.',
+            'schema' => [
+                'eyebrow' => 'nullable|string|max:60',
+                'title' => 'required|string|max:140',
+                'subtitle' => 'nullable|string|max:400',
+                'background_image' => 'nullable|string|max:255',
+                'overlay_opacity' => 'nullable|numeric|min:0|max:1',
+                'alignment' => 'nullable|in:left,center',
+            ],
+            'defaults' => [
+                'eyebrow' => null,
+                'title' => '',
+                'subtitle' => null,
+                'background_image' => null,
+                'overlay_opacity' => 0.45,
+                'alignment' => 'left',
+            ],
+        ],
+
+        'image_text_split' => [
+            'type' => 'image_text_split',
+            'label' => 'Image + Text Split',
+            'description' => 'Side-by-side layout with image and rich text content, optional quote.',
+            'schema' => [
+                'eyebrow' => 'nullable|string|max:60',
+                'title' => 'nullable|string|max:160',
+                'content' => 'required|string',
+                'image' => 'nullable|string|max:255',
+                'image_alt' => 'nullable|string|max:125',
+                'image_position' => 'nullable|in:left,right',
+                'quote' => 'nullable|string|max:500',
+            ],
+            'defaults' => [
+                'eyebrow' => null,
+                'title' => null,
+                'content' => '',
+                'image' => null,
+                'image_alt' => null,
+                'image_position' => 'left',
+                'quote' => null,
+            ],
+        ],
+
+        'icon_cards' => [
+            'type' => 'icon_cards',
+            'label' => 'Icon Cards',
+            'description' => 'Grid of cards with icon, title, and description.',
+            'schema' => [
+                'title' => 'nullable|string|max:120',
+                'subtitle' => 'nullable|string|max:255',
+                'items' => 'required|array|min:1|max:6',
+                'items.*.icon' => 'nullable|string|max:60',
+                'items.*.title' => 'required|string|max:80',
+                'items.*.description' => 'required|string|max:400',
+            ],
+            'defaults' => [
+                'title' => null,
+                'subtitle' => null,
+                'items' => [
+                    ['icon' => '', 'title' => '', 'description' => ''],
+                ],
+            ],
+        ],
+
+        'team_members' => [
+            'type' => 'team_members',
+            'label' => 'Team Members',
+            'description' => 'Team/leadership profile cards with photo and bio.',
+            'schema' => [
+                'title' => 'nullable|string|max:120',
+                'subtitle' => 'nullable|string|max:255',
+                'members' => 'required|array|min:1',
+                'members.*.name' => 'required|string|max:100',
+                'members.*.position' => 'nullable|string|max:100',
+                'members.*.image' => 'nullable|string|max:255',
+                'members.*.bio' => 'nullable|string',
+            ],
+            'defaults' => [
+                'title' => 'Our Leadership',
+                'subtitle' => null,
+                'members' => [
+                    ['name' => '', 'position' => '', 'image' => null, 'bio' => ''],
+                ],
+            ],
+        ],
+
+        'two_column_text' => [
+            'type' => 'two_column_text',
+            'label' => 'Two Column Text',
+            'description' => 'Side-by-side text columns with a shared heading.',
+            'schema' => [
+                'title' => 'nullable|string|max:120',
+                'left_content' => 'required|string',
+                'right_content' => 'required|string',
+            ],
+            'defaults' => [
+                'title' => null,
+                'left_content' => '',
+                'right_content' => '',
+            ],
+        ],
+
+        'service_areas' => [
+            'type' => 'service_areas',
+            'label' => 'Service Areas (About)',
+            'description' => 'County cards with images, city lists, and optional map embed.',
+            'schema' => [
+                'title' => 'nullable|string|max:120',
+                'subtitle' => 'nullable|string|max:255',
+                'counties' => 'required|array|min:1',
+                'counties.*.county_name' => 'required|string|max:80',
+                'counties.*.image' => 'nullable|string|max:255',
+                'counties.*.cities' => 'required|array|min:1',
+                'counties.*.cities.*' => 'required|string|max:60',
+                'show_map' => 'nullable|boolean',
+                'map_embed' => 'nullable|string|max:500',
+            ],
+            'defaults' => [
+                'title' => 'Areas We Serve',
+                'subtitle' => null,
+                'counties' => [
+                    ['county_name' => 'Fairfield County', 'image' => null, 'cities' => ['Greenwich']],
+                ],
+                'show_map' => false,
+                'map_embed' => null,
+            ],
+        ],
+
+        'office_info' => [
+            'type' => 'office_info',
+            'label' => 'Office Info',
+            'description' => 'Office location card with address, phone, email, and directions link.',
+            'schema' => [
+                'title' => 'nullable|string|max:120',
+                'address' => 'required|string|max:255',
+                'phone' => 'nullable|string|max:32',
+                'email' => 'nullable|string|max:120',
+                'office_image' => 'nullable|string|max:255',
+                'directions_url' => 'nullable|string|max:500',
+            ],
+            'defaults' => [
+                'title' => 'Visit Our Office',
+                'address' => '',
+                'phone' => null,
+                'email' => null,
+                'office_image' => null,
+                'directions_url' => null,
+            ],
+        ],
+
+        'feature_grid' => [
+            'type' => 'feature_grid',
+            'label' => 'Feature Grid',
+            'description' => 'Grid of feature/guarantee cards with icon, title, and description.',
+            'schema' => [
+                'title' => 'nullable|string|max:120',
+                'subtitle' => 'nullable|string|max:255',
+                'items' => 'required|array|min:1|max:8',
+                'items.*.icon' => 'nullable|string|max:60',
+                'items.*.title' => 'required|string|max:80',
+                'items.*.description' => 'required|string|max:400',
+            ],
+            'defaults' => [
+                'title' => null,
+                'subtitle' => null,
+                'items' => [
+                    ['icon' => '', 'title' => '', 'description' => ''],
+                ],
+            ],
+        ],
+
+        'dark_text_section' => [
+            'type' => 'dark_text_section',
+            'label' => 'Dark Text Section',
+            'description' => 'Full-width dark background section with title and rich text content.',
+            'schema' => [
+                'title' => 'nullable|string|max:120',
+                'content' => 'required|string',
+            ],
+            'defaults' => [
+                'title' => null,
+                'content' => '',
+            ],
+        ],
+
+        'cta_split_form' => [
+            'type' => 'cta_split_form',
+            'label' => 'CTA Split Form',
+            'description' => 'CTA section with steps list alongside a consultation form.',
+            'schema' => [
+                'title' => 'nullable|string|max:120',
+                'subtitle' => 'nullable|string|max:255',
+                'steps' => 'nullable|array|min:1|max:5',
+                'steps.*.number' => 'required_with:steps|integer|min:1|max:5',
+                'steps.*.text' => 'required_with:steps|string|max:80',
+                'form_id' => 'nullable|string|max:60',
+                'background_image' => 'nullable|string|max:255',
+            ],
+            'defaults' => [
+                'title' => 'Ready to Start Your Project?',
+                'subtitle' => null,
+                'steps' => [
+                    ['number' => 1, 'text' => 'Tell us about your project'],
+                    ['number' => 2, 'text' => 'Schedule a site visit'],
+                    ['number' => 3, 'text' => 'Get your detailed proposal'],
+                ],
+                'form_id' => null,
+                'background_image' => null,
+            ],
+        ],
+
+        'service_hero' => [
+            'type' => 'service_hero',
+            'label' => 'Service Hero',
+            'description' => 'Service page hero with title, subtitle, background image and CTAs.',
+            'schema' => [
+                'title' => 'required|string|max:140',
+                'subtitle' => 'nullable|string|max:400',
+                'background_image' => 'nullable|string|max:255',
+                'primary_cta' => 'nullable|array',
+                'primary_cta.label' => 'nullable|string|max:50',
+                'primary_cta.url' => 'nullable|string|max:255',
+                'secondary_cta' => 'nullable|array',
+                'secondary_cta.label' => 'nullable|string|max:50',
+                'secondary_cta.url' => 'nullable|string|max:255',
+                'overlay_opacity' => 'nullable|numeric|min:0|max:1',
+            ],
+            'defaults' => [
+                'title' => '',
+                'subtitle' => null,
+                'background_image' => null,
+                'primary_cta' => ['label' => 'Schedule a Free Consultation', 'url' => '/free-consultation/'],
+                'secondary_cta' => ['label' => 'Call Now', 'url' => 'tel:'],
+                'overlay_opacity' => 0.45,
+            ],
+        ],
+
+        'service_intro_split' => [
+            'type' => 'service_intro_split',
+            'label' => 'Service Intro Split',
+            'description' => 'Service overview with text, image(s), and bullet points.',
+            'schema' => [
+                'title' => 'nullable|string|max:160',
+                'content' => 'required|string',
+                'image_main' => 'nullable|string|max:255',
+                'image_secondary' => 'nullable|string|max:255',
+                'bullet_points' => 'nullable|array',
+                'bullet_points.*.text' => 'required_with:bullet_points|string|max:120',
+            ],
+            'defaults' => [
+                'title' => null,
+                'content' => '',
+                'image_main' => null,
+                'image_secondary' => null,
+                'bullet_points' => [],
+            ],
+        ],
+
+        'service_process' => [
+            'type' => 'service_process',
+            'label' => 'Service Process',
+            'description' => 'Horizontal step cards showing the service process.',
+            'schema' => [
+                'title' => 'nullable|string|max:120',
+                'steps' => 'required|array|min:1|max:7',
+                'steps.*.step_number' => 'required|integer|min:1',
+                'steps.*.title' => 'required|string|max:50',
+                'steps.*.description' => 'required|string|max:255',
+            ],
+            'defaults' => [
+                'title' => null,
+                'steps' => [
+                    ['step_number' => 1, 'title' => 'Consultation', 'description' => ''],
+                    ['step_number' => 2, 'title' => 'Planning', 'description' => ''],
+                    ['step_number' => 3, 'title' => 'Selections', 'description' => ''],
+                    ['step_number' => 4, 'title' => 'Build', 'description' => ''],
+                    ['step_number' => 5, 'title' => 'Walkthrough', 'description' => ''],
+                ],
+            ],
+        ],
+
+        'full_width_text_dark' => [
+            'type' => 'full_width_text_dark',
+            'label' => 'Full Width Text (Dark)',
+            'description' => 'Dark background band with title, subtitle, and alignment.',
+            'schema' => [
+                'title' => 'required|string|max:140',
+                'subtitle' => 'nullable|string|max:400',
+                'alignment' => 'nullable|in:left,center,right',
+            ],
+            'defaults' => [
+                'title' => '',
+                'subtitle' => null,
+                'alignment' => 'center',
+            ],
+        ],
+
+        'before_after_grid' => [
+            'type' => 'before_after_grid',
+            'label' => 'Before/After Grid',
+            'description' => 'Project showcase with before/after images and testimonials.',
+            'schema' => [
+                'title' => 'nullable|string|max:120',
+                'subtitle' => 'nullable|string|max:255',
+                'projects' => 'required|array|min:1',
+                'projects.*.before_image' => 'nullable|string|max:255',
+                'projects.*.after_image' => 'nullable|string|max:255',
+                'projects.*.location' => 'nullable|string|max:100',
+                'projects.*.description' => 'nullable|string|max:255',
+                'projects.*.testimonial_quote' => 'nullable|string|max:500',
+            ],
+            'defaults' => [
+                'title' => null,
+                'subtitle' => null,
+                'projects' => [
+                    ['before_image' => null, 'after_image' => null, 'location' => '', 'description' => '', 'testimonial_quote' => null],
+                ],
+            ],
+        ],
+
+        'testimonial_slider_small' => [
+            'type' => 'testimonial_slider_small',
+            'label' => 'Testimonial Slider (Small)',
+            'description' => 'Compact testimonial carousel strip.',
+            'schema' => [
+                'title' => 'nullable|string|max:120',
+                'testimonials' => 'required|array|min:1',
+                'testimonials.*.name' => 'required|string|max:100',
+                'testimonials.*.city' => 'nullable|string|max:100',
+                'testimonials.*.rating' => 'nullable|integer|min:1|max:5',
+                'testimonials.*.text' => 'required|string|max:500',
+            ],
+            'defaults' => [
+                'title' => null,
+                'testimonials' => [
+                    ['name' => '', 'city' => '', 'rating' => 5, 'text' => ''],
+                ],
+            ],
+        ],
+
+        'service_area_text' => [
+            'type' => 'service_area_text',
+            'label' => 'Service Area Text',
+            'description' => 'Text strip listing service areas by county.',
+            'schema' => [
+                'title' => 'nullable|string|max:120',
+                'content' => 'nullable|string|max:600',
+                'counties' => 'nullable|array',
+                'counties.*' => 'required_with:counties|string|max:80',
+            ],
+            'defaults' => [
+                'title' => null,
+                'content' => null,
+                'counties' => [],
+            ],
+        ],
+
+        'faq_accordion' => [
+            'type' => 'faq_accordion',
+            'label' => 'FAQ Accordion',
+            'description' => 'Collapsible FAQ section for service pages.',
+            'schema' => [
+                'title' => 'nullable|string|max:120',
+                'items' => 'required|array|min:1',
+                'items.*.question' => 'required|string|max:255',
+                'items.*.answer' => 'required|string',
+            ],
+            'defaults' => [
+                'title' => 'Frequently Asked Questions',
+                'items' => [
+                    ['question' => '', 'answer' => ''],
+                ],
+            ],
+        ],
+
+        // ---------------------------------------------------------------------
+        // SERVICE LOCATION (TOWN-LEVEL) SECTIONS
+        // ---------------------------------------------------------------------
+
+        'hero_service_location' => [
+            'type' => 'hero_service_location',
+            'label' => 'Service Location Hero',
+            'description' => 'Hero section for town-level service pages with background image and CTAs.',
+            'schema' => [
+                'headline' => 'required|string|max:140',
+                'subheadline' => 'nullable|string|max:400',
+                'background_image' => 'nullable|string|max:255',
+                'primary_cta' => 'nullable|array',
+                'primary_cta.label' => 'nullable|string|max:50',
+                'primary_cta.url' => 'nullable|string|max:255',
+                'secondary_cta' => 'nullable|array',
+                'secondary_cta.label' => 'nullable|string|max:50',
+                'secondary_cta.url' => 'nullable|string|max:255',
+            ],
+            'defaults' => [
+                'headline' => '',
+                'subheadline' => null,
+                'background_image' => null,
+                'primary_cta' => ['label' => 'Schedule a Free Consultation', 'url' => '/free-consultation/'],
+                'secondary_cta' => ['label' => 'Call Now', 'url' => 'tel:'],
+            ],
+        ],
+
+        'service_two_column' => [
+            'type' => 'service_two_column',
+            'label' => 'Service Two Column',
+            'description' => 'Service overview with headline, description, bullet points, and image.',
+            'schema' => [
+                'section_label' => 'nullable|string|max:60',
+                'headline' => 'required|string|max:160',
+                'description' => 'required|string',
+                'bullet_points' => 'nullable|array',
+                'bullet_points.*' => 'required_with:bullet_points|string|max:120',
+                'image' => 'nullable|string|max:255',
+                'image_alt' => 'nullable|string|max:125',
+            ],
+            'defaults' => [
+                'section_label' => null,
+                'headline' => '',
+                'description' => '',
+                'bullet_points' => [],
+                'image' => null,
+                'image_alt' => null,
+            ],
+        ],
+
+        'before_after_showcase' => [
+            'type' => 'before_after_showcase',
+            'label' => 'Before/After Showcase',
+            'description' => 'Single before/after comparison with description.',
+            'schema' => [
+                'section_label' => 'nullable|string|max:60',
+                'headline' => 'nullable|string|max:160',
+                'description' => 'nullable|string|max:500',
+                'before_image' => 'nullable|string|max:255',
+                'after_image' => 'nullable|string|max:255',
+            ],
+            'defaults' => [
+                'section_label' => null,
+                'headline' => null,
+                'description' => null,
+                'before_image' => null,
+                'after_image' => null,
+            ],
+        ],
+
+        'service_area_highlight' => [
+            'type' => 'service_area_highlight',
+            'label' => 'Service Area Highlight',
+            'description' => 'Short service area callout for town-level pages.',
+            'schema' => [
+                'headline' => 'required|string|max:120',
+                'description' => 'nullable|string|max:400',
+            ],
+            'defaults' => [
+                'headline' => '',
+                'description' => null,
+            ],
+        ],
+
+        'consultation_cta_split' => [
+            'type' => 'consultation_cta_split',
+            'label' => 'Consultation CTA Split',
+            'description' => 'Split layout with CTA steps on left and consultation form on right.',
+            'schema' => [
+                'headline' => 'required|string|max:140',
+                'steps' => 'nullable|array|min:1|max:5',
+                'steps.*.number' => 'required_with:steps|integer|min:1|max:5',
+                'steps.*.text' => 'required_with:steps|string|max:80',
+                'fields' => 'required|array|min:1',
+                'fields.*.name' => 'required|string|max:40',
+                'fields.*.label' => 'required|string|max:60',
+                'fields.*.type' => 'required|in:text,email,tel,select,textarea',
+                'fields.*.required' => 'boolean',
+                'fields.*.options' => 'nullable|array',
+                'fields.*.options.*.label' => 'required_with:fields.*.options|string|max:60',
+                'fields.*.options.*.value' => 'required_with:fields.*.options|string|max:60',
+                'submit_label' => 'required|string|max:50',
+            ],
+            'defaults' => [
+                'headline' => 'Stop Dreaming, Start Building.',
+                'steps' => [
+                    ['number' => 1, 'text' => 'Tell us about your project'],
+                    ['number' => 2, 'text' => 'Schedule a visit'],
+                    ['number' => 3, 'text' => 'Get your proposal'],
+                ],
+                'fields' => [
+                    ['name' => 'full_name', 'label' => 'Full Name', 'type' => 'text', 'required' => true],
+                    ['name' => 'phone', 'label' => 'Phone', 'type' => 'tel', 'required' => true],
+                    ['name' => 'email', 'label' => 'Email', 'type' => 'email', 'required' => true],
+                ],
+                'submit_label' => 'Book Free Consultation',
             ],
         ],
 

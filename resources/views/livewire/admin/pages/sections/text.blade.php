@@ -1,6 +1,6 @@
 @php
     $isLong = str_contains($field, 'content') || str_contains($field, 'description') || str_contains($field, 'body');
-    $inputClasses = 'w-full rounded-lg border border-zinc-700/60 bg-zinc-800/40 px-3 py-2 text-sm text-white placeholder-zinc-600 transition focus:border-emerald-500/50 focus:outline-none focus:ring-1 focus:ring-emerald-500/20';
+    $inputClasses = 'w-full rounded-lg border border-edge bg-surface-alt px-3 py-2.5 text-sm text-ink placeholder-ink-faint transition focus:border-tint focus:outline-none focus:ring-2 focus:ring-tint/30';
 @endphp
 
 @if ($isLong)

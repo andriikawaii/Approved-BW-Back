@@ -27,7 +27,14 @@ class PageController extends Controller
             return Page::query()
                 ->publicVisible()
                 ->where('full_path', $fullPath)
-                ->with(['sections', 'county', 'service', 'town'])
+                ->with([
+                    'sections' => function ($query) {
+                        $query
+                            ->where('is_active', true)
+                            ->orderBy('sort_order')
+                            ->select(['id', 'page_id', 'type', 'data', 'is_active']);
+                    },
+                ])
                 ->first();
         });
 
@@ -55,7 +62,14 @@ class PageController extends Controller
         $page = Page::query()
             ->where('full_path', $fullPath)
             ->whereIn('status', ['draft', 'published'])
-            ->with(['sections', 'county', 'service', 'town'])
+            ->with([
+                'sections' => function ($query) {
+                    $query
+                        ->where('is_active', true)
+                        ->orderBy('sort_order')
+                        ->select(['id', 'page_id', 'type', 'data', 'is_active']);
+                },
+            ])
             ->first();
 
         if (!$page) {

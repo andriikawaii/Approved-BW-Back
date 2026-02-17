@@ -3,7 +3,13 @@
     "allow": [
       "Bash(php artisan view:clear:*)",
       "Bash(php artisan config:cache:*)",
-      "Bash(php -l:*)"
+      "Bash(php -l:*)",
+      "Bash(xargs:*)",
+      "Bash(php artisan tinker:*)",
+      "Bash(del:*)",
+      "Bash(php artisan route:list:*)",
+      "Bash(curl:*)",
+      "Bash(Remove-Item seed_navbar_pages.php)"
     ]
   }
 }

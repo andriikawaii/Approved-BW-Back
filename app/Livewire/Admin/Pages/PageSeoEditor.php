@@ -26,8 +26,12 @@ class PageSeoEditor extends Component
     protected function rules(): array
     {
         return [
-            'seo_title' => 'nullable|string|max:60',
-            'seo_description' => 'nullable|string|max:160',
+            'seo_title' => $this->page->status === 'published'
+                ? 'required|string|max:60'
+                : 'nullable|string|max:60',
+            'seo_description' => $this->page->status === 'published'
+                ? 'required|string|max:160'
+                : 'nullable|string|max:160',
             'canonical_url' => 'nullable|string|max:255',
         ];
     }

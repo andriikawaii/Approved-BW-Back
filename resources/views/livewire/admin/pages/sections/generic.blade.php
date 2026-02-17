@@ -5,7 +5,6 @@
     $schema = SectionRegistry::rulesFor($section['type']);
     $meta = SectionRegistry::get($section['type']);
 
-    // Group fields by category for better UX
     $groups = ['text' => [], 'media' => [], 'cta' => [], 'repeater' => [], 'other' => []];
 
     foreach ($schema as $field => $rules) {
@@ -25,7 +24,6 @@
         ) {
             $editor = 'media';
         } elseif (str_contains($rules, 'array')) {
-            // Check if this is a repeater (has field.*.subfield rules) or a single object (field.subfield rules)
             $isRepeater = false;
             foreach ($schema as $schemaKey => $schemaRules) {
                 if (str_starts_with($schemaKey, $field . '.*.')) {
@@ -89,28 +87,29 @@
     ];
 @endphp
 
-<div class="space-y-5">
+<div class="space-y-6">
 
     @forelse ($groups as $groupKey => $fields)
         <div class="space-y-4">
             @if (count($groups) > 1)
-                <div class="flex items-center gap-2 border-b border-gray-200 dark:border-zinc-700/60 pb-2">
-                    <svg class="h-3.5 w-3.5 text-gray-400 dark:text-zinc-500" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                <div class="flex items-center gap-2 pb-1">
+                    <svg class="h-3.5 w-3.5 text-ink-faint" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
                         {!! $groupIcons[$groupKey] ?? $groupIcons['other'] !!}
                     </svg>
-                    <span class="text-[11px] font-bold uppercase tracking-wider text-gray-400 dark:text-zinc-500">
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-ink-faint">
                         {{ $groupLabels[$groupKey] ?? Str::headline($groupKey) }}
                     </span>
+                    <div class="flex-1 border-t border-edge"></div>
                 </div>
             @endif
 
             @foreach ($fields as $field => $fieldMeta)
-                <div class="space-y-1.5">
-                    <label class="block text-sm font-medium text-gray-700 dark:text-zinc-300">
+                <div>
+                    <label class="mb-1.5 block text-xs font-semibold text-ink-muted">
                         {{ Str::headline($field) }}
                     </label>
                     @if (isset($fieldHelpers[$field]))
-                        <p class="text-[11px] text-gray-400 dark:text-zinc-500">{{ $fieldHelpers[$field] }}</p>
+                        <p class="mb-2 text-[11px] text-ink-faint">{{ $fieldHelpers[$field] }}</p>
                     @endif
 
                     @include("livewire.admin.pages.sections.{$fieldMeta['editor']}", [
@@ -123,7 +122,7 @@
             @endforeach
         </div>
     @empty
-        <div class="flex items-center gap-2 rounded-lg bg-gray-50 dark:bg-zinc-800/30 px-4 py-3 text-sm text-gray-400 dark:text-zinc-500">
+        <div class="flex items-center gap-2 rounded-lg px-3 py-4 text-sm text-ink-faint">
             <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z"/></svg>
             No editable fields defined for this section.
         </div>

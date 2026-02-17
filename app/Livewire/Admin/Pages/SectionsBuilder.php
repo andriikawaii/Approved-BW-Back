@@ -15,6 +15,19 @@ use Livewire\Component;
 
 class SectionsBuilder extends Component
 {
+    private const SEO_RELEVANT_TYPES = [
+        'hero',
+        'hero_slider',
+        'rich_text',
+        'faq_list',
+        'service_area_links',
+        'town_list',
+        'services_grid',
+        'local_context',
+        'case_study_header',
+        'case_study_body',
+    ];
+
     public Page $page;
 
     /** @var array<int, array> */
@@ -142,6 +155,34 @@ class SectionsBuilder extends Component
     public function toggleCollapse(int $index): void
     {
         $this->collapsed[$index] = ! ($this->collapsed[$index] ?? true);
+    }
+
+    public function reorderSections(array $orderedIndexes): void
+    {
+        $total = count($this->sections);
+
+        if ($total <= 1 || count($orderedIndexes) !== $total) {
+            return;
+        }
+
+        $orderedIndexes = array_map('intval', $orderedIndexes);
+        $sorted = $orderedIndexes;
+        sort($sorted);
+
+        if ($sorted !== range(0, $total - 1)) {
+            return;
+        }
+
+        $nextSections = [];
+        $nextCollapsed = [];
+
+        foreach ($orderedIndexes as $index) {
+            $nextSections[] = $this->sections[$index];
+            $nextCollapsed[] = $this->collapsed[$index] ?? true;
+        }
+
+        $this->sections = $nextSections;
+        $this->collapsed = $nextCollapsed;
     }
 
     /* --------------------------------------------
@@ -460,6 +501,7 @@ class SectionsBuilder extends Component
             'groupedSections' => $groupedSections,
             'allowedTypes'    => $allowed,
             'requiredTypes'   => config("page-template-sections.{$this->page->template_key}.required", []),
+            'seoRelevantTypes' => self::SEO_RELEVANT_TYPES,
             'mediaItems'      => $mediaItems,
         ]);
     }

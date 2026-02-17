@@ -21,6 +21,8 @@ class PageApiContractTest extends TestCase
             'template_key' => 'service-default',
             'status' => 'published',
             'published_at' => now()->subDay(),
+            'seo_title' => 'Test SEO Title',
+            'seo_description' => 'Test SEO Description',
         ]);
 
         Section::create([
@@ -38,14 +40,18 @@ class PageApiContractTest extends TestCase
         $payload = $response->json();
 
         $this->assertExactKeys(
-            ['id', 'full_path', 'template', 'seo', 'context', 'content', 'meta'],
+            ['id', 'slug', 'template', 'seo', 'sections'],
             array_keys($payload)
         );
 
-        $this->assertExactKeys(['sections'], array_keys($payload['content']));
-        $this->assertIsArray($payload['content']['sections']);
+        $this->assertExactKeys(['title', 'description'], array_keys($payload['seo']));
+        $this->assertIsString($payload['seo']['title']);
+        $this->assertIsString($payload['seo']['description']);
+        $this->assertNotSame('', $payload['seo']['title']);
+        $this->assertNotSame('', $payload['seo']['description']);
+        $this->assertIsArray($payload['sections']);
 
-        $section = $payload['content']['sections'][0];
+        $section = $payload['sections'][0];
         $this->assertExactKeys(['id', 'type', 'data', 'is_active'], array_keys($section));
     }
 
@@ -57,6 +63,8 @@ class PageApiContractTest extends TestCase
             'template_key' => 'service-default',
             'status' => 'published',
             'published_at' => now()->subDay(),
+            'seo_title' => 'Preview SEO Title',
+            'seo_description' => 'Preview SEO Description',
         ]);
 
         Section::create([
@@ -75,14 +83,18 @@ class PageApiContractTest extends TestCase
         $payload = $response->json();
 
         $this->assertExactKeys(
-            ['id', 'full_path', 'template', 'seo', 'context', 'content', 'meta'],
+            ['id', 'slug', 'template', 'seo', 'sections'],
             array_keys($payload)
         );
 
-        $this->assertExactKeys(['sections'], array_keys($payload['content']));
-        $this->assertIsArray($payload['content']['sections']);
+        $this->assertExactKeys(['title', 'description'], array_keys($payload['seo']));
+        $this->assertIsString($payload['seo']['title']);
+        $this->assertIsString($payload['seo']['description']);
+        $this->assertNotSame('', $payload['seo']['title']);
+        $this->assertNotSame('', $payload['seo']['description']);
+        $this->assertIsArray($payload['sections']);
 
-        $section = $payload['content']['sections'][0];
+        $section = $payload['sections'][0];
         $this->assertExactKeys(['id', 'type', 'data', 'is_active'], array_keys($section));
     }
 

@@ -1,36 +1,36 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     @include('partials.head')
 </head>
 
-<body class="min-h-screen bg-white dark:bg-zinc-800">
+<body class="min-h-screen bg-panel text-ink">
 
 <flux:sidebar
     sticky
     collapsible="mobile"
-    class="border-e border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900"
+    class="border-r border-edge bg-surface text-ink"
 >
 
     {{-- ================= BRAND ================= --}}
-    <flux:sidebar.header class="px-4 py-4 border-b border-zinc-200 dark:border-zinc-700">
+    <flux:sidebar.header class="border-b border-edge px-4 py-4">
         <div class="flex items-center justify-between w-full">
             <a href="{{ route('dashboard') }}" wire:navigate class="flex items-center gap-3">
-                <div class="h-10 w-10 rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center shadow-sm">
-                    <span class="font-extrabold text-black text-lg">BW</span>
+                <div class="flex h-10 w-10 items-center justify-center rounded-xl border border-edge-strong bg-surface-alt shadow-sm">
+                    <span class="text-lg font-extrabold text-tint">BW</span>
                 </div>
 
                 <div class="leading-tight">
-                    <div class="font-bold text-zinc-900 dark:text-white text-base">
+                    <div class="text-base font-bold text-ink">
                         BuiltWell
                     </div>
-                    <div class="text-xs text-amber-600 dark:text-amber-400 font-medium">
+                    <div class="text-xs font-medium text-ink-muted">
                         Admin Panel
                     </div>
                 </div>
             </a>
 
-            <flux:sidebar.collapse class="lg:hidden text-zinc-700 dark:text-zinc-200 hover:text-amber-500 transition" />
+            <flux:sidebar.collapse class="text-ink-muted transition hover:text-ink lg:hidden" />
         </div>
     </flux:sidebar.header>
 
@@ -163,19 +163,34 @@
         @endrole
     </flux:sidebar.nav>
 
+    {{-- ================= THEME TOGGLE ================= --}}
+    <div class="border-t border-edge px-4 py-3" x-data="{ current: localStorage.getItem('flux.appearance') || 'system' }">
+        <div class="flex items-center rounded-lg bg-surface-alt p-1">
+            <template x-for="opt in ['light', 'system', 'dark']" :key="opt">
+                <button
+                    type="button"
+                    @click="current = opt; Flux.appearance = opt"
+                    :class="current === opt ? 'bg-surface text-ink shadow-sm' : 'text-ink-muted hover:text-ink'"
+                    class="flex-1 rounded-md px-2 py-1.5 text-center text-xs font-medium transition"
+                    x-text="opt.charAt(0).toUpperCase() + opt.slice(1)"
+                ></button>
+            </template>
+        </div>
+    </div>
+
     <x-desktop-user-menu class="hidden lg:block" :name="auth()->user()->name" />
 </flux:sidebar>
 
 {{-- ================= MOBILE HEADER ================= --}}
-<flux:header class="lg:hidden">
+<flux:header class="border-b border-edge bg-surface text-ink lg:hidden">
     <flux:sidebar.toggle class="lg:hidden" icon="bars-2" inset="left" />
     <flux:spacer />
 
     <div class="flex items-center gap-2">
-        <div class="h-8 w-8 rounded-lg bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center">
-            <span class="font-extrabold text-black text-sm">BW</span>
+        <div class="flex h-8 w-8 items-center justify-center rounded-lg border border-edge-strong bg-surface-alt">
+            <span class="text-sm font-extrabold text-tint">BW</span>
         </div>
-        <span class="font-bold text-zinc-900 dark:text-white text-sm">BuiltWell</span>
+        <span class="text-sm font-bold text-ink">BuiltWell</span>
     </div>
 
     <flux:spacer />
@@ -185,8 +200,8 @@
 
         <flux:menu>
             <div class="px-3 py-2">
-                <div class="text-sm font-semibold">{{ auth()->user()->name }}</div>
-                <div class="text-xs text-zinc-500">{{ auth()->user()->email }}</div>
+                <div class="text-sm font-semibold text-ink">{{ auth()->user()->name }}</div>
+                <div class="text-xs text-ink-muted">{{ auth()->user()->email }}</div>
             </div>
 
             <flux:menu.separator />

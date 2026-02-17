@@ -6,6 +6,7 @@ use App\Models\Redirect;
 use App\Support\Paths\RedirectPathNormalizer;
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
 use Symfony\Component\HttpFoundation\Response;
 
 class ResolvePageRedirect
@@ -14,6 +15,10 @@ class ResolvePageRedirect
 
     public function handle(Request $request, Closure $next): Response
     {
+        if (!Schema::hasTable('redirects')) {
+            return $next($request);
+        }
+
         // API route: /api/pages/{path}
         $path = (string) $request->route('path', '');
 
@@ -31,17 +36,21 @@ class ResolvePageRedirect
         }
 
         // 🔢 hits
-        $redirect->increment('hits');
+        try {
+            $redirect->increment('hits');
+        } catch (\Throwable) {
+            // Column may not exist yet
+        }
 
         // 🌍 full URL redirect
         if (preg_match('#^https?://#i', $redirect->to_path)) {
-            return redirect()->away($redirect->to_path, (int) $redirect->status_code);
+            return redirect()->away($redirect->to_path, (int) ($redirect->type ?? 301));
         }
 
         // 🧠 internal path redirect (API-friendly)
         return redirect(
             '/api/pages/' . ltrim($normalizedTo, '/'),
-            (int) $redirect->status_code
+            (int) ($redirect->type ?? 301)
         );
     }
 
@@ -56,7 +65,7 @@ class ResolvePageRedirect
             $redirect = Redirect::query()
                 ->where('from_path', $current)
                 ->where('is_active', true)
-                ->first(['id', 'to_path', 'status_code']);
+                ->first(['id', 'to_path', 'type']);
 
             if (!$redirect) {
                 break;
