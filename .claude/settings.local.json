@@ -9,7 +9,9 @@
       "Bash(del:*)",
       "Bash(php artisan route:list:*)",
       "Bash(curl:*)",
-      "Bash(Remove-Item seed_navbar_pages.php)"
+      "Bash(Remove-Item seed_navbar_pages.php)",
+      "Bash(php -r \"require ''vendor/autoload.php''; require ''bootstrap/app.php''; app\\(\\)->make\\(''Illuminate\\\\Contracts\\\\Console\\\\Kernel''\\)->bootstrap\\(\\); include ''check_pages.php'';\")",
+      "Bash(php -r \"require ''vendor/autoload.php''; require ''bootstrap/app.php''; app\\(\\)->make\\(''Illuminate\\\\Contracts\\\\Console\\\\Kernel''\\)->bootstrap\\(\\); include ''seed_service_sections.php'';\")"
     ]
   }
 }

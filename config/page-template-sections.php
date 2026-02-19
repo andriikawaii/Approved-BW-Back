@@ -313,6 +313,156 @@ return [
     ],
 
     // ========================================================================
+    // GENERIC PAGES (e.g. /services hub)
+    // ========================================================================
+    'generic' => [
+        'allowed' => [
+            'hero',
+            'rich_text',
+            'rich_text_image',
+            'trust_bar',
+            'services_grid',
+            'feature_list_two_column',
+            'process_steps',
+            'testimonials',
+            'logo_strip',
+            'cta_block',
+            'cta_split_form',
+            'faq_list',
+            'image_gallery',
+            'stats_counter',
+            'areas_served',
+            'lead_form',
+        ],
+        'required' => ['hero'],
+        'min' => 1,
+        'max' => 20,
+        'defaults' => [
+            ['type' => 'hero'],
+            ['type' => 'rich_text'],
+            ['type' => 'cta_block'],
+        ],
+    ],
+
+    // ========================================================================
+    // PORTFOLIO / PROJECTS PAGE
+    // ========================================================================
+    'portfolio' => [
+        'allowed' => [
+            'hero',
+            'rich_text',
+            'trust_bar',
+            'testimonials',
+            'cta_block',
+            'cta_split_form',
+            'stats_counter',
+            'image_gallery',
+            'project_category_filter',
+            'projects_masonry_grid',
+            'case_study_highlight',
+            'stats_bar',
+            'cta_dark_band',
+        ],
+        'required' => ['hero'],
+        'min' => 2,
+        'max' => 20,
+        'defaults' => [
+            ['type' => 'hero'],
+            ['type' => 'project_category_filter'],
+            ['type' => 'projects_masonry_grid'],
+            ['type' => 'case_study_highlight'],
+            ['type' => 'stats_bar'],
+            ['type' => 'cta_dark_band'],
+        ],
+    ],
+
+    // ========================================================================
+    // TESTIMONIALS / REVIEWS PAGE
+    // ========================================================================
+    'testimonials_page' => [
+        'allowed' => [
+            'hero',
+            'rich_text',
+            'trust_bar',
+            'testimonials',
+            'cta_block',
+            'cta_split_form',
+            'stats_counter',
+            'review_rating_summary',
+            'testimonial_grid_large',
+            'video_testimonial_placeholder',
+            'service_area_trust',
+        ],
+        'required' => ['hero'],
+        'min' => 2,
+        'max' => 20,
+        'defaults' => [
+            ['type' => 'hero'],
+            ['type' => 'review_rating_summary'],
+            ['type' => 'testimonial_grid_large'],
+            ['type' => 'video_testimonial_placeholder'],
+            ['type' => 'service_area_trust'],
+            ['type' => 'cta_split_form'],
+        ],
+    ],
+
+    // ========================================================================
+    // CONTACT PAGE
+    // ========================================================================
+    'contact' => [
+        'allowed' => [
+            'hero',
+            'rich_text',
+            'trust_bar',
+            'cta_block',
+            'cta_dark_band',
+            'lead_form',
+            'faq_list',
+            'contact_split_layout',
+            'office_info_cards',
+            'map_embed',
+        ],
+        'required' => ['hero'],
+        'min' => 2,
+        'max' => 15,
+        'defaults' => [
+            ['type' => 'hero'],
+            ['type' => 'contact_split_layout'],
+            ['type' => 'office_info_cards'],
+            ['type' => 'map_embed'],
+            ['type' => 'faq_list'],
+            ['type' => 'cta_dark_band'],
+        ],
+    ],
+
+    // ========================================================================
+    // SUBCONTRACTORS PAGE
+    // ========================================================================
+    'subcontractors' => [
+        'allowed' => [
+            'hero',
+            'rich_text',
+            'trust_bar',
+            'cta_block',
+            'feature_grid',
+            'requirements_section',
+            'benefits_grid',
+            'application_form_section',
+            'cta_light_section',
+        ],
+        'required' => ['hero'],
+        'min' => 2,
+        'max' => 15,
+        'defaults' => [
+            ['type' => 'hero'],
+            ['type' => 'requirements_section'],
+            ['type' => 'benefits_grid'],
+            ['type' => 'application_form_section'],
+            ['type' => 'cta_light_section'],
+        ],
+    ],
+
+    // ========================================================================
     // FREE CONSULTATION FORM PAGE
     // ========================================================================
     'consultation' => [
