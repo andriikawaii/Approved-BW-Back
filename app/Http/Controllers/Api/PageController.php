@@ -34,6 +34,9 @@ class PageController extends Controller
                             ->orderBy('sort_order')
                             ->select(['id', 'page_id', 'type', 'data', 'is_active']);
                     },
+                    'county',
+                    'town',
+                    'service',
                 ])
                 ->first();
         });
@@ -69,6 +72,9 @@ class PageController extends Controller
                         ->orderBy('sort_order')
                         ->select(['id', 'page_id', 'type', 'data', 'is_active']);
                 },
+                'county',
+                'town',
+                'service',
             ])
             ->first();
 

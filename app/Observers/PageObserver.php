@@ -7,6 +7,7 @@ namespace App\Observers;
 use App\Models\Page;
 use App\Http\Controllers\Api\PageController as ApiPageController;
 use App\Models\Redirect;
+use App\Services\CanonicalResolver;
 use App\Support\Paths\PathNormalizer;
 use Illuminate\Support\Facades\Cache;
 
@@ -21,6 +22,11 @@ class PageObserver
     {
         // Normalize path
         $page->full_path = PathNormalizer::normalize($page->full_path);
+
+        // Auto-set canonical_url when null or when full_path changed
+        if ($page->canonical_url === null || $page->isDirty('full_path')) {
+            $page->canonical_url = CanonicalResolver::resolve($page);
+        }
 
         // Auto-assign and validate schema_type
         $this->autoAssignSchema($page);
@@ -40,8 +46,8 @@ class PageObserver
             return;
         }
 
-        // Auto-assign based on page type
-        $schemaType = match ($page->type) {
+        // Auto-assign based on template_key
+        $schemaType = match ($page->template_key) {
             'service_global', 'service_county', 'service_town' => 'Service',
             'county_hub' => 'Place',
             'office' => 'HomeAndConstructionBusiness',
@@ -49,8 +55,8 @@ class PageObserver
             default => null,
         };
 
-        // Only set if not already set or if page type changed
-        if ($schemaType && ($page->schema_type === null || $page->isDirty('type'))) {
+        // Only set if not already set or if template changed
+        if ($schemaType && ($page->schema_type === null || $page->isDirty('template_key'))) {
             $page->schema_type = $schemaType;
         }
     }
@@ -122,11 +128,11 @@ class PageObserver
     {
         $validTypes = ['service_global', 'service_county', 'service_town'];
 
-        if (!in_array($page->type, $validTypes, true)) {
+        if (!in_array($page->template_key, $validTypes, true)) {
             throw new \Exception(
                 "Service schema should only be used on service pages " .
                 "(service_global, service_county, service_town). " .
-                "Current page type: {$page->type}"
+                "Current template_key: {$page->template_key}"
             );
         }
     }
@@ -138,11 +144,11 @@ class PageObserver
     {
         $validTypes = ['county_hub', 'service_county', 'service_town'];
 
-        if (!in_array($page->type, $validTypes, true)) {
+        if (!in_array($page->template_key, $validTypes, true)) {
             throw new \Exception(
                 "Place schema should only be used on location pages " .
                 "(county_hub, service_county, service_town). " .
-                "Current page type: {$page->type}"
+                "Current template_key: {$page->template_key}"
             );
         }
     }
@@ -161,7 +167,7 @@ class PageObserver
                     ['from_path' => $oldPath],
                     [
                         'to_path'     => $newPath,
-                        'status_code' => 301,
+                        'type' => '301',
                         'is_active'   => true,
                         'updated_by'  => $actorId,
                         'created_by'  => $page->created_by ?? $actorId,

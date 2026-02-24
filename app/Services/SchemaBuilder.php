@@ -6,15 +6,13 @@ use App\Models\Page;
 
 class SchemaBuilder
 {
-    private const SITE_URL = 'https://www.builtwellct.com';
     private const BUSINESS_NAME = 'BuiltWell';
     private const HIC_LICENSE = 'CT HIC #0668405';
-    private const LOGO_URL = 'https://www.builtwellct.com/images/builtwell-logo.png';
     private const ORANGE_PATH = '/new-haven-county/orange-ct/';
 
     private const OFFICE_ADDRESS = [
         '@type'           => 'PostalAddress',
-        'streetAddress'   => '477 S Orange Center Rd',
+        'streetAddress'   => '206A Boston Post Road',
         'addressLocality' => 'Orange',
         'addressRegion'   => 'CT',
         'postalCode'      => '06477',
@@ -22,14 +20,14 @@ class SchemaBuilder
     ];
 
     private const OPENING_HOURS = [
-        'Mo-Fr 08:00-18:00',
-        'Sa 09:00-14:00',
+        'Mo-Fr 08:00-17:00',
+        'Sa 08:00-15:00',
     ];
 
     private const GEO = [
         '@type'     => 'GeoCoordinates',
-        'latitude'  => 41.2782,
-        'longitude' => -73.0256,
+        'latitude'  => 41.2784,
+        'longitude' => -73.0257,
     ];
 
     private const AREA_SERVED = [
@@ -40,6 +38,16 @@ class SchemaBuilder
         'fairfield-county' => '+12039199616',
         'new-haven-county' => '+12034669148',
     ];
+
+    private static function siteUrl(): string
+    {
+        return rtrim(config('app.frontend_url', config('app.url')), '/');
+    }
+
+    private static function logoUrl(): string
+    {
+        return self::siteUrl() . '/images/logo.png';
+    }
 
     /**
      * Build the complete schema array for a page.
@@ -68,6 +76,11 @@ class SchemaBuilder
     {
         $template = $page->template_key;
         $path = rtrim($page->full_path ?? '', '/') . '/';
+
+        // Home page → Organization + WebSite
+        if ($template === 'home') {
+            return self::buildOrganization($page);
+        }
 
         // Orange office → HomeAndConstructionBusiness
         if ($path === self::ORANGE_PATH) {
@@ -102,14 +115,16 @@ class SchemaBuilder
      */
     private static function buildHomeAndConstructionBusiness(Page $page): array
     {
+        $siteUrl = self::siteUrl();
+
         $base = [
             '@context'    => 'https://schema.org',
             '@type'       => 'HomeAndConstructionBusiness',
-            '@id'         => self::SITE_URL . self::ORANGE_PATH . '#business',
+            '@id'         => $siteUrl . self::ORANGE_PATH . '#business',
             'name'        => self::BUSINESS_NAME,
-            'url'         => self::SITE_URL,
-            'logo'        => self::LOGO_URL,
-            'image'       => self::LOGO_URL,
+            'url'         => $siteUrl,
+            'logo'        => self::logoUrl(),
+            'image'       => self::logoUrl(),
             'description' => $page->seo_description ?: 'Licensed CT home remodeling contractor serving Fairfield and New Haven counties.',
             'telephone'   => self::PHONES['new-haven-county'],
             'address'     => self::OFFICE_ADDRESS,
@@ -133,6 +148,38 @@ class SchemaBuilder
     }
 
     /**
+     * Organization — home page only.
+     */
+    private static function buildOrganization(Page $page): array
+    {
+        $siteUrl = self::siteUrl();
+
+        return [
+            '@context'    => 'https://schema.org',
+            '@type'       => 'Organization',
+            '@id'         => $siteUrl . '/#organization',
+            'name'        => self::BUSINESS_NAME,
+            'url'         => $siteUrl,
+            'logo'        => self::logoUrl(),
+            'image'       => self::logoUrl(),
+            'description' => $page->seo_description ?: 'Licensed CT home remodeling contractor serving Fairfield and New Haven counties.',
+            'telephone'   => self::PHONES['new-haven-county'],
+            'address'     => self::OFFICE_ADDRESS,
+            'areaServed'  => self::AREA_SERVED,
+            'hasCredential' => [
+                '@type'              => 'EducationalOccupationalCredential',
+                'credentialCategory' => 'Home Improvement Contractor License',
+                'recognizedBy'       => [
+                    '@type' => 'GovernmentOrganization',
+                    'name'  => 'State of Connecticut',
+                ],
+                'name' => self::HIC_LICENSE,
+            ],
+            'sameAs' => [],
+        ];
+    }
+
+    /**
      * FAQPage — /faq/ ONLY.
      */
     private static function buildFaqPage(Page $page): array
@@ -143,7 +190,7 @@ class SchemaBuilder
             '@context'   => 'https://schema.org',
             '@type'      => 'FAQPage',
             'name'       => $page->seo_title ?: 'Frequently Asked Questions',
-            'url'        => self::SITE_URL . $page->full_path,
+            'url'        => CanonicalResolver::resolve($page),
             'mainEntity' => $faqItems,
         ];
 
@@ -155,6 +202,7 @@ class SchemaBuilder
      */
     private static function buildService(Page $page): array
     {
+        $siteUrl = self::siteUrl();
         $service = $page->service;
         $county  = $page->county;
         $town    = $page->town;
@@ -174,13 +222,13 @@ class SchemaBuilder
             '@context'    => 'https://schema.org',
             '@type'       => 'Service',
             'name'        => $name,
-            'url'         => self::SITE_URL . $page->full_path,
+            'url'         => CanonicalResolver::resolve($page),
             'description' => $page->seo_description ?: null,
             'provider'    => [
                 '@type'         => 'HomeAndConstructionBusiness',
-                '@id'           => self::SITE_URL . self::ORANGE_PATH . '#business',
+                '@id'           => $siteUrl . self::ORANGE_PATH . '#business',
                 'name'          => self::BUSINESS_NAME,
-                'url'           => self::SITE_URL,
+                'url'           => $siteUrl,
                 'telephone'     => self::resolvePhone($page),
                 'hasCredential' => [
                     '@type'              => 'EducationalOccupationalCredential',
@@ -277,13 +325,13 @@ class SchemaBuilder
                 '@type'     => 'OpeningHoursSpecification',
                 'dayOfWeek' => ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
                 'opens'     => '08:00',
-                'closes'    => '18:00',
+                'closes'    => '17:00',
             ],
             [
                 '@type'     => 'OpeningHoursSpecification',
                 'dayOfWeek' => ['Saturday'],
-                'opens'     => '09:00',
-                'closes'    => '14:00',
+                'opens'     => '08:00',
+                'closes'    => '15:00',
             ],
         ];
     }

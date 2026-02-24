@@ -15,17 +15,17 @@ class Edit extends Component
 
     public string $from_path = '';
     public string $to_path = '';
-    public int $status_code = 301;
+    public string $type = '301';
     public bool $is_active = true;
 
     public function mount(Redirect $redirect): void
     {
         $this->redirect = $redirect;
 
-        $this->from_path   = $redirect->from_path;
-        $this->to_path     = $redirect->to_path;
-        $this->status_code = (int) $redirect->status_code;
-        $this->is_active   = (bool) $redirect->is_active;
+        $this->from_path = $redirect->from_path;
+        $this->to_path   = $redirect->to_path;
+        $this->type      = $redirect->type ?? '301';
+        $this->is_active = (bool) $redirect->is_active;
     }
 
     protected function rules(): array
@@ -39,7 +39,7 @@ class Edit extends Component
                     ->ignore($this->redirect->id),
             ],
             'to_path' => ['required', 'string', 'max:2048'],
-            'status_code' => ['required', 'integer', 'in:301,302,307,308'],
+            'type' => ['required', 'string', 'in:301,302'],
             'is_active' => ['boolean'],
         ];
     }
@@ -55,7 +55,7 @@ class Edit extends Component
 
         $this->addError(
             'to_path',
-            'To path mora biti relativan path (/nešto) ili full URL (https://...).'
+            'To path must be a relative path (/something) or full URL (https://...).'
         );
 
         return false;
@@ -66,7 +66,7 @@ class Edit extends Component
         if ($this->from_path === $this->to_path) {
             $this->addError(
                 'to_path',
-                'To path ne može biti isti kao From path.'
+                'To path cannot be the same as From path.'
             );
             return false;
         }
@@ -80,7 +80,7 @@ class Edit extends Component
         if ($reverseExists) {
             $this->addError(
                 'to_path',
-                'Ovo pravi redirect loop (već postoji reverse redirect).'
+                'This would create a redirect loop (reverse redirect already exists).'
             );
             return false;
         }
@@ -88,7 +88,7 @@ class Edit extends Component
         if ($this->createsRedirectLoop()) {
             $this->addError(
                 'to_path',
-                'Ovo pravi redirect chain loop.'
+                'This would create a redirect chain loop.'
             );
             return false;
         }
@@ -136,7 +136,6 @@ class Edit extends Component
 
     public function save()
     {
-        // ✅ normalizacija (centralno)
         $this->from_path = RedirectPathNormalizer::from($this->from_path);
         $this->to_path   = RedirectPathNormalizer::to($this->to_path);
 
@@ -151,11 +150,10 @@ class Edit extends Component
         $this->validate();
 
         $this->redirect->update([
-            'from_path'   => $this->from_path,
-            'to_path'     => $this->to_path,
-            'status_code' => $this->status_code,
-            'is_active'   => $this->is_active,
-            'updated_by'  => auth()->id(),
+            'from_path' => $this->from_path,
+            'to_path'   => $this->to_path,
+            'type'      => $this->type,
+            'is_active' => $this->is_active,
         ]);
 
         return redirect()->route('admin.redirects.index');

@@ -12,17 +12,12 @@ class Redirect extends Model
     protected $fillable = [
         'from_path',
         'to_path',
-        'status_code',
+        'type',
         'is_active',
-        'hits',
-        'created_by',
-        'updated_by',
     ];
 
     protected $casts = [
         'is_active' => 'boolean',
-        'status_code' => 'integer',
-        'hits' => 'integer',
     ];
 
     public static function wouldCreateLoop(string $fromPath, string $toPath, ?int $ignoreId = null): bool

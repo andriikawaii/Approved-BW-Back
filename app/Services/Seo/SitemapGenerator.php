@@ -3,15 +3,14 @@
 namespace App\Services\Seo;
 
 use App\Models\Page;
+use App\Services\CanonicalResolver;
 
 class SitemapGenerator
 {
     public function generate(): string
     {
-        $frontUrl = rtrim(config('app.frontend_url', env('FRONTEND_URL', config('app.url'))), '/');
-
         $pages = Page::query()
-            ->select(['full_path', 'updated_at', 'canonical_url'])
+            ->select(['id', 'full_path', 'updated_at'])
             ->publicVisible()
             ->orderBy('full_path')
             ->get();
@@ -19,7 +18,7 @@ class SitemapGenerator
         $urls = [];
 
         foreach ($pages as $page) {
-            $loc = $page->canonical_url ?: $this->fullUrlFromPath($frontUrl, $page->full_path);
+            $loc = CanonicalResolver::resolve($page);
 
             $urls[] = [
                 'loc' => $loc,

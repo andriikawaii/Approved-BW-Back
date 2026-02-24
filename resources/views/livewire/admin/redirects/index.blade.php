@@ -54,11 +54,11 @@
                         <th class="px-4 py-3 text-left font-medium cursor-pointer" wire:click="setSort('to_path')">
                             To
                         </th>
-                        <th class="px-4 py-3 text-left font-medium cursor-pointer" wire:click="setSort('status_code')">
+                        <th class="px-4 py-3 text-left font-medium cursor-pointer" wire:click="setSort('type')">
                             Code
                         </th>
-                        <th class="px-4 py-3 text-left font-medium cursor-pointer" wire:click="setSort('hits')">
-                            Hits
+                        <th class="px-4 py-3 text-left font-medium">
+                            Created
                         </th>
                         <th class="px-4 py-3 text-left font-medium cursor-pointer" wire:click="setSort('is_active')">
                             Active
@@ -79,11 +79,11 @@
                             <td class="px-4 py-3">
                                 <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium
                                     bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300">
-                                    {{ $r->status_code }}
+                                    {{ $r->type }}
                                 </span>
                             </td>
                             <td class="px-4 py-3 text-gray-700 dark:text-zinc-200">
-                                {{ number_format($r->hits) }}
+                                {{ $r->created_at?->format('M j, Y') ?? '—' }}
                             </td>
                             <td class="px-4 py-3">
                                 <button

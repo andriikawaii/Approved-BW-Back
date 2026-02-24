@@ -10,21 +10,29 @@ class Edit extends Component
 {
     public Project $project;
 
-    public string $title;
-    public string $slug;
-    public string $location;
-    public string $status;
-    public string $excerpt;
+    public string $title = '';
+    public string $slug = '';
+    public string $excerpt = '';
+    public string $description = '';
+    public string $client = '';
+    public bool $is_published = false;
+    public ?string $completed_at = null;
+    public string $meta_title = '';
+    public string $meta_description = '';
 
     public function mount(Project $project)
     {
         $this->project = $project;
 
-        $this->title = $project->title;
-        $this->slug = $project->slug;
-        $this->location = $project->location ?? '';
-        $this->status = $project->status;
+        $this->title = $project->title ?? '';
+        $this->slug = $project->slug ?? '';
         $this->excerpt = $project->excerpt ?? '';
+        $this->description = $project->description ?? '';
+        $this->client = $project->client ?? '';
+        $this->is_published = (bool) $project->is_published;
+        $this->completed_at = $project->completed_at?->format('Y-m-d');
+        $this->meta_title = $project->meta_title ?? '';
+        $this->meta_description = $project->meta_description ?? '';
     }
 
     protected function rules(): array
@@ -33,11 +41,17 @@ class Edit extends Component
             'title' => 'required|string|max:255',
             'slug' => [
                 'required',
+                'string',
+                'max:255',
                 Rule::unique('projects', 'slug')->ignore($this->project->id),
             ],
-            'status' => 'required|in:draft,published',
             'excerpt' => 'nullable|string',
-            'location' => 'nullable|string|max:255',
+            'description' => 'nullable|string',
+            'client' => 'nullable|string|max:255',
+            'is_published' => 'boolean',
+            'completed_at' => 'nullable|date',
+            'meta_title' => 'nullable|string|max:255',
+            'meta_description' => 'nullable|string|max:500',
         ];
     }
 
@@ -48,11 +62,16 @@ class Edit extends Component
         $this->project->update([
             'title' => $this->title,
             'slug' => $this->slug,
-            'excerpt' => $this->excerpt,
-            'location' => $this->location,
-            'status' => $this->status,
-            'updated_by' => auth()->id(),
+            'excerpt' => $this->excerpt ?: null,
+            'description' => $this->description ?: null,
+            'client' => $this->client ?: null,
+            'is_published' => $this->is_published,
+            'completed_at' => $this->completed_at ?: null,
+            'meta_title' => $this->meta_title ?: null,
+            'meta_description' => $this->meta_description ?: null,
         ]);
+
+        session()->flash('success', 'Project updated.');
 
         return redirect()->route('admin.projects.index');
     }

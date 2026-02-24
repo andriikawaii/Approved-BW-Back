@@ -4,20 +4,23 @@ namespace Tests\Feature;
 
 use App\Models\Page;
 use App\Models\Section;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class PageApiContractTest extends TestCase
 {
-    use RefreshDatabase;
+    use DatabaseTransactions;
 
     public function test_live_page_api_returns_exact_contract_shape(): void
     {
+        $slug = 'test-' . Str::lower(Str::random(8));
+        $fullPath = '/' . $slug;
+
         $page = Page::create([
-            'full_path' => '/test',
-            'type' => 'service',
+            'full_path' => $fullPath,
             'template_key' => 'service-default',
             'status' => 'published',
             'published_at' => now()->subDay(),
@@ -33,23 +36,29 @@ class PageApiContractTest extends TestCase
             'is_active' => true,
         ]);
 
-        $response = $this->getJson('/api/pages/test');
+        $response = $this->getJson('/api/pages/' . $slug);
 
         $response->assertOk();
 
         $payload = $response->json();
 
         $this->assertExactKeys(
-            ['id', 'slug', 'template', 'seo', 'sections'],
+            ['id', 'slug', 'template', 'seo', 'phones', 'footer', 'breadcrumbs', 'schema', 'sections'],
             array_keys($payload)
         );
 
-        $this->assertExactKeys(['title', 'description'], array_keys($payload['seo']));
+        $this->assertExactKeys(['title', 'description', 'canonical'], array_keys($payload['seo']));
         $this->assertIsString($payload['seo']['title']);
         $this->assertIsString($payload['seo']['description']);
+        $this->assertIsString($payload['seo']['canonical']);
         $this->assertNotSame('', $payload['seo']['title']);
         $this->assertNotSame('', $payload['seo']['description']);
+        $this->assertStringContainsString('/' . $slug . '/', $payload['seo']['canonical']);
         $this->assertIsArray($payload['sections']);
+        $this->assertIsArray($payload['phones']);
+        $this->assertIsArray($payload['footer']);
+        $this->assertIsArray($payload['breadcrumbs']);
+        $this->assertIsArray($payload['schema']);
 
         $section = $payload['sections'][0];
         $this->assertExactKeys(['id', 'type', 'data', 'is_active'], array_keys($section));
@@ -57,9 +66,11 @@ class PageApiContractTest extends TestCase
 
     public function test_preview_page_api_returns_exact_contract_shape(): void
     {
+        $slug = 'preview-test-' . Str::lower(Str::random(8));
+        $fullPath = '/' . $slug;
+
         $page = Page::create([
-            'full_path' => '/preview-test',
-            'type' => 'service',
+            'full_path' => $fullPath,
             'template_key' => 'service-default',
             'status' => 'published',
             'published_at' => now()->subDay(),
@@ -75,7 +86,7 @@ class PageApiContractTest extends TestCase
             'is_active' => true,
         ]);
 
-        $url = URL::signedRoute('api.pages.preview', ['path' => 'preview-test']);
+        $url = URL::signedRoute('api.pages.preview', ['path' => $slug]);
         $response = $this->getJson($url);
 
         $response->assertOk();
@@ -83,16 +94,22 @@ class PageApiContractTest extends TestCase
         $payload = $response->json();
 
         $this->assertExactKeys(
-            ['id', 'slug', 'template', 'seo', 'sections'],
+            ['id', 'slug', 'template', 'seo', 'phones', 'footer', 'breadcrumbs', 'schema', 'sections'],
             array_keys($payload)
         );
 
-        $this->assertExactKeys(['title', 'description'], array_keys($payload['seo']));
+        $this->assertExactKeys(['title', 'description', 'canonical'], array_keys($payload['seo']));
         $this->assertIsString($payload['seo']['title']);
         $this->assertIsString($payload['seo']['description']);
+        $this->assertIsString($payload['seo']['canonical']);
         $this->assertNotSame('', $payload['seo']['title']);
         $this->assertNotSame('', $payload['seo']['description']);
+        $this->assertStringContainsString('/' . $slug . '/', $payload['seo']['canonical']);
         $this->assertIsArray($payload['sections']);
+        $this->assertIsArray($payload['phones']);
+        $this->assertIsArray($payload['footer']);
+        $this->assertIsArray($payload['breadcrumbs']);
+        $this->assertIsArray($payload['schema']);
 
         $section = $payload['sections'][0];
         $this->assertExactKeys(['id', 'type', 'data', 'is_active'], array_keys($section));
@@ -100,40 +117,43 @@ class PageApiContractTest extends TestCase
 
     public function test_live_page_api_enforces_visibility_rules(): void
     {
+        $futureSlug = 'future-' . Str::lower(Str::random(8));
+        $draftSlug = 'draft-' . Str::lower(Str::random(8));
+
         Page::create([
-            'full_path' => '/future',
-            'type' => 'service',
+            'full_path' => '/' . $futureSlug,
             'template_key' => 'service-default',
             'status' => 'published',
             'published_at' => now()->addDay(),
         ]);
 
         Page::create([
-            'full_path' => '/draft',
-            'type' => 'service',
+            'full_path' => '/' . $draftSlug,
             'template_key' => 'service-default',
             'status' => 'draft',
             'published_at' => null,
         ]);
 
-        $this->getJson('/api/pages/future')->assertNotFound();
-        $this->getJson('/api/pages/draft')->assertNotFound();
+        $this->getJson('/api/pages/' . $futureSlug)->assertNotFound();
+        $this->getJson('/api/pages/' . $draftSlug)->assertNotFound();
     }
 
     public function test_preview_page_api_returns_draft_and_is_never_cached(): void
     {
+        $slug = 'draft-preview-' . Str::lower(Str::random(8));
+        $fullPath = '/' . $slug;
+
         Page::create([
-            'full_path' => '/draft-preview',
-            'type' => 'service',
+            'full_path' => $fullPath,
             'template_key' => 'service-default',
             'status' => 'draft',
             'published_at' => null,
         ]);
 
-        $cacheKey = 'page_api:' . md5('/draft-preview');
+        $cacheKey = 'page_api:' . md5($fullPath);
         Cache::forget($cacheKey);
 
-        $url = URL::signedRoute('api.pages.preview', ['path' => 'draft-preview']);
+        $url = URL::signedRoute('api.pages.preview', ['path' => $slug]);
         $this->getJson($url)->assertOk();
 
         $this->assertFalse(Cache::has($cacheKey));

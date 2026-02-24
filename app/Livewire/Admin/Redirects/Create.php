@@ -13,7 +13,7 @@ class Create extends Component
 
     public string $from_path = '';
     public string $to_path = '';
-    public int $status_code = 301;
+    public string $type = '301';
     public bool $is_active = true;
 
     protected function rules(): array
@@ -26,7 +26,7 @@ class Create extends Component
                 Rule::unique('redirects', 'from_path'),
             ],
             'to_path' => ['required', 'string', 'max:2048'],
-            'status_code' => ['required', 'integer', 'in:301,302,307,308'],
+            'type' => ['required', 'string', 'in:301,302'],
             'is_active' => ['boolean'],
         ];
     }
@@ -42,7 +42,7 @@ class Create extends Component
 
         $this->addError(
             'to_path',
-            'To path mora biti relativan path (/nešto) ili full URL (https://...).'
+            'To path must be a relative path (/something) or full URL (https://...).'
         );
 
         return false;
@@ -53,7 +53,7 @@ class Create extends Component
         if ($this->from_path === $this->to_path) {
             $this->addError(
                 'to_path',
-                'To path ne može biti isti kao From path.'
+                'To path cannot be the same as From path.'
             );
             return false;
         }
@@ -66,7 +66,7 @@ class Create extends Component
         if ($reverseExists) {
             $this->addError(
                 'to_path',
-                'Ovo pravi redirect loop (već postoji reverse redirect).'
+                'This would create a redirect loop (reverse redirect already exists).'
             );
             return false;
         }
@@ -74,7 +74,7 @@ class Create extends Component
         if ($this->createsRedirectLoop()) {
             $this->addError(
                 'to_path',
-                'Ovo pravi redirect chain loop.'
+                'This would create a redirect chain loop.'
             );
             return false;
         }
@@ -121,7 +121,6 @@ class Create extends Component
 
     public function save()
     {
-        // ✅ normalizacija (centralno)
         $this->from_path = RedirectPathNormalizer::from($this->from_path);
         $this->to_path   = RedirectPathNormalizer::to($this->to_path);
 
@@ -136,13 +135,10 @@ class Create extends Component
         $this->validate();
 
         Redirect::create([
-            'from_path'   => $this->from_path,
-            'to_path'     => $this->to_path,
-            'status_code' => $this->status_code,
-            'is_active'   => $this->is_active,
-            'hits'        => 0,
-            'created_by'  => auth()->id(),
-            'updated_by'  => auth()->id(),
+            'from_path' => $this->from_path,
+            'to_path'   => $this->to_path,
+            'type'      => $this->type,
+            'is_active' => $this->is_active,
         ]);
 
         return redirect()->route('admin.redirects.index');

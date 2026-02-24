@@ -10,18 +10,26 @@ class Create extends Component
 {
     public string $title = '';
     public string $slug = '';
-    public string $location = '';
-    public string $status = 'draft';
     public string $excerpt = '';
+    public string $description = '';
+    public string $client = '';
+    public bool $is_published = false;
+    public ?string $completed_at = null;
+    public string $meta_title = '';
+    public string $meta_description = '';
 
     protected function rules(): array
     {
         return [
             'title' => 'required|string|max:255',
-            'slug' => 'required|unique:projects,slug',
-            'status' => 'required|in:draft,published',
+            'slug' => 'required|string|max:255|unique:projects,slug',
             'excerpt' => 'nullable|string',
-            'location' => 'nullable|string|max:255',
+            'description' => 'nullable|string',
+            'client' => 'nullable|string|max:255',
+            'is_published' => 'boolean',
+            'completed_at' => 'nullable|date',
+            'meta_title' => 'nullable|string|max:255',
+            'meta_description' => 'nullable|string|max:500',
         ];
     }
 
@@ -37,11 +45,13 @@ class Create extends Component
         Project::create([
             'title' => $this->title,
             'slug' => $this->slug,
-            'excerpt' => $this->excerpt,
-            'location' => $this->location,
-            'status' => $this->status,
-            'created_by' => auth()->id(),
-            'updated_by' => auth()->id(),
+            'excerpt' => $this->excerpt ?: null,
+            'description' => $this->description ?: null,
+            'client' => $this->client ?: null,
+            'is_published' => $this->is_published,
+            'completed_at' => $this->completed_at ?: null,
+            'meta_title' => $this->meta_title ?: null,
+            'meta_description' => $this->meta_description ?: null,
         ]);
 
         return redirect()->route('admin.projects.index');

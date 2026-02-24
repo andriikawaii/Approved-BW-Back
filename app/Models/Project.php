@@ -3,55 +3,46 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Project extends Model
 {
+    use LogsActivity;
+
     protected $fillable = [
         'title',
         'slug',
         'excerpt',
-        'content',
-        'location',
+        'description',
+        'client',
         'completed_at',
-        'status',
-        'featured_media_asset_id',
-        'created_by',
-        'updated_by',
+        'is_published',
+        'meta_title',
+        'meta_description',
     ];
 
     protected $casts = [
-        'content' => 'array',
         'completed_at' => 'date',
+        'is_published' => 'boolean',
     ];
 
-    /**
-     * Glavna slika projekta
-     */
-    public function featuredMedia(): BelongsTo
+    public function getActivitylogOptions(): LogOptions
     {
-        return $this->belongsTo(MediaAsset::class, 'featured_media_asset_id');
+        return LogOptions::defaults()
+            ->logOnly(['title', 'slug', 'is_published'])
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
     }
 
-    /**
-     * Projekat može biti vezan za više servisa
-     */
     public function services(): BelongsToMany
     {
         return $this->belongsToMany(Service::class, 'project_service');
     }
 
-    /**
-     * Audit
-     */
-    public function creator(): BelongsTo
+    public function scopePublished($query)
     {
-        return $this->belongsTo(User::class, 'created_by');
-    }
-
-    public function editor(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'updated_by');
+        return $query->where('is_published', true);
     }
 }

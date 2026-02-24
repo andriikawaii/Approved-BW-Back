@@ -14,7 +14,7 @@ class FooterTemplateResolver
     ];
 
     private const OFFICE_ADDRESS = [
-        'street'  => '477 S Orange Center Rd',
+        'street'  => '206A Boston Post Road',
         'city'    => 'Orange',
         'state'   => 'CT',
         'zip'     => '06477',
@@ -22,8 +22,8 @@ class FooterTemplateResolver
     ];
 
     private const OFFICE_HOURS = [
-        'Mon–Fri' => '8:00 AM – 6:00 PM',
-        'Sat'     => '9:00 AM – 2:00 PM',
+        'Mon–Fri' => '8:00 AM – 5:00 PM',
+        'Sat'     => '8:00 AM – 3:00 PM',
         'Sun'     => 'Closed',
     ];
 

@@ -150,19 +150,6 @@
 
     <flux:spacer />
 
-    {{-- ================= FOOTER LINKS ================= --}}
-    <flux:sidebar.nav>
-        <flux:sidebar.item icon="globe-alt" href="{{ config('app.frontend_url', '/') }}" target="_blank">
-            View Website
-        </flux:sidebar.item>
-
-        @role('super_admin')
-        <flux:sidebar.item icon="folder-git-2" href="https://github.com/petar2020/builtwell-backend" target="_blank">
-            Repository
-        </flux:sidebar.item>
-        @endrole
-    </flux:sidebar.nav>
-
     {{-- ================= THEME TOGGLE ================= --}}
     <div class="border-t border-edge px-4 py-3" x-data="{ current: localStorage.getItem('flux.appearance') || 'system' }">
         <div class="flex items-center rounded-lg bg-surface-alt p-1">

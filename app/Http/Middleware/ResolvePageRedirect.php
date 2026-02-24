@@ -47,10 +47,24 @@ class ResolvePageRedirect
             return redirect()->away($redirect->to_path, (int) ($redirect->type ?? 301));
         }
 
-        // 🧠 internal path redirect (API-friendly)
-        return redirect(
-            '/api/pages/' . ltrim($normalizedTo, '/'),
-            (int) ($redirect->type ?? 301)
+        // Internal path: return JSON with redirect target so frontend can handle it
+        $statusCode = (int) ($redirect->type ?? 301);
+        $targetPath = '/' . ltrim($normalizedTo, '/');
+
+        if ($request->expectsJson() || $request->is('api/*')) {
+            return response()->json([
+                'redirect' => true,
+                'status'   => $statusCode,
+                'location' => $targetPath,
+            ], $statusCode, ['Location' => $targetPath]);
+        }
+
+        // Non-API request: redirect to the frontend path directly
+        $frontendUrl = rtrim(config('app.frontend_url', config('app.url')), '/');
+
+        return redirect()->away(
+            $frontendUrl . $targetPath,
+            $statusCode,
         );
     }
 

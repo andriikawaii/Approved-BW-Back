@@ -6,7 +6,6 @@ use App\Models\Page;
 
 class BreadcrumbBuilder
 {
-    private const SITE_URL = 'https://www.builtwellct.com';
 
     /**
      * Build breadcrumb trail and BreadcrumbList JSON-LD for a page.
@@ -67,18 +66,18 @@ class BreadcrumbBuilder
             return $trail;
         }
 
-        // Service town: Home > County > Service in County > Town
+        // Service town: Home > County Hub > Global Service > Current Page
         if ($template === 'service_town') {
             if ($county) {
                 $trail[] = self::crumb($county->name, '/' . $county->slug . '/');
             }
-            if ($service && $county) {
-                $trail[] = self::crumb(
-                    $service->name . ' in ' . $county->name,
-                    '/' . $county->slug . '/' . $service->slug . '/',
-                );
+            if ($service) {
+                $trail[] = self::crumb($service->name, '/' . $service->slug . '/');
             }
-            $trail[] = self::crumb($town?->name ?? 'Town', $page->full_path);
+            $trail[] = self::crumb(
+                ($service?->name ?? 'Service') . ' in ' . ($town?->name ?? 'Town'),
+                $page->full_path,
+            );
             return $trail;
         }
 
@@ -94,8 +93,17 @@ class BreadcrumbBuilder
     {
         return [
             'label' => $label,
-            'url'   => $path,
+            'url'   => self::trailingSlash($path),
         ];
+    }
+
+    private static function trailingSlash(string $path): string
+    {
+        if ($path === '/' || $path === '') {
+            return '/';
+        }
+
+        return rtrim($path, '/') . '/';
     }
 
     /**
@@ -128,7 +136,7 @@ class BreadcrumbBuilder
                 '@type'    => 'ListItem',
                 'position' => $i + 1,
                 'name'     => $crumb['label'],
-                'item'     => self::SITE_URL . $crumb['url'],
+                'item'     => rtrim(config('app.frontend_url', config('app.url')), '/') . $crumb['url'],
             ];
         }
 

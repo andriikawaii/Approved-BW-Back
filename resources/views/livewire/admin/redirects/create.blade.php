@@ -5,7 +5,7 @@
             <div>
                 <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Create Redirect</h1>
                 <p class="text-sm text-gray-500 dark:text-zinc-400 mt-1">
-                    From path mora biti relativan path. To može biti path ili full URL.
+                    From path must be a relative path. To can be a path or full URL.
                 </p>
             </div>
 
@@ -34,7 +34,7 @@
                     <input
                         type="text"
                         wire:model.defer="to_path"
-                        placeholder="/new-path ili https://example.com/new-path"
+                        placeholder="/new-path or https://example.com/new-path"
                         class="w-full rounded-lg border border-gray-300 dark:border-zinc-600 bg-white dark:bg-zinc-700
                                px-4 py-2.5 text-sm text-gray-900 dark:text-white"
                     />
@@ -43,18 +43,16 @@
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-zinc-200 mb-1">Status code</label>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-zinc-200 mb-1">Type</label>
                         <select
-                            wire:model.defer="status_code"
+                            wire:model.defer="type"
                             class="w-full rounded-lg border border-gray-300 dark:border-zinc-600 bg-white dark:bg-zinc-700
                                    px-4 py-2.5 text-sm text-gray-900 dark:text-white"
                         >
-                            <option value="301">301</option>
-                            <option value="302">302</option>
-                            <option value="307">307</option>
-                            <option value="308">308</option>
+                            <option value="301">301 (Permanent)</option>
+                            <option value="302">302 (Temporary)</option>
                         </select>
-                        @error('status_code') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
+                        @error('type') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
                     </div>
 
                     <div class="flex items-end">
