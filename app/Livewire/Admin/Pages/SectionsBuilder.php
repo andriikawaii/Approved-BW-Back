@@ -15,6 +15,16 @@ use Livewire\Component;
 
 class SectionsBuilder extends Component
 {
+    private const FEATURE_LIST_TWO_COLUMN_DEFAULT_BULLETS = [
+        'Structural Integrity Guarantee',
+        'Material Defect Coverage Assistance',
+        'Workmanship Quality Assurance',
+        'Post-Completion Support',
+        'Transparent Warranty Documentation',
+        'Annual Maintenance Check-ins',
+        'Priority Service Scheduling',
+    ];
+
     private const SEO_RELEVANT_TYPES = [
         'hero',
         'hero_slider',
@@ -66,7 +76,7 @@ class SectionsBuilder extends Component
             ->map(fn (Section $s) => [
                 'id'        => $s->id,
                 'type'      => $s->type,
-                'data'      => $s->data ?? [],
+                'data'      => $this->normalizeSectionData($s->type, $s->data ?? []),
                 'is_active' => (bool) $s->is_active,
             ])
             ->toArray();
@@ -369,6 +379,15 @@ class SectionsBuilder extends Component
     public function save(): void
     {
         // ✅ SECURITY: Validate required sections exist and are active
+        $this->sections = array_map(function (array $section): array {
+            $section['data'] = $this->normalizeSectionData(
+                (string) ($section['type'] ?? ''),
+                $section['data'] ?? []
+            );
+
+            return $section;
+        }, $this->sections);
+
         $required = config("page-template-sections.{$this->page->template_key}.required", []);
 
         if (!empty($required)) {
@@ -504,5 +523,46 @@ class SectionsBuilder extends Component
             'seoRelevantTypes' => self::SEO_RELEVANT_TYPES,
             'mediaItems'      => $mediaItems,
         ]);
+    }
+
+    private function normalizeSectionData(string $type, mixed $data): array
+    {
+        if (! is_array($data)) {
+            $data = [];
+        }
+
+        if ($type === 'feature_list_two_column') {
+            $data = $this->ensureFeatureListTwoColumnBullets($data);
+        }
+
+        return $data;
+    }
+
+    private function ensureFeatureListTwoColumnBullets(array $data): array
+    {
+        $bullets = $data['right_bullets'] ?? [];
+
+        if (! is_array($bullets)) {
+            $bullets = [];
+        }
+
+        $bullets = array_values(array_filter(array_map(
+            static fn ($item) => is_string($item) ? trim($item) : '',
+            $bullets
+        )));
+
+        foreach (self::FEATURE_LIST_TWO_COLUMN_DEFAULT_BULLETS as $defaultBullet) {
+            if (count($bullets) >= count(self::FEATURE_LIST_TWO_COLUMN_DEFAULT_BULLETS)) {
+                break;
+            }
+
+            if (! in_array($defaultBullet, $bullets, true)) {
+                $bullets[] = $defaultBullet;
+            }
+        }
+
+        $data['right_bullets'] = $bullets;
+
+        return $data;
     }
 }

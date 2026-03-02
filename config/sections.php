@@ -300,6 +300,7 @@ return [
             'label' => 'Project Highlights',
             'description' => 'Mini case studies / transformations list.',
             'schema' => [
+                'eyebrow' => 'nullable|string|max:60',
                 'title' => 'nullable|string|max:120',
                 'items' => 'required|array|min:1',
                 'items.*.title' => 'required|string|max:120',
@@ -309,6 +310,7 @@ return [
                 'items.*.tag' => 'nullable|string|max:40',
             ],
             'defaults' => [
+                'eyebrow' => 'Recent Projects',
                 'title' => 'Real Transformations',
                 'items' => [
                     ['title' => '', 'description' => null, 'image' => null, 'url' => null, 'tag' => null],
@@ -368,24 +370,43 @@ return [
             'schema' => [
                 'eyebrow' => 'nullable|string|max:60',
                 'title' => 'nullable|string|max:160',
+                'left_paragraph' => 'nullable|string|max:500',
 
                 'left_features' => 'required|array|min:1',
                 'left_features.*.title' => 'required|string|max:80',
                 'left_features.*.description' => 'required|string|max:400',
 
+                'right_title' => 'nullable|string|max:120',
                 'right_bullets' => 'nullable|array',
                 'right_bullets.*' => 'required_with:right_bullets|string|max:120',
 
                 'closing_quote' => 'nullable|string|max:500',
             ],
             'defaults' => [
-                'eyebrow' => null,
-                'title' => null,
+                'eyebrow' => 'Peace of Mind Guarantee',
+                'title' => 'Our Solid Warranty Promise',
+                'left_paragraph' => "We don't just build it right; we stand behind it. Every project comes with our comprehensive workmanship guarantee, ensuring your investment is protected long after we leave the job site.",
                 'left_features' => [
-                    ['title' => '', 'description' => ''],
+                    [
+                        'title' => 'Superior Craftsmanship',
+                        'description' => 'Built to code and beyond, using only premium materials.',
+                    ],
+                    [
+                        'title' => 'Long-Term Protection',
+                        'description' => 'Issues related to our work? We fix them. No questions asked.',
+                    ],
                 ],
-                'right_bullets' => [],
-                'closing_quote' => null,
+                'right_title' => "What's Included",
+                'right_bullets' => [
+                    'Structural Integrity Guarantee',
+                    'Material Defect Coverage Assistance',
+                    'Workmanship Quality Assurance',
+                    'Post-Completion Support',
+                    'Transparent Warranty Documentation',
+                    'Annual Maintenance Check-ins',
+                    'Priority Service Scheduling',
+                ],
+                'closing_quote' => "We build it like it's our own home. That's the BuiltWell standard.",
             ],
         ],
 
