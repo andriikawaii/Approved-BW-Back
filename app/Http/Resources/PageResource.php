@@ -6,6 +6,7 @@ use App\Services\BreadcrumbBuilder;
 use App\Services\CanonicalResolver;
 use App\Services\FooterTemplateResolver;
 use App\Services\PhoneResolver;
+use App\Services\MediaUrlResolver;
 use App\Services\SchemaBuilder;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -67,7 +68,7 @@ class PageResource extends JsonResource
                     return [
                         'id' => $section->id,
                         'type' => $section->type,
-                        'data' => $data,
+                        'data' => MediaUrlResolver::resolveSection($data),
                         'is_active' => (bool) $section->is_active,
                     ];
                 })

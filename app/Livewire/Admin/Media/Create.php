@@ -18,7 +18,7 @@ class Create extends Component
     protected $rules = [
         'file' => 'required|file|max:10240', // 10MB
         'title' => 'nullable|string|max:255',
-        'alt_text' => 'nullable|string|max:255',
+        'alt_text' => 'required|string|max:255',
     ];
 
     public function save()

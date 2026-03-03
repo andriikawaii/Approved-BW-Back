@@ -1,0 +1,81 @@
+<?php
+
+namespace App\Services;
+
+use Illuminate\Support\Facades\Storage;
+
+/**
+ * Resolves raw media file paths into absolute public URLs.
+ *
+ * Single source of truth for all media URL generation.
+ * When switching to CDN, only this class needs to change.
+ */
+class MediaUrlResolver
+{
+    /**
+     * Known image/media field names in section data.
+     * Any key matching these names will be resolved to a full URL.
+     */
+    private const MEDIA_FIELDS = [
+        'background_image',
+        'background_video',
+        'image',
+        'image_main',
+        'image_secondary',
+        'logo',
+        'avatar',
+        'before_image',
+        'after_image',
+        'cover_image',
+        'office_image',
+    ];
+
+    /**
+     * Convert a single file_path to an absolute public URL.
+     */
+    public static function url(?string $path): ?string
+    {
+        if (! $path) {
+            return null;
+        }
+
+        // Already a full URL (e.g. external link)
+        if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) {
+            return $path;
+        }
+
+        $storageUrl = Storage::disk('public')->url($path);
+
+        // Storage::url() may return relative path — ensure absolute
+        if (str_starts_with($storageUrl, '/')) {
+            return rtrim(config('app.url'), '/') . $storageUrl;
+        }
+
+        return $storageUrl;
+    }
+
+    /**
+     * Walk through section data and resolve all media fields to absolute URLs.
+     */
+    public static function resolveSection(array|object $data): array
+    {
+        if (is_object($data)) {
+            $data = (array) $data;
+        }
+
+        return self::walk($data);
+    }
+
+    private static function walk(array $data): array
+    {
+        foreach ($data as $key => &$value) {
+            if (is_array($value)) {
+                $value = self::walk($value);
+            } elseif (is_string($value) && in_array($key, self::MEDIA_FIELDS, true)) {
+                $value = self::url($value);
+            }
+        }
+
+        return $data;
+    }
+}

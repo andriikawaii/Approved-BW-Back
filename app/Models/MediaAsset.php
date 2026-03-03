@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use App\Services\MediaUrlResolver;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Facades\Storage;
 
 class MediaAsset extends Model
 {
@@ -23,7 +23,7 @@ class MediaAsset extends Model
 
     public function getUrlAttribute(): string
     {
-        return Storage::url($this->file_path);
+        return MediaUrlResolver::url($this->file_path) ?? '';
     }
 
     public function isImage(): bool
@@ -34,6 +34,6 @@ class MediaAsset extends Model
 
     public function pages(): HasMany
     {
-        return $this->hasMany(Page::class, 'hero_media_asset_id');
+        return $this->hasMany(Page::class, 'hero_media_id');
     }
 }
