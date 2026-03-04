@@ -1348,6 +1348,131 @@ return [
             ],
         ],
 
+        // ---------------------------------------------------------------------
+        // PORTFOLIO
+        // ---------------------------------------------------------------------
+
+        'project_category_filter' => [
+            'type' => 'project_category_filter',
+            'label' => 'Project Category Filter',
+            'description' => 'Filter navigation bar for portfolio projects (e.g. All | Kitchen | Bathroom).',
+            'schema' => [
+                'filters' => 'required|array|min:1',
+                'filters.*.label' => 'required|string|max:40',
+                'filters.*.value' => 'required|string|max:40',
+                'default' => 'nullable|string|max:40',
+            ],
+            'defaults' => [
+                'filters' => [
+                    ['label' => 'All', 'value' => 'all'],
+                    ['label' => 'Kitchen', 'value' => 'kitchen'],
+                    ['label' => 'Bathroom', 'value' => 'bathroom'],
+                    ['label' => 'Basement', 'value' => 'basement'],
+                    ['label' => 'Flooring', 'value' => 'flooring'],
+                ],
+                'default' => 'all',
+            ],
+        ],
+
+        'projects_masonry_grid' => [
+            'type' => 'projects_masonry_grid',
+            'label' => 'Projects Masonry Grid',
+            'description' => 'Portfolio project grid grouped by category with images, scope descriptions, and case study links.',
+            'schema' => [
+                'categories' => 'required|array|min:1',
+                'categories.*.title' => 'required|string|max:120',
+                'categories.*.category' => 'required|string|max:40',
+                'categories.*.projects' => 'required|array|min:1',
+                'categories.*.projects.*.title' => 'required|string|max:160',
+                'categories.*.projects.*.featured' => 'nullable|boolean',
+                'categories.*.projects.*.scope' => 'required|string',
+                'categories.*.projects.*.case_study' => 'nullable|string|max:255',
+                'categories.*.projects.*.image' => 'nullable|string|max:255',
+                'categories.*.projects.*.image_alt' => 'nullable|string|max:255',
+                'categories.*.see_all_link' => 'nullable|string|max:255',
+                'categories.*.see_all_label' => 'nullable|string|max:80',
+            ],
+            'defaults' => [
+                'categories' => [
+                    [
+                        'title' => 'Kitchen Remodeling Projects',
+                        'category' => 'kitchen',
+                        'projects' => [
+                            ['title' => '', 'featured' => false, 'scope' => '', 'case_study' => null, 'image' => null, 'image_alt' => null],
+                        ],
+                        'see_all_link' => null,
+                        'see_all_label' => null,
+                    ],
+                ],
+            ],
+        ],
+
+        'case_study_highlight' => [
+            'type' => 'case_study_highlight',
+            'label' => 'Case Study Highlight',
+            'description' => 'Featured case studies showcase section.',
+            'schema' => [
+                'title' => 'nullable|string|max:120',
+                'subtitle' => 'nullable|string|max:255',
+                'items' => 'required|array|min:1',
+                'items.*.title' => 'required|string|max:160',
+                'items.*.summary' => 'nullable|string|max:400',
+                'items.*.image' => 'nullable|string|max:255',
+                'items.*.url' => 'required|string|max:255',
+            ],
+            'defaults' => [
+                'title' => 'Featured Case Studies',
+                'subtitle' => null,
+                'items' => [
+                    ['title' => '', 'summary' => null, 'image' => null, 'url' => ''],
+                ],
+            ],
+        ],
+
+        'stats_bar' => [
+            'type' => 'stats_bar',
+            'label' => 'Stats Bar',
+            'description' => 'Horizontal bar with key statistics.',
+            'schema' => [
+                'items' => 'required|array|min:1|max:6',
+                'items.*.value' => 'required|string|max:20',
+                'items.*.label' => 'required|string|max:60',
+                'items.*.icon' => 'nullable|string|max:60',
+                'variant' => 'nullable|in:default,light,dark',
+            ],
+            'defaults' => [
+                'items' => [
+                    ['value' => '500+', 'label' => 'Projects Completed', 'icon' => 'check'],
+                    ['value' => '15+', 'label' => 'Years Experience', 'icon' => 'clock'],
+                    ['value' => '100%', 'label' => 'Satisfaction', 'icon' => 'star'],
+                ],
+                'variant' => 'default',
+            ],
+        ],
+
+        'cta_dark_band' => [
+            'type' => 'cta_dark_band',
+            'label' => 'CTA Dark Band',
+            'description' => 'Full-width dark background CTA section.',
+            'schema' => [
+                'title' => 'required|string|max:140',
+                'subtitle' => 'nullable|string|max:255',
+                'button' => 'required|array',
+                'button.label' => 'required|string|max:50',
+                'button.url' => 'required|string|max:255',
+                'subtext' => 'nullable|string|max:80',
+            ],
+            'defaults' => [
+                'title' => 'Ready to Start Your Project?',
+                'subtitle' => null,
+                'button' => [
+                    'label' => 'Schedule a Free Consultation',
+                    'url' => '/free-consultation/',
+                ],
+                'subtext' => 'On-site or remote (Google Meet or Zoom)',
+            ],
+        ],
+
     ],
 
 ];
