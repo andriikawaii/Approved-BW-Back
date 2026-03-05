@@ -129,6 +129,11 @@ return [
 
                 'align' => 'nullable|in:left,center,right',
                 'variant' => 'nullable|in:default,light,dark',
+                'style_variant' => 'nullable|in:default,legal,faq,process,cards,links',
+                'surface' => 'nullable|in:default,light,dark,white',
+                'container_width' => 'nullable|in:narrow,default,wide',
+                'spacing' => 'nullable|in:compact,normal,relaxed',
+                'anchor_id' => 'nullable|regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/|max:80',
             ],
             'defaults' => [
                 'eyebrow' => null,
@@ -140,6 +145,11 @@ return [
                 'cta' => ['label' => '', 'url' => ''],
                 'align' => 'left',
                 'variant' => 'default',
+                'style_variant' => 'default',
+                'surface' => 'default',
+                'container_width' => 'default',
+                'spacing' => 'normal',
+                'anchor_id' => null,
             ],
         ],
 
