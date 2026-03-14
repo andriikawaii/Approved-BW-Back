@@ -44,6 +44,14 @@ class MediaUrlResolver
             return $path;
         }
 
+        // Many BuiltWell assets are stored directly under public/, not storage/app/public.
+        $publicRelativePath = ltrim($path, '/');
+        $publicAbsolutePath = public_path($publicRelativePath);
+
+        if (file_exists($publicAbsolutePath)) {
+            return rtrim(config('app.url'), '/') . '/' . str_replace('\\', '/', $publicRelativePath);
+        }
+
         $storageUrl = Storage::disk('public')->url($path);
 
         // Storage::url() may return relative path — ensure absolute

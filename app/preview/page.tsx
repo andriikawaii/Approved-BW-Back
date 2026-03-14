@@ -12,8 +12,6 @@ export default async function PreviewPage({ searchParams }: any) {
 
     const page = await res.json();
 
-    // ovde koristiš tvoj postojeći renderer koji renderuje sections[] po type
-    // npr: <PageRenderer page={page} />
     return (
         <div style={{ padding: 24 }}>
             <pre style={{ whiteSpace: "pre-wrap" }}>{JSON.stringify(page, null, 2)}</pre>
