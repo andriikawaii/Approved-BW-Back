@@ -5,34 +5,27 @@ namespace App\Livewire\Admin\Media;
 use App\Models\MediaAsset;
 use Livewire\Component;
 use Livewire\WithFileUploads;
-use Livewire\TemporaryUploadedFile;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class Create extends Component
 {
     use WithFileUploads;
 
     /** @var TemporaryUploadedFile[] */
-    public $files = [];
+    public $photos = [];
 
     /** @var array<int, string> */
     public $altTexts = [];
 
-    protected function rules(): array
+    public function updatedPhotos(): void
     {
-        return [
-            'files' => 'required|array|min:1',
-            'files.*' => 'file|max:10240|mimes:jpg,jpeg,png,gif,pdf,doc,docx,mp4,mov,avi,webm',
-            'altTexts.*' => 'nullable|string|max:255',
-        ];
-    }
+        $this->validate([
+            'photos.*' => 'file|max:102400',
+        ]);
 
-    public function updatedFiles(): void
-    {
-        $this->validateOnly('files.*');
-
-        // Generate alt texts for newly added files
-        foreach ($this->files as $index => $file) {
-            if ($file instanceof TemporaryUploadedFile && !isset($this->altTexts[$index])) {
+        // Generate alt texts for each new file
+        foreach ($this->photos as $index => $file) {
+            if (!isset($this->altTexts[$index])) {
                 $this->altTexts[$index] = self::generateAltFromFilename($file->getClientOriginalName());
             }
         }
@@ -40,13 +33,9 @@ class Create extends Component
 
     public static function generateAltFromFilename(string $filename): string
     {
-        // Remove extension
         $name = pathinfo($filename, PATHINFO_FILENAME);
-        // Replace dashes and underscores with spaces
         $name = str_replace(['-', '_'], ' ', $name);
-        // Trim excess whitespace
         $name = preg_replace('/\s+/', ' ', trim($name));
-        // Capitalize first letter
         $name = ucfirst($name);
 
         return $name;
@@ -54,51 +43,88 @@ class Create extends Component
 
     public function removeFile(int $index): void
     {
-        unset($this->files[$index]);
-        unset($this->altTexts[$index]);
-        $this->files = array_values($this->files);
-        $this->altTexts = array_values($this->altTexts);
+        $photos = collect($this->photos)->values()->all();
+        $alts = collect($this->altTexts)->values()->all();
+
+        unset($photos[$index]);
+        unset($alts[$index]);
+
+        $this->photos = array_values($photos);
+        $this->altTexts = array_values($alts);
     }
 
     public function save()
     {
-        $this->validate();
+        \Log::info('Media upload save() called', [
+            'photos_count' => count($this->photos),
+            'photos_types' => array_map(fn($f) => get_class($f), $this->photos),
+            'altTexts' => $this->altTexts,
+        ]);
 
-        foreach ($this->files as $index => $file) {
+        if (empty($this->photos)) {
+            $this->addError('photos', 'Please select at least one file.');
+            return;
+        }
+
+        $count = 0;
+
+        foreach ($this->photos as $index => $file) {
             if (!$file instanceof TemporaryUploadedFile) {
+                \Log::warning('Media upload: file at index ' . $index . ' is not TemporaryUploadedFile, type: ' . get_class($file));
                 continue;
             }
 
-            $path = $file->store('media', 'public');
-            $alt = trim($this->altTexts[$index] ?? '');
+            try {
+                $path = $file->store('media', 'public');
+                \Log::info('Media upload: stored file at ' . $path);
 
-            if ($alt === '') {
-                $alt = self::generateAltFromFilename($file->getClientOriginalName());
+                $alt = trim($this->altTexts[$index] ?? '');
+                if ($alt === '') {
+                    $alt = self::generateAltFromFilename($file->getClientOriginalName());
+                }
+
+                MediaAsset::create([
+                    'file_name' => $file->getClientOriginalName(),
+                    'file_path' => $path,
+                    'mime_type' => $file->getMimeType(),
+                    'size' => $file->getSize(),
+                    'title' => null,
+                    'alt_text' => $alt,
+                ]);
+
+                $count++;
+            } catch (\Throwable $e) {
+                \Log::error('Media upload error: ' . $e->getMessage());
             }
-
-            MediaAsset::create([
-                'file_name' => $file->getClientOriginalName(),
-                'file_path' => $path,
-                'mime_type' => $file->getMimeType(),
-                'size' => $file->getSize(),
-                'title' => null,
-                'alt_text' => $alt,
-            ]);
         }
 
-        session()->flash('message', count($this->files) . ' file(s) uploaded successfully.');
+        session()->flash('message', $count . ' file(s) uploaded successfully.');
 
         return redirect()->route('admin.media.index');
     }
 
     public function isImageFile(int $index): bool
     {
-        $file = $this->files[$index] ?? null;
+        $file = $this->photos[$index] ?? null;
         if (!$file instanceof TemporaryUploadedFile) {
             return false;
         }
         $mime = $file->getMimeType();
         return is_string($mime) && str_starts_with($mime, 'image/');
+    }
+
+    public function isVideoFile(int $index): bool
+    {
+        $file = $this->photos[$index] ?? null;
+        if (!$file instanceof TemporaryUploadedFile) {
+            return false;
+        }
+        $mime = $file->getMimeType();
+        if (is_string($mime) && str_starts_with($mime, 'video/')) {
+            return true;
+        }
+        $ext = strtolower(pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION));
+        return in_array($ext, ['mp4', 'mov', 'avi', 'webm']);
     }
 
     public function render()

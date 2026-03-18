@@ -19,7 +19,7 @@ return [
     'temporary_file_upload' => [
         'disk' => 'local',
         'directory' => 'livewire-tmp',
-        'rules' => 'required|file|max:12288', // 12MB
+        'rules' => 'required|file|max:102400', // 100MB
         'stream' => [
             'disk' => 'local',
             'directory' => 'livewire-tmp',

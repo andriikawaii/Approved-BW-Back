@@ -21,7 +21,7 @@
                 <input
                     id="file-upload"
                     type="file"
-                    wire:model="files"
+                    wire:model="photos"
                     class="hidden"
                     accept=".jpg,.jpeg,.png,.gif,.pdf,.doc,.docx,.mp4,.mov,.avi,.webm"
                     multiple
@@ -44,22 +44,22 @@
                                     <span x-text="dragging ? 'Drop files here' : 'Drag & drop or click to select files'"></span>
                                 </div>
                                 <p class="mt-1 text-xs text-gray-500 dark:text-zinc-400">
-                                    PNG, JPG, GIF, PDF up to 10MB each &bull; Multiple files supported
+                                    PNG, JPG, GIF, PDF, MP4 up to 100MB each &bull; Multiple files supported
                                 </p>
                             </div>
                         </div>
                     </label>
                 </div>
 
-                @error('files')
+                @error('photos')
                     <div class="mt-2 text-sm text-rose-600 dark:text-rose-400 font-medium">{{ $message }}</div>
                 @enderror
-                @error('files.*')
+                @error('photos.*')
                     <div class="mt-2 text-sm text-rose-600 dark:text-rose-400 font-medium">{{ $message }}</div>
                 @enderror
 
                 {{-- Loading indicator --}}
-                <div wire:loading wire:target="files" class="mt-3">
+                <div wire:loading wire:target="photos" class="mt-3">
                     <div class="flex items-center justify-center gap-2 text-sm text-blue-600 dark:text-blue-400">
                         <svg class="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -72,16 +72,16 @@
         </div>
 
         {{-- File List with Alt Text Editing --}}
-        @if(count($files))
+        @if(count($photos))
             <div class="p-6">
                 <div class="flex items-center justify-between mb-4">
                     <h2 class="text-sm font-semibold text-gray-900 dark:text-white">
-                        {{ count($files) }} {{ count($files) === 1 ? 'file' : 'files' }} selected
+                        {{ count($photos) }} {{ count($photos) === 1 ? 'file' : 'files' }} selected
                     </h2>
                 </div>
 
                 <div class="space-y-4">
-                    @foreach($files as $index => $file)
+                    @foreach($photos as $index => $file)
                         <div class="flex gap-4 p-4 bg-gray-50 dark:bg-zinc-700/50 rounded-lg border border-gray-200 dark:border-zinc-600">
                             {{-- Preview --}}
                             <div class="flex-shrink-0">
@@ -93,6 +93,13 @@
                                             class="h-full w-full object-cover"
                                             onerror="this.style.display='none'"
                                         >
+                                    </div>
+                                @elseif($this->isVideoFile($index))
+                                    <div class="h-20 w-20 rounded-lg bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center">
+                                        <svg class="h-8 w-8 text-indigo-500 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
                                     </div>
                                 @else
                                     <div class="h-20 w-20 rounded-lg bg-gray-200 dark:bg-zinc-600 flex items-center justify-center">
@@ -168,13 +175,12 @@
                     variant="primary"
                     class="w-full sm:w-auto px-4 py-2.5 text-sm font-medium rounded-lg bg-blue-600 hover:bg-blue-700 text-white shadow-sm hover:shadow transition-all duration-200 flex items-center justify-center"
                     wire:loading.attr="disabled"
-                    :disabled="!count($files)"
                 >
                     <span wire:loading.remove wire:target="save">
                         <svg class="h-4 w-4 mr-1.5 -ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4-4m0 0L7 8m4-4v12" />
                         </svg>
-                        Upload {{ count($files) }} {{ count($files) === 1 ? 'File' : 'Files' }}
+                        Upload {{ count($photos) }} {{ count($photos) === 1 ? 'File' : 'Files' }}
                     </span>
                     <span wire:loading wire:target="save" class="flex items-center">
                         <svg class="animate-spin h-4 w-4 mr-1.5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
