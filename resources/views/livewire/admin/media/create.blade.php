@@ -23,7 +23,7 @@
                     type="file"
                     wire:model="files"
                     class="hidden"
-                    accept=".jpg,.jpeg,.png,.gif,.pdf,.doc,.docx"
+                    accept=".jpg,.jpeg,.png,.gif,.pdf,.doc,.docx,.mp4,.mov,.avi,.webm"
                     multiple
                 >
                 <div

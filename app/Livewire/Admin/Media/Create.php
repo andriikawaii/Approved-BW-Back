@@ -21,7 +21,7 @@ class Create extends Component
     {
         return [
             'files' => 'required|array|min:1',
-            'files.*' => 'file|max:10240|mimes:jpg,jpeg,png,gif,pdf,doc,docx',
+            'files.*' => 'file|max:10240|mimes:jpg,jpeg,png,gif,pdf,doc,docx,mp4,mov,avi,webm',
             'altTexts.*' => 'nullable|string|max:255',
         ];
     }
