@@ -1,4 +1,4 @@
-<div class="w-full max-w-2xl mx-auto px-4 sm:px-6 py-6 bg-gray-50 dark:bg-zinc-900">
+<div class="w-full max-w-4xl mx-auto px-4 sm:px-6 py-6 bg-gray-50 dark:bg-zinc-900">
     {{-- Header --}}
     <div class="mb-8 text-center">
         <div class="inline-flex items-center justify-center h-12 w-12 rounded-xl bg-blue-50 dark:bg-blue-900/30 mb-4 mx-auto">
@@ -7,24 +7,24 @@
             </svg>
         </div>
         <h1 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
-            Upload New Media
+            Upload Media
         </h1>
         <p class="text-sm text-gray-500 dark:text-zinc-400 mt-2 max-w-md mx-auto">
-            Upload images, documents, and other files to your media library. Supported formats include JPG, PNG, GIF, PDF, and DOCX.
+            Upload one or more files to your media library. Alt text is auto-generated from filenames and can be edited before saving.
         </p>
     </div>
 
-    {{-- Upload Card --}}
     <div class="bg-white dark:bg-zinc-800 rounded-xl border border-gray-200 dark:border-zinc-700 shadow-sm overflow-hidden">
-        {{-- File Upload Section --}}
+        {{-- File Upload Zone --}}
         <div class="border-b border-gray-200 dark:border-zinc-700 bg-gray-50 dark:bg-zinc-800/50 p-6">
             <div class="text-center">
                 <input
                     id="file-upload"
                     type="file"
-                    wire:model="file"
+                    wire:model="files"
                     class="hidden"
                     accept=".jpg,.jpeg,.png,.gif,.pdf,.doc,.docx"
+                    multiple
                 >
                 <div
                     class="relative mx-auto mb-4"
@@ -33,197 +33,158 @@
                     @dragleave.prevent="dragging = false"
                     @drop.prevent="dragging = false"
                 >
-                        <label for="file-upload" class="block cursor-pointer h-full">
-                        <div class="h-48 w-48 mx-auto rounded-2xl border-2 border-dashed
-                                   transition-all duration-300
-                                   @if($file) border-blue-500 bg-blue-50 dark:bg-blue-900/30 @else border-gray-300 dark:border-zinc-600 bg-gray-50 dark:bg-zinc-700/50 @endif
-                                   group-hover:border-blue-400
-                                   :class='{
-                                       "border-blue-500 bg-blue-50 dark:bg-blue-900/30": dragging || @entangle("file"),
-                        "border-gray-300 dark:border-zinc-600 bg-gray-50 dark:bg-zinc-700/50": !(dragging || @entangle("file"))
-                        }'">
-                        <div class="h-full w-full rounded-2xl flex flex-col items-center justify-center p-4 pointer-events-none">
-                            <div class="flex flex-col items-center justify-center text-center">
-                                <svg class="h-10 w-10 text-gray-400 dark:text-zinc-500 mb-3 transition-colors duration-300
-                                               @if($file) text-blue-500 dark:text-blue-400 @endif
-                                               :class='{ "text-blue-500 dark:text-blue-400": dragging || @entangle("file"), "text-gray-400 dark:text-zinc-500": !(dragging || @entangle("file")) }'"
-                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                      d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                    <label for="file-upload" class="block cursor-pointer">
+                        <div class="w-full py-10 rounded-2xl border-2 border-dashed transition-all duration-300 border-gray-300 dark:border-zinc-600 bg-gray-50 dark:bg-zinc-700/50 hover:border-blue-400 dark:hover:border-blue-500"
+                             :class="{ 'border-blue-500 bg-blue-50 dark:bg-blue-900/30': dragging }">
+                            <div class="flex flex-col items-center justify-center pointer-events-none">
+                                <svg class="h-10 w-10 text-gray-400 dark:text-zinc-500 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
                                 </svg>
-                                <div class="text-sm font-medium text-gray-700 dark:text-zinc-300 transition-colors duration-300
-                                               @if($file) text-blue-700 dark:text-blue-300 @endif">
-                                    @if($file)
-                                        <span x-text="dragging ? 'Drop to upload' : 'File selected'"></span>
-                                    @else
-                                        <span x-text="dragging ? 'Drop to upload' : 'Drag & drop or click to upload'"></span>
-                                    @endif
+                                <div class="text-sm font-medium text-gray-700 dark:text-zinc-300">
+                                    <span x-text="dragging ? 'Drop files here' : 'Drag & drop or click to select files'"></span>
                                 </div>
                                 <p class="mt-1 text-xs text-gray-500 dark:text-zinc-400">
-                                    PNG, JPG, GIF, PDF up to 10MB
+                                    PNG, JPG, GIF, PDF up to 10MB each &bull; Multiple files supported
                                 </p>
                             </div>
                         </div>
-                    </div>
-                        </label>
+                    </label>
                 </div>
 
-            @if($file)
-                <div class="mt-4">
-                    <div class="flex items-center justify-center gap-3 bg-blue-50 dark:bg-blue-900/30 py-2 px-4 rounded-lg border border-blue-200 dark:border-blue-800">
-                        <svg class="h-4 w-4 text-blue-500 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                @error('files')
+                    <div class="mt-2 text-sm text-rose-600 dark:text-rose-400 font-medium">{{ $message }}</div>
+                @enderror
+                @error('files.*')
+                    <div class="mt-2 text-sm text-rose-600 dark:text-rose-400 font-medium">{{ $message }}</div>
+                @enderror
+
+                {{-- Loading indicator --}}
+                <div wire:loading wire:target="files" class="mt-3">
+                    <div class="flex items-center justify-center gap-2 text-sm text-blue-600 dark:text-blue-400">
+                        <svg class="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
                         </svg>
-                        <span class="text-sm font-medium text-blue-700 dark:text-blue-300 truncate max-w-xs">
-                                    {{ $file->getClientOriginalName() }}
-                                </span>
-                        <button
-                            type="button"
-                            wire:click="removeFile"
-                            class="ml-auto text-blue-500 hover:text-blue-700 dark:hover:text-blue-300"
-                        >
-                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                            </svg>
-                        </button>
+                        Processing files...
                     </div>
                 </div>
-                @endif
-
-                @error('file')
-                <div class="mt-2 text-sm text-rose-600 dark:text-rose-400 font-medium">
-                    {{ $message }}
-                </div>
-                @enderror
+            </div>
         </div>
-    </div>
 
-    {{-- Form Fields Section --}}
-    <div class="p-6">
-        <div class="space-y-6">
-            {{-- Title Field --}}
-            <div class="space-y-2">
-                <label for="title" class="block text-sm font-medium text-gray-700 dark:text-zinc-300">
-                    Title <span class="text-gray-400 dark:text-zinc-500">(optional)</span>
-                </label>
-                <input
-                    type="text"
-                    wire:model.defer="title"
-                    id="title"
-                    class="w-full rounded-lg border border-gray-300 dark:border-zinc-600 bg-white dark:bg-zinc-700 px-4 py-2.5 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-zinc-500 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-                    placeholder="Descriptive title for this media"
-                >
-                <p class="text-xs text-gray-500 dark:text-zinc-400 mt-1">
-                    This appears in media library listings and helps with organization
-                </p>
-                @error('title')
-                <p class="text-xs text-rose-600 dark:text-rose-400 font-medium mt-1">{{ $message }}</p>
-                @enderror
-            </div>
+        {{-- File List with Alt Text Editing --}}
+        @if(count($files))
+            <div class="p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-sm font-semibold text-gray-900 dark:text-white">
+                        {{ count($files) }} {{ count($files) === 1 ? 'file' : 'files' }} selected
+                    </h2>
+                </div>
 
-            {{-- Alt Text Field --}}
-            <div class="space-y-2">
-                <label for="alt_text" class="block text-sm font-medium text-gray-700 dark:text-zinc-300">
-                    Alt Text <span class="text-gray-400 dark:text-zinc-500">(required for images)</span>
-                </label>
-                <textarea
-                    wire:model.defer="alt_text"
-                    id="alt_text"
-                    rows="3"
-                    class="w-full rounded-lg border border-gray-300 dark:border-zinc-600 bg-white dark:bg-zinc-700 px-4 py-2.5 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-zinc-500 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all resize-none"
-                    placeholder="Describe this image for accessibility and SEO"
-                ></textarea>
-                <p class="text-xs text-gray-500 dark:text-zinc-400 mt-1">
-                    Describe the image content for screen readers and search engines
-                </p>
-                @error('alt_text')
-                <p class="text-xs text-rose-600 dark:text-rose-400 font-medium mt-1">{{ $message }}</p>
-                @enderror
-            </div>
+                <div class="space-y-4">
+                    @foreach($files as $index => $file)
+                        <div class="flex gap-4 p-4 bg-gray-50 dark:bg-zinc-700/50 rounded-lg border border-gray-200 dark:border-zinc-600">
+                            {{-- Preview --}}
+                            <div class="flex-shrink-0">
+                                @if($this->isImageFile($index))
+                                    <div class="h-20 w-20 rounded-lg overflow-hidden bg-gray-200 dark:bg-zinc-600">
+                                        <img
+                                            src="{{ $file->temporaryUrl() }}"
+                                            alt="Preview"
+                                            class="h-full w-full object-cover"
+                                            onerror="this.style.display='none'"
+                                        >
+                                    </div>
+                                @else
+                                    <div class="h-20 w-20 rounded-lg bg-gray-200 dark:bg-zinc-600 flex items-center justify-center">
+                                        <svg class="h-8 w-8 text-gray-400 dark:text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                                        </svg>
+                                    </div>
+                                @endif
+                            </div>
 
-            {{-- File Info Preview --}}
-            @if($file)
-                <div class="mt-2 p-4 bg-gray-50 dark:bg-zinc-700/50 rounded-lg border border-gray-200 dark:border-zinc-600">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-3">
-                            @if($this->isImageFile())
-                                <div class="h-10 w-10 rounded-lg overflow-hidden bg-gray-200 dark:bg-zinc-600">
-                                    <img
-                                        src="{{ $file->temporaryUrl() }}"
-                                        alt="Preview"
-                                        class="h-full w-full object-cover"
-                                        onerror="this.parentElement.classList.add('bg-gray-300', 'dark:bg-zinc-600'); this.style.display='none'"
+                            {{-- Info + Alt input --}}
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-start justify-between gap-2">
+                                    <div class="min-w-0">
+                                        <p class="text-sm font-medium text-gray-900 dark:text-white truncate">
+                                            {{ $file->getClientOriginalName() }}
+                                        </p>
+                                        <p class="text-xs text-gray-500 dark:text-zinc-400 mt-0.5">
+                                            {{ number_format($file->getSize() / 1024, 1) }} KB &bull; {{ strtoupper(pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION)) }}
+                                        </p>
+                                    </div>
+                                    <button
+                                        type="button"
+                                        wire:click="removeFile({{ $index }})"
+                                        class="flex-shrink-0 p-1 text-gray-400 hover:text-rose-500 dark:hover:text-rose-400 transition-colors"
+                                        title="Remove file"
+                                    >
+                                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                    </button>
+                                </div>
+                                <div class="mt-2">
+                                    <label class="block text-xs font-medium text-gray-600 dark:text-zinc-400 mb-1">Alt Text</label>
+                                    <input
+                                        type="text"
+                                        wire:model.defer="altTexts.{{ $index }}"
+                                        class="w-full rounded-md border border-gray-300 dark:border-zinc-600 bg-white dark:bg-zinc-700 px-3 py-1.5 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-zinc-500 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                                        placeholder="Describe this image for accessibility"
                                     >
                                 </div>
-                            @else
-                                <div class="h-10 w-10 rounded-lg bg-gray-200 dark:bg-zinc-600 flex items-center justify-center">
-                                    <svg class="h-5 w-5 text-gray-500 dark:text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                                    </svg>
-                                </div>
-                            @endif
-                            <div>
-                                <p class="text-sm font-medium text-gray-900 dark:text-white">
-                                    {{ $file->getClientOriginalName() }}
-                                </p>
-                                <p class="text-xs text-gray-500 dark:text-zinc-400">
-                                    {{ number_format($file->getSize() / 1024, 1) }} KB • {{ pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION) }}
-                                </p>
                             </div>
                         </div>
-                        @if($this->isImageFile() && ($imageSize = $this->getImageSize()))
-                            <div class="text-xs text-gray-500 dark:text-zinc-400">
-                                {{ $imageSize['width'] }}x{{ $imageSize['height'] }} px
-                            </div>
-                        @endif
-                    </div>
+                    @endforeach
                 </div>
-            @endif
-        </div>
-    </div>
+            </div>
+        @endif
 
-    {{-- Action Footer --}}
-    <div class="border-t border-gray-200 dark:border-zinc-700 bg-gray-50 dark:bg-zinc-800/50 px-6 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-        <div class="text-sm text-gray-500 dark:text-zinc-400">
-            <svg class="h-4 w-4 inline-block mr-1 text-emerald-500 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-            </svg>
-            All uploads are automatically optimized for web delivery
-        </div>
-
-        <div class="flex flex-col sm:flex-row sm:items-center gap-3 w-full sm:w-auto">
-            <flux:button
-                href="{{ route('admin.media.index') }}"
-                wire:navigate
-                variant="outline"
-                class="w-full sm:w-auto px-4 py-2.5 text-sm font-medium rounded-lg border-gray-300 dark:border-zinc-600 text-gray-700 dark:text-zinc-300 hover:bg-gray-50 dark:hover:bg-zinc-700/50 transition-colors"
-            >
-                <svg class="h-4 w-4 mr-1.5 -ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        {{-- Action Footer --}}
+        <div class="border-t border-gray-200 dark:border-zinc-700 bg-gray-50 dark:bg-zinc-800/50 px-6 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div class="text-sm text-gray-500 dark:text-zinc-400">
+                <svg class="h-4 w-4 inline-block mr-1 text-emerald-500 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                 </svg>
-                Cancel
-            </flux:button>
+                All uploads are automatically optimized for web delivery
+            </div>
 
-            <flux:button
-                wire:click="save"
-                variant="primary"
-                class="w-full sm:w-auto px-4 py-2.5 text-sm font-medium rounded-lg bg-blue-600 hover:bg-blue-700 text-white shadow-sm hover:shadow transition-all duration-200 flex items-center justify-center"
-                wire:loading.attr="disabled"
-            >
-                    <span wire:loading.remove>
+            <div class="flex flex-col sm:flex-row sm:items-center gap-3 w-full sm:w-auto">
+                <flux:button
+                    href="{{ route('admin.media.index') }}"
+                    wire:navigate
+                    variant="outline"
+                    class="w-full sm:w-auto px-4 py-2.5 text-sm font-medium rounded-lg border-gray-300 dark:border-zinc-600 text-gray-700 dark:text-zinc-300 hover:bg-gray-50 dark:hover:bg-zinc-700/50 transition-colors"
+                >
+                    <svg class="h-4 w-4 mr-1.5 -ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                    </svg>
+                    Cancel
+                </flux:button>
+
+                <flux:button
+                    wire:click="save"
+                    variant="primary"
+                    class="w-full sm:w-auto px-4 py-2.5 text-sm font-medium rounded-lg bg-blue-600 hover:bg-blue-700 text-white shadow-sm hover:shadow transition-all duration-200 flex items-center justify-center"
+                    wire:loading.attr="disabled"
+                    :disabled="!count($files)"
+                >
+                    <span wire:loading.remove wire:target="save">
                         <svg class="h-4 w-4 mr-1.5 -ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4-4m0 0L7 8m4-4v12" />
                         </svg>
-                        Upload Media
+                        Upload {{ count($files) }} {{ count($files) === 1 ? 'File' : 'Files' }}
                     </span>
-                <span wire:loading class="flex items-center">
-                        <svg class="animate-spin h-4 w-4 mr-1.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                    <span wire:loading wire:target="save" class="flex items-center">
+                        <svg class="animate-spin h-4 w-4 mr-1.5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
                         </svg>
                         Uploading...
                     </span>
-            </flux:button>
+                </flux:button>
+            </div>
         </div>
     </div>
-</div>
 </div>

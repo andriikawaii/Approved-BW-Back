@@ -469,7 +469,8 @@ class SectionsBuilder extends Component
     {
         $mediaItems = collect();
         if ($this->showMediaModal) {
-            $query = MediaAsset::where('mime_type', 'like', 'image/%');
+            $isVideoField = str_contains($this->mediaTargetField ?? '', 'video');
+            $query = MediaAsset::where('mime_type', 'like', $isVideoField ? 'video/%' : 'image/%');
             if ($this->mediaSearch) {
                 $query->where(function ($q) {
                     $q->where('file_name', 'like', "%{$this->mediaSearch}%")

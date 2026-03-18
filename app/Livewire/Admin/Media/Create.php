@@ -11,74 +11,94 @@ class Create extends Component
 {
     use WithFileUploads;
 
-    public $file;
-    public $title;
-    public $alt_text;
+    /** @var TemporaryUploadedFile[] */
+    public $files = [];
 
-    protected $rules = [
-        'file' => 'required|file|max:10240', // 10MB
-        'title' => 'nullable|string|max:255',
-        'alt_text' => 'required|string|max:255',
-    ];
+    /** @var array<int, string> */
+    public $altTexts = [];
+
+    protected function rules(): array
+    {
+        return [
+            'files' => 'required|array|min:1',
+            'files.*' => 'file|max:10240|mimes:jpg,jpeg,png,gif,pdf,doc,docx',
+            'altTexts.*' => 'nullable|string|max:255',
+        ];
+    }
+
+    public function updatedFiles(): void
+    {
+        $this->validateOnly('files.*');
+
+        // Generate alt texts for newly added files
+        foreach ($this->files as $index => $file) {
+            if ($file instanceof TemporaryUploadedFile && !isset($this->altTexts[$index])) {
+                $this->altTexts[$index] = self::generateAltFromFilename($file->getClientOriginalName());
+            }
+        }
+    }
+
+    public static function generateAltFromFilename(string $filename): string
+    {
+        // Remove extension
+        $name = pathinfo($filename, PATHINFO_FILENAME);
+        // Replace dashes and underscores with spaces
+        $name = str_replace(['-', '_'], ' ', $name);
+        // Trim excess whitespace
+        $name = preg_replace('/\s+/', ' ', trim($name));
+        // Capitalize first letter
+        $name = ucfirst($name);
+
+        return $name;
+    }
+
+    public function removeFile(int $index): void
+    {
+        unset($this->files[$index]);
+        unset($this->altTexts[$index]);
+        $this->files = array_values($this->files);
+        $this->altTexts = array_values($this->altTexts);
+    }
 
     public function save()
     {
         $this->validate();
 
-        $path = $this->file->store('media', 'public');
+        foreach ($this->files as $index => $file) {
+            if (!$file instanceof TemporaryUploadedFile) {
+                continue;
+            }
 
-        MediaAsset::create([
-            'file_name' => $this->file->getClientOriginalName(),
-            'file_path' => $path,
-            'mime_type' => $this->file->getMimeType(),
-            'size' => $this->file->getSize(),
-            'title' => $this->title,
-            'alt_text' => $this->alt_text,
-        ]);
+            $path = $file->store('media', 'public');
+            $alt = trim($this->altTexts[$index] ?? '');
+
+            if ($alt === '') {
+                $alt = self::generateAltFromFilename($file->getClientOriginalName());
+            }
+
+            MediaAsset::create([
+                'file_name' => $file->getClientOriginalName(),
+                'file_path' => $path,
+                'mime_type' => $file->getMimeType(),
+                'size' => $file->getSize(),
+                'title' => null,
+                'alt_text' => $alt,
+            ]);
+        }
+
+        session()->flash('message', count($this->files) . ' file(s) uploaded successfully.');
 
         return redirect()->route('admin.media.index');
     }
 
-    public function removeFile(): void
+    public function isImageFile(int $index): bool
     {
-        $this->reset('file');
-    }
-
-    public function isImageFile(): bool
-    {
-        if (! $this->file instanceof TemporaryUploadedFile) {
+        $file = $this->files[$index] ?? null;
+        if (!$file instanceof TemporaryUploadedFile) {
             return false;
         }
-
-        $mime = $this->file->getMimeType();
-
+        $mime = $file->getMimeType();
         return is_string($mime) && str_starts_with($mime, 'image/');
-    }
-
-    public function getImageSize(): ?array
-    {
-        if (! $this->isImageFile()) {
-            return null;
-        }
-
-        try {
-            $realPath = $this->file->getRealPath();
-            if (! $realPath) {
-                return null;
-            }
-
-            $info = @getimagesize($realPath);
-            if (! is_array($info) || ! isset($info[0], $info[1])) {
-                return null;
-            }
-
-            return [
-                'width' => (int) $info[0],
-                'height' => (int) $info[1],
-            ];
-        } catch (\Throwable $e) {
-            return null;
-        }
     }
 
     public function render()

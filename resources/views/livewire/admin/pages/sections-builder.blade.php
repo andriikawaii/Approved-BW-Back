@@ -309,8 +309,9 @@
         <div wire:key="media-picker-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-overlay px-4 backdrop-blur-sm" wire:click.self="closeMediaPicker">
             <div class="flex max-h-[80vh] w-full max-w-4xl flex-col overflow-hidden rounded-2xl border border-edge-strong bg-surface shadow-2xl" @click.stop>
                 <div class="flex items-center justify-between border-b border-edge px-6 py-4">
+                    @php $isVideoPicker = str_contains($mediaTargetField ?? '', 'video'); @endphp
                     <div class="flex items-center gap-3">
-                        <h3 class="text-base font-semibold text-ink">{{ $isMultiSelectMode ? 'Select Multiple Images' : 'Select Image' }}</h3>
+                        <h3 class="text-base font-semibold text-ink">{{ $isVideoPicker ? 'Select Video' : ($isMultiSelectMode ? 'Select Multiple Images' : 'Select Image') }}</h3>
                         @if ($isMultiSelectMode && count($selectedMediaIds) > 0)
                             <span class="inline-flex items-center rounded-md bg-tint-soft px-2 py-0.5 text-xs font-semibold text-tint ring-1 ring-tint/25">{{ count($selectedMediaIds) }} selected</span>
                         @endif
@@ -343,7 +344,11 @@
                                     wire:click="selectMedia({{ $media->id }})"
                                     class="group relative aspect-square overflow-hidden rounded-lg border-2 transition {{ $isMultiSelectMode && $isSelected ? 'border-tint ring-2 ring-tint/30' : 'border-transparent hover:border-tint/50' }}"
                                 >
-                                    <img src="{{ $media->url }}" alt="{{ $media->alt_text ?? $media->file_name }}" class="h-full w-full object-cover transition group-hover:scale-105" loading="lazy" />
+                                    @if ($isVideoPicker)
+                                        <video src="{{ $media->url }}" muted class="h-full w-full object-cover transition group-hover:scale-105"></video>
+                                    @else
+                                        <img src="{{ $media->url }}" alt="{{ $media->alt_text ?? $media->file_name }}" class="h-full w-full object-cover transition group-hover:scale-105" loading="lazy" />
+                                    @endif
                                     @if ($isMultiSelectMode)
                                         <div class="absolute right-1.5 top-1.5 flex h-5 w-5 items-center justify-center rounded border {{ $isSelected ? 'border-tint bg-tint' : 'border-ink-muted bg-surface/70' }}">
                                             @if ($isSelected)
@@ -355,7 +360,7 @@
                             @endforeach
                         </div>
                     @else
-                        <div class="py-8 text-center text-sm text-ink-faint">No images found.</div>
+                        <div class="py-8 text-center text-sm text-ink-faint">{{ $isVideoPicker ? 'No videos found.' : 'No images found.' }}</div>
                     @endif
                 </div>
 

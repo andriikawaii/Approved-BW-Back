@@ -107,16 +107,14 @@ class PageObserver
     }
 
     /**
-     * Validate HomeAndConstructionBusiness schema (LOCKED: only Orange office)
+     * Validate HomeAndConstructionBusiness schema (office pages only)
      */
     protected function validateHomeAndConstructionBusiness(Page $page): void
     {
-        $normalizedPath = rtrim($page->full_path, '/') . '/';
-
-        if ($normalizedPath !== '/new-haven-county/orange-ct/') {
+        if ($page->template_key !== 'office') {
             throw new \Exception(
-                "HomeAndConstructionBusiness schema can ONLY be used on the Orange office page " .
-                "(/new-haven-county/orange-ct/). Current path: {$page->full_path}"
+                "HomeAndConstructionBusiness schema can only be used on office pages. " .
+                "Current template: {$page->template_key}, path: {$page->full_path}"
             );
         }
     }

@@ -15,6 +15,7 @@
         } elseif (
             (
                 str_contains($field, 'image') ||
+                str_contains($field, 'video') ||
                 str_contains($field, 'media') ||
                 str_contains($field, 'cover_') ||
                 str_contains($field, 'logo') ||
