@@ -450,6 +450,7 @@ return [
             'lead_form',
             'faq_list',
             'contact_split_layout',
+            'office_info',
             'office_info_cards',
             'map_embed',
         ],
