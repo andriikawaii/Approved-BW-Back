@@ -319,6 +319,7 @@ return [
             'schema' => [
                 'eyebrow' => 'nullable|string|max:60',
                 'title' => 'nullable|string|max:120',
+                'subtitle' => 'nullable|string|max:255',
                 'items' => 'required|array|min:1',
                 'items.*.title' => 'required|string|max:120',
                 'items.*.description' => 'nullable|string|max:255',
@@ -329,6 +330,7 @@ return [
             'defaults' => [
                 'eyebrow' => 'Recent Projects',
                 'title' => 'Real Transformations',
+                'subtitle' => null,
                 'items' => [
                     ['title' => '', 'description' => null, 'image' => null, 'url' => null, 'tag' => null],
                 ],

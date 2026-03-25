@@ -384,6 +384,7 @@ return [
             'testimonials',
             'cta_block',
             'cta_split_form',
+            'lead_form',
             'stats_counter',
             'image_gallery',
             'project_category_filter',
