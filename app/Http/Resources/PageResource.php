@@ -46,6 +46,8 @@ class PageResource extends JsonResource
                 'title' => (string) ($this->seo_title ?? ''),
                 'description' => (string) ($this->seo_description ?? ''),
                 'canonical' => CanonicalResolver::resolve($page),
+                'og_image_alt' => $this->og_image_alt,
+                'robots' => $this->robots,
             ],
 
             'phones' => $phones,

@@ -22,6 +22,7 @@
                 str_contains($field, 'avatar') ||
                 str_contains($rules, 'file')
             ) && !preg_match('/(_(alt|caption|position))$/', $field)
+              && !str_contains($rules, 'array')
         ) {
             $editor = 'media';
         } elseif (str_contains($rules, 'array')) {

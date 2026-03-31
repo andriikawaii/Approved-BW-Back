@@ -30,6 +30,8 @@ class Page extends Model
         'seo_title',
         'seo_description',
         'canonical_url',
+        'og_image_alt',
+        'robots',
 
         'schema_type',
         'schema_overrides',

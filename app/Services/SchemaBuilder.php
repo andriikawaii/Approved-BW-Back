@@ -58,6 +58,14 @@ class SchemaBuilder
      */
     public static function build(Page $page): array
     {
+        $overrides = is_array($page->schema_overrides) ? $page->schema_overrides : [];
+
+        // If schema_overrides is a raw list of schema objects (seeded from HTML),
+        // return it directly — no dynamic generation needed.
+        if (!empty($overrides) && array_is_list($overrides)) {
+            return $overrides;
+        }
+
         $schemas = [];
 
         // Primary schema based on page type

@@ -8,7 +8,10 @@
     $imageSubfields = [];
     if (!empty($items) && is_array($items[0] ?? null)) {
         foreach (array_keys($items[0]) as $k) {
-            if (str_contains($k, 'image') || str_contains($k, 'logo') || str_contains($k, 'avatar') || str_contains($k, 'cover')) {
+            if (
+                (str_contains($k, 'image') || str_contains($k, 'logo') || str_contains($k, 'avatar') || str_contains($k, 'cover'))
+                && !preg_match('/_(alt|caption|position)$/', $k)
+            ) {
                 $imageSubfields[] = $k;
             }
         }
@@ -17,12 +20,25 @@
         foreach ($schema as $key => $rules) {
             if (str_starts_with($key, $field . '.*.')) {
                 $subfield = str_replace($field . '.*.', '', $key);
-                if (str_contains($subfield, 'image') || str_contains($subfield, 'logo') || str_contains($subfield, 'avatar') || str_contains($subfield, 'cover')) {
+                if (
+                    (str_contains($subfield, 'image') || str_contains($subfield, 'logo') || str_contains($subfield, 'avatar') || str_contains($subfield, 'cover'))
+                    && !preg_match('/_(alt|caption|position)$/', $subfield)
+                ) {
                     if (!in_array($subfield, $imageSubfields)) {
                         $imageSubfields[] = $subfield;
                     }
                 }
             }
+        }
+    }
+
+    // Build default keys from section defaults so new fields appear even on existing saved items
+    $sectionDefaults = SectionRegistry::defaultsFor($section['type']);
+    $defaultRepeaterItem = [];
+    if (!empty($sectionDefaults[$field]) && is_array($sectionDefaults[$field])) {
+        $firstDefault = reset($sectionDefaults[$field]);
+        if (is_array($firstDefault)) {
+            $defaultRepeaterItem = $firstDefault;
         }
     }
 
@@ -59,7 +75,7 @@
                 @else
                     <div class="grid grid-cols-1 gap-3 md:grid-cols-2">
                         @php
-                            $allKeys = is_array($item) ? array_unique(array_merge(array_keys($item), $imageSubfields)) : [];
+                            $allKeys = is_array($item) ? array_unique(array_merge(array_keys($defaultRepeaterItem), array_keys($item), $imageSubfields)) : [];
                         @endphp
                         @foreach($allKeys as $k)
                             @php
@@ -111,12 +127,22 @@
                                         @endforeach
                                     </div>
                                 @else
-                                    <input
-                                        type="text"
-                                        wire:model.live="sections.{{ $index }}.data.{{ $field }}.{{ $i }}.{{ $k }}"
-                                        class="{{ $inputClasses }}"
-                                        placeholder="{{ $k }}..."
-                                    />
+                                    @if (preg_match('/_(alt)$/', $k))
+                                        <input
+                                            type="text"
+                                            wire:model.live="sections.{{ $index }}.data.{{ $field }}.{{ $i }}.{{ $k }}"
+                                            class="{{ $inputClasses }}"
+                                            placeholder="Describe the image for accessibility and SEO..."
+                                        />
+                                        <p class="mt-1 text-[10px] text-ink-faint">Alt text for screen readers and search engines</p>
+                                    @else
+                                        <input
+                                            type="text"
+                                            wire:model.live="sections.{{ $index }}.data.{{ $field }}.{{ $i }}.{{ $k }}"
+                                            class="{{ $inputClasses }}"
+                                            placeholder="{{ $k }}..."
+                                        />
+                                    @endif
                                 @endif
                             </div>
                         @endforeach

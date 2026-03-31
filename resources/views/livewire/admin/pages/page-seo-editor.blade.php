@@ -58,6 +58,36 @@
                     />
                     @error('canonical_url')<p class="mt-1 text-xs text-danger">{{ $message }}</p>@enderror
                 </div>
+
+                <div>
+                    <label for="og_image_alt" class="mb-1 block text-sm font-medium text-ink-muted">OG Image Alt Text</label>
+                    <input
+                        id="og_image_alt"
+                        type="text"
+                        wire:model.defer="og_image_alt"
+                        aria-label="OG image alt text"
+                        maxlength="125"
+                        class="w-full rounded-lg border border-edge bg-surface-alt px-3 py-2.5 text-sm text-ink focus:border-tint focus:outline-none focus:ring-2 focus:ring-tint/30"
+                        placeholder="Describe the OG image for accessibility and social sharing"
+                    />
+                    @error('og_image_alt')<p class="mt-1 text-xs text-danger">{{ $message }}</p>@enderror
+                    <p class="mt-1 text-xs text-ink-muted">Used for og:image:alt in Open Graph / social previews. Max 125 chars.</p>
+                </div>
+
+                <div>
+                    <label for="robots" class="mb-1 block text-sm font-medium text-ink-muted">Robots (Optional)</label>
+                    <input
+                        id="robots"
+                        type="text"
+                        wire:model.defer="robots"
+                        aria-label="Robots meta"
+                        maxlength="64"
+                        class="w-full rounded-lg border border-edge bg-surface-alt px-3 py-2.5 text-sm text-ink focus:border-tint focus:outline-none focus:ring-2 focus:ring-tint/30"
+                        placeholder="e.g. noindex, nofollow"
+                    />
+                    @error('robots')<p class="mt-1 text-xs text-danger">{{ $message }}</p>@enderror
+                    <p class="mt-1 text-xs text-ink-muted">Leave blank to inherit the global default (index, follow).</p>
+                </div>
             </div>
 
             <div class="mt-5 flex justify-end">

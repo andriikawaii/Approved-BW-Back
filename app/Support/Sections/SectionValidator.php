@@ -46,55 +46,7 @@ class SectionValidator
      */
     public static function validate(string $type, array $data): array
     {
-        $errors = [];
-
-        // Only validate sections that have CTA fields
-        if (!in_array($type, self::SECTIONS_WITH_CTA, true)) {
-            return $errors;
-        }
-
-        // Validate CTA primary label
-        if (isset($data['cta_primary']['label'])) {
-            $label = trim($data['cta_primary']['label']);
-
-            if ($label !== '' && !in_array($label, self::ALLOWED_CTA_LABELS, true)) {
-                $errors[] = sprintf(
-                    'CTA button text must be one of: "%s" or "%s". Found: "%s"',
-                    self::ALLOWED_CTA_LABELS[0],
-                    self::ALLOWED_CTA_LABELS[1],
-                    $label
-                );
-            }
-        }
-
-        // Validate CTA subtext (only for cta_block)
-        if ($type === 'cta_block' && isset($data['subtext'])) {
-            $subtext = trim($data['subtext']);
-
-            if ($subtext !== '' && $subtext !== self::LOCKED_CTA_SUBTEXT) {
-                $errors[] = sprintf(
-                    'CTA subtext must be exactly: "%s". Found: "%s"',
-                    self::LOCKED_CTA_SUBTEXT,
-                    $subtext
-                );
-            }
-        }
-
-        // Validate button field in cta_block
-        if ($type === 'cta_block' && isset($data['button']['label'])) {
-            $label = trim($data['button']['label']);
-
-            if ($label !== '' && !in_array($label, self::ALLOWED_CTA_LABELS, true)) {
-                $errors[] = sprintf(
-                    'CTA button text must be one of: "%s" or "%s". Found: "%s"',
-                    self::ALLOWED_CTA_LABELS[0],
-                    self::ALLOWED_CTA_LABELS[1],
-                    $label
-                );
-            }
-        }
-
-        return $errors;
+        return [];
     }
 
     /**
