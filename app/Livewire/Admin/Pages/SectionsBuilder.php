@@ -487,7 +487,7 @@ class SectionsBuilder extends Component
 
         $categoryMap = [
             'Hero'          => ['hero', 'hero_slider'],
-            'Content'       => ['rich_text', 'local_context'],
+            'Content'       => ['rich_text', 'consultation_cards_split', 'local_context'],
             'Social Proof'  => ['trust_bar', 'stats_counter', 'testimonials', 'project_highlights', 'logo_strip', 'before_after'],
             'Services'      => ['services_grid', 'service_includes', 'pricing_table', 'timeline_block', 'process_steps', 'service_area_links'],
             'CTA & Forms'   => ['cta_block', 'lead_form'],
@@ -532,6 +532,14 @@ class SectionsBuilder extends Component
             $data = [];
         }
 
+        if ($type === 'before_after_grid') {
+            $data = $this->normalizeBeforeAfterGridData($data);
+        }
+
+        if ($type === 'project_highlights') {
+            $data = $this->normalizeProjectHighlightsData($data);
+        }
+
         if ($type === 'feature_list_two_column') {
             $data = $this->ensureFeatureListTwoColumnBullets($data);
         }
@@ -563,6 +571,75 @@ class SectionsBuilder extends Component
         }
 
         $data['right_bullets'] = $bullets;
+
+        return $data;
+    }
+
+    private function normalizeBeforeAfterGridData(array $data): array
+    {
+        $projects = $data['projects'] ?? [];
+
+        if (! is_array($projects)) {
+            $projects = [];
+        }
+
+        $data['projects'] = array_map(static function ($project): array {
+            if (! is_array($project)) {
+                $project = [];
+            }
+
+            if (! array_key_exists('image', $project) && array_key_exists('before_image', $project)) {
+                $project['image'] = $project['before_image'];
+            }
+
+            if (! array_key_exists('image_alt', $project) && array_key_exists('before_image_alt', $project)) {
+                $project['image_alt'] = $project['before_image_alt'];
+            }
+
+            unset(
+                $project['before_image'],
+                $project['before_image_alt'],
+                $project['after_image'],
+                $project['after_image_alt']
+            );
+
+            return $project;
+        }, $projects);
+
+        return $data;
+    }
+
+    private function normalizeProjectHighlightsData(array $data): array
+    {
+        $items = $data['items'] ?? [];
+
+        if (! is_array($items)) {
+            $items = [];
+        }
+
+        $data['items'] = array_map(static function ($item): array {
+            if (! is_array($item)) {
+                $item = [];
+            }
+
+            if (! array_key_exists('url', $item) && array_key_exists('link', $item)) {
+                $item['url'] = $item['link'];
+            }
+
+            if (! array_key_exists('link', $item) && array_key_exists('url', $item)) {
+                $item['link'] = $item['url'];
+            }
+
+            if (! array_key_exists('image', $item)) {
+                $item['image'] = null;
+            }
+
+            if (! array_key_exists('image_alt', $item)) {
+                $item['image_alt'] = null;
+            }
+
+            return $item;
+        }, $items);
 
         return $data;
     }

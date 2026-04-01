@@ -67,6 +67,10 @@ class PageResource extends JsonResource
                         $data = (object) [];
                     }
 
+                    if ($section->type === 'before_after_grid') {
+                        $data = $this->normalizeBeforeAfterGridData($data);
+                    }
+
                     return [
                         'id' => $section->id,
                         'type' => $section->type,
@@ -76,5 +80,43 @@ class PageResource extends JsonResource
                 })
                 ->all(),
         ];
+    }
+
+    private function normalizeBeforeAfterGridData(array|object $data): array
+    {
+        if (is_object($data)) {
+            $data = (array) $data;
+        }
+
+        $projects = $data['projects'] ?? [];
+
+        if (!is_array($projects)) {
+            $projects = [];
+        }
+
+        $data['projects'] = array_map(static function ($project): array {
+            if (!is_array($project)) {
+                $project = [];
+            }
+
+            if (!array_key_exists('image', $project) && array_key_exists('before_image', $project)) {
+                $project['image'] = $project['before_image'];
+            }
+
+            if (!array_key_exists('image_alt', $project) && array_key_exists('before_image_alt', $project)) {
+                $project['image_alt'] = $project['before_image_alt'];
+            }
+
+            unset(
+                $project['before_image'],
+                $project['before_image_alt'],
+                $project['after_image'],
+                $project['after_image_alt']
+            );
+
+            return $project;
+        }, $projects);
+
+        return $data;
     }
 }

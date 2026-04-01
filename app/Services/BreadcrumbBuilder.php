@@ -67,17 +67,23 @@ class BreadcrumbBuilder
         }
 
         // Service town: Home > County Hub > Global Service > Current Page
+        // Town hub (service_town without service): Home > Areas We Serve > County > Town
         if ($template === 'service_town') {
             if ($county) {
                 $trail[] = self::crumb($county->name, '/' . $county->slug . '/');
             }
             if ($service) {
                 $trail[] = self::crumb($service->name, '/' . $service->slug . '/');
+                $trail[] = self::crumb(
+                    $service->name . ' in ' . ($town?->name ?? 'Town'),
+                    $page->full_path,
+                );
+            } else {
+                $trail[] = self::crumb(
+                    ($town?->name ?? 'Town') . ', CT',
+                    $page->full_path,
+                );
             }
-            $trail[] = self::crumb(
-                ($service?->name ?? 'Service') . ' in ' . ($town?->name ?? 'Town'),
-                $page->full_path,
-            );
             return $trail;
         }
 

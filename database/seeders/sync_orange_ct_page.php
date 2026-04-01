@@ -1,0 +1,498 @@
+<?php
+
+use App\Http\Controllers\Api\PageController as ApiPageController;
+use App\Models\Page;
+use App\Models\Section;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
+
+$pagePayload = [
+    'full_path' => '/new-haven-county/orange-ct',
+    'template_key' => 'office',
+    'status' => 'published',
+    'published_at' => now(),
+    'seo_title' => 'Home Remodeling Orange, CT | BuiltWell CT',
+    'seo_description' => 'Kitchen, bathroom, basement, and flooring remodeling in Orange, CT. Visit our office at 206A Boston Post Road. CT HIC #0668405. Get a free estimate today.',
+    'canonical_url' => 'https://buildwellct.com/new-haven-county/orange-ct/',
+    'og_image_alt' => 'BuiltWell CT office at 206A Boston Post Road, Orange, Connecticut',
+    'robots' => 'index, follow',
+];
+
+$rich = static fn (
+    string $eyebrow,
+    string $title,
+    string $content,
+    array $overrides = []
+): array => array_merge([
+    'eyebrow' => $eyebrow,
+    'title' => $title,
+    'highlight_text' => null,
+    'content' => $content,
+    'image' => null,
+    'image_alt' => null,
+    'image_position' => 'right',
+    'cta' => null,
+    'align' => 'left',
+    'variant' => 'default',
+    'style_variant' => 'default',
+    'surface' => 'default',
+    'container_width' => 'default',
+    'spacing' => 'normal',
+    'anchor_id' => null,
+], $overrides);
+
+$sections = [
+    [
+        'type' => 'hero',
+        'data' => [
+            'headline' => 'Home Remodeling in Orange, CT',
+            'subheadline' => 'Home remodeling in Orange, CT from our headquarters at 206A Boston Post Road. Kitchens, bathrooms, basements, and additions for your neighborhood. Licensed and insured.',
+            'background_image' => '/portfolio/builtwell-team-office-exterior-ct.jpg',
+            'background_image_alt' => 'BuiltWell CT office exterior at 206A Boston Post Road in Orange, Connecticut',
+            'overlay' => ['opacity' => 0.45],
+            'cta_primary' => ['label' => 'Get Your Free Estimate', 'url' => '#contact'],
+            'cta_secondary' => ['label' => 'New Haven: (203) 466-9148', 'url' => 'tel:2034669148'],
+            'badges' => [],
+        ],
+    ],
+    [
+        'type' => 'trust_bar',
+        'data' => [
+            'variant' => 'hero',
+            'items' => [
+                ['label' => 'Years of Experience', 'value' => '15+', 'icon' => 'clock'],
+                ['label' => 'Completed Projects', 'value' => '100+', 'icon' => 'check-circle'],
+                ['label' => 'Google Rating', 'value' => '4.9', 'icon' => 'star', 'url' => 'https://www.google.com/search?q=builtwell+ct+reviews'],
+                ['label' => 'Fully Bonded and Insured', 'value' => null, 'icon' => 'shield'],
+            ],
+        ],
+    ],
+    [
+        'type' => 'rich_text',
+        'data' => $rich(
+            'Orange Remodeling',
+            'Professional Home Remodeling in Orange, CT',
+            "Home remodeling in Orange, CT costs $25,000 to $150,000+ for kitchens, $15,000 to $80,000+ for bathrooms, and $25,000 to $100,000+ for basements, with all work handled from our office at 206A Boston Post Road. Orange's housing stock was built primarily between the 1950s and 1980s, including split-levels, colonials, and raised ranches. We know the construction patterns, permit requirements, and building department process here because this is where we work every day. We hold CT HIC License #0668405 and serve Orange and the rest of [New Haven County](/new-haven-county/).\n\nWe have worked in nearly every neighborhood in town. We know what to expect when we open up a wall in a 1965 split-level on Race Brook Road. We know the Orange building department's permit process and how to move through it without unnecessary delays. That is not something a contractor coming in from outside the area can offer.\n\nOrange homeowners tend to be practical and direct. They have lived in their homes for years and they take care of them. When they decide it is time to redo a kitchen or finish a basement they have been using for storage since 1998, they want a contractor who shows up when they say they will, communicates clearly throughout the project, and delivers work that holds up. That is what we are here to do.\n\nWhether you are updating a bathroom that has been the same since the original owner, refinishing hardwood floors throughout the main level, or finally finishing that basement, we know your house and we know your town, because it is our town too.",
+            [
+                'anchor_id' => 'orange-intro',
+                'align' => 'center',
+                'container_width' => 'wide',
+                'image' => '/images/areas/orange-ct-neighborhood.jpg',
+                'image_alt' => 'Residential street in Orange CT with colonial homes served by BuiltWell',
+            ]
+        ),
+    ],
+    [
+        'type' => 'full_width_text_dark',
+        'data' => [
+            'title' => 'Orange Homes and What They Require',
+            'subtitle' => "Orange's housing stock consists primarily of split-levels, colonials, and raised ranches built between the 1950s and 1980s. These homes were solidly constructed for their era, but most still have original kitchens, bathrooms, electrical panels, and plumbing that predate modern standards. Knowing what is behind the walls before work begins is what separates a smooth project from one full of surprises.",
+            'alignment' => 'center',
+        ],
+    ],
+    [
+        'type' => 'rich_text_image',
+        'data' => [
+            'title' => '1950s to 1980s Split-Levels and Colonials',
+            'content' => "The majority of Orange's housing stock consists of split-levels and colonials built during the postwar boom through the early 1980s. These homes were built well for their era, but most still have their original kitchens and bathrooms, wiring that predates modern electrical loads, and layouts designed for a different way of living. Galley kitchens, small bathrooms, and closed-off floor plans are standard.\n\nWhen homeowners are ready to update, the work typically goes beyond cosmetics. We regularly open up load-bearing walls between kitchens and dining areas, upgrade 100-amp panels to 200-amp service, and reconfigure plumbing that has not been touched since the Johnson administration. These are the projects we handle every week in Orange.",
+            'image' => '/images/areas/orange-ct-split-level.jpg',
+            'image_alt' => 'Split-level home typical of 1960s-1970s housing stock in Orange CT',
+            'image_position' => 'left',
+        ],
+    ],
+    [
+        'type' => 'rich_text_image',
+        'data' => [
+            'title' => 'What We Find When We Open the Walls',
+            'content' => "Homes built in Orange during the 1960s and 1970s commonly contain original copper or galvanized plumbing, undersized electrical panels with fuse boxes instead of breakers, and in some cases, 9x9 vinyl floor tiles that may contain asbestos. None of this is unusual, and none of it is a reason to avoid renovation. It just requires a contractor who knows what to look for and how to handle it properly.\n\nWe assess these conditions during the initial consultation so you know exactly what the project involves before any work begins. If abatement is required, we coordinate with certified environmental firms. If the panel needs upgrading, we plan for it in the original scope, not as a surprise change order after demolition starts.",
+            'image' => '/images/areas/basement-finishing-framing-ct-01.jpeg',
+            'image_alt' => 'Basement framing and structural work in a Connecticut home renovation',
+            'image_position' => 'right',
+        ],
+    ],
+    [
+        'type' => 'rich_text_image',
+        'data' => [
+            'title' => 'Your Neighborhood, Our Neighborhood',
+            'content' => "We are headquartered right here in Orange on Boston Post Road. That means we are not commuting an hour to get to your house. When you call our office, you are reaching people who drive the same roads you do, who know the building inspector by name, and who understand how the town operates.\n\nThat proximity shows up in faster response times, smoother permitting, and a level of familiarity with the area that out-of-town contractors simply do not have. We have worked on Race Brook Road, on Racebrook Farms, on Grassy Hill, and in the neighborhoods off of Orange Center Road. When a homeowner two streets from our office calls about a project, it is personal. This is our community, and the quality of our work here is our most visible calling card.",
+            'image' => '/portfolio/builtwell-team-office-exterior-ct.jpg',
+            'image_alt' => 'BuiltWell CT office exterior at 206A Boston Post Road in Orange, Connecticut',
+            'image_position' => 'left',
+        ],
+    ],
+    [
+        'type' => 'accordion_list',
+        'data' => [
+            'eyebrow' => 'Neighborhoods',
+            'title' => 'Orange Neighborhoods: What They Mean for Your Remodeling Project',
+            'highlight_text' => 'Your Remodeling Project',
+            'subtitle' => "Orange's neighborhoods were built across different decades and in different styles, and each area has specific construction patterns that shape what renovation work involves.",
+            'items' => [
+                ['title' => 'Race Brook Road and Turkey Hill', 'content' => 'Race Brook Road and Turkey Hill feature 1960s and 1970s colonials and raised ranches on wooded lots with larger properties. These homes are common renovation candidates for kitchen and bathroom updates, with original builder-grade interiors that have served their purpose but are ready for modernization. The larger lot sizes also make these properties strong candidates for additions and outdoor living projects. Construction in this area is typical of the era: solid framing, but original electrical, plumbing, and insulation that predate current standards.'],
+                ['title' => 'Grassy Hill', 'content' => "Grassy Hill contains a mix of split-levels and colonials from the 1950s through 1970s. This is a mature neighborhood with original builder-grade interiors that are ready for renovation. Kitchens, bathrooms, and basements in these homes tend to have their original finishes and systems. The split-level floor plans in this area often prompt homeowners to request open floor plan conversions that remove the wall between the kitchen and adjacent living space, which requires structural beam work to maintain load paths."],
+                ['title' => 'Orange Center Road', 'content' => "Orange Center Road has some of the town's older housing stock near the town center, with some homes dating to the early 1900s. The mix of colonials and capes here carries architectural character worth preserving during renovation. Older homes in this area may have original plaster walls, knob-and-tube wiring remnants, and stone or block foundations that require assessment before major interior work begins. Renovation projects here often balance modernization with preservation of the home's original character."],
+                ['title' => 'Racebrook Farms', 'content' => 'Racebrook Farms is a newer development from the 1990s and 2000s, consisting of colonials and contemporaries built with builder-grade materials that are now reaching end of life. Kitchens with original laminate countertops, stock cabinetry, and basic fixtures are prime candidates for mid-range to high-end renovation. These homes have modern framing and systems, which typically makes renovation less complex than in older Orange neighborhoods, but the builder-grade materials were selected for cost rather than longevity and are showing their age.'],
+                ['title' => 'Peck Lane and Dogwood Road Area', 'content' => "The Peck Lane and Dogwood Road area contains 1960s and 1970s split-levels and bi-levels typical of Orange's suburban buildout during that period. These homes are common candidates for basement finishing and open floor plan conversions. The split-level and bi-level layouts have compartmentalized rooms that homeowners frequently want opened up, and the lower levels offer usable square footage that can be finished into living space. Electrical panels in these homes are often the original 100-amp service that needs upgrading during renovation."],
+                ['title' => 'Indian River Road and Route 34 Corridor', 'content' => 'Indian River Road and the Route 34 corridor contain a mix of housing from different periods, with some properties retaining a more rural character on larger lots. These properties frequently benefit from additions and outdoor living projects that take advantage of the extra land. The variety of construction periods means renovation work here requires careful assessment of what is behind the walls before scoping a project. Properties near watercourses in this area may require Inland Wetlands Commission review for exterior work and additions.'],
+            ],
+        ],
+    ],
+    [
+        'type' => 'rich_text',
+        'data' => $rich(
+            'Permits and Approvals',
+            'Permitting and Approvals in Orange, CT',
+            "All building permits in Orange are issued through the Orange Building Department at the Town Hall on Orange Center Road. The permit process for residential remodeling projects is straightforward but thorough. Standard permit review for residential projects typically runs two to four weeks depending on scope and the time of year. Required documentation includes scaled drawings, a scope of work description, contractor license verification, and property survey information for projects that affect the building footprint.\n\nAny project involving structural changes, electrical work, plumbing modifications, or mechanical system alterations requires a permit. Kitchen and bathroom remodels that move plumbing or add circuits require separate trade permits for electrical and plumbing in addition to the building permit. We handle all permit applications, plan submissions, and inspection coordination as part of every project in Orange.\n\nH3: Zoning and Setbacks\n\nOrange's zoning regulations include setback requirements, lot coverage limits, and height restrictions that affect home additions, deck construction, and exterior modifications. Properties in Orange's residential zones have specific dimensional requirements that must be verified before construction begins. A zoning permit is required in addition to the building permit for any project that changes the building footprint. We verify all zoning compliance and setback dimensions before submitting permit applications to avoid delays.\n\nH3: Inland Wetlands\n\nOrange has an active Inland Wetlands Commission that reviews projects on properties near watercourses, wetlands, and regulated areas. Properties along the Indian River, the Wepawaug River, and other drainage corridors may require Inland Wetlands review for exterior work, additions, grading changes, and any activity within regulated setback areas. We check wetlands status during the consultation phase and coordinate any required applications before construction begins.",
+            ['anchor_id' => 'orange-permits', 'container_width' => 'wide']
+        ),
+    ],
+    [
+        'type' => 'rich_text',
+        'data' => $rich(
+            'Investment',
+            'What Remodeling Costs in Orange, CT',
+            "Home remodeling in Orange, CT costs $25,000 to $150,000+ for kitchens, $15,000 to $80,000+ for bathrooms, and $25,000 to $100,000+ for basements. As our home base, we know the local permit costs and building department requirements here better than anywhere.",
+            ['anchor_id' => 'orange-costs-intro', 'container_width' => 'wide']
+        ),
+    ],
+    [
+        'type' => 'pricing_table',
+        'data' => [
+            'title' => 'Kitchen Remodeling Costs in Orange, CT',
+            'subtitle' => "Orange's 1960s-1980s housing stock means kitchen renovations frequently involve updating original electrical panels from 100 to 200 amps, replacing galvanized supply lines, and addressing asbestos-containing floor tiles - costs that are part of the scope, not surprises.",
+            'columns' => ['Tier', 'Scope', 'Typical Range'],
+            'rows' => [
+                ['label' => 'Basic', 'notes' => 'Cabinet refacing, new counters, appliances, paint', 'price' => '$25,000 - $50,000'],
+                ['label' => 'Mid-Range', 'notes' => 'New cabinets, countertops, flooring, appliances, lighting', 'price' => '$50,000 - $90,000'],
+                ['label' => 'High-End', 'notes' => 'Custom cabinets, layout changes, premium appliances', 'price' => '$90,000 - $150,000+'],
+            ],
+        ],
+    ],
+    [
+        'type' => 'pricing_table',
+        'data' => [
+            'title' => 'Bathroom Remodeling Costs in Orange, CT',
+            'columns' => ['Tier', 'Scope', 'Typical Range'],
+            'rows' => [
+                ['label' => 'Basic', 'notes' => 'Fixtures, vanity, flooring, paint', 'price' => '$15,000 - $25,000'],
+                ['label' => 'Mid-Range', 'notes' => 'Full gut, new tile, shower or tub, vanity, lighting', 'price' => '$25,000 - $55,000'],
+                ['label' => 'High-End', 'notes' => 'Walk-in shower, premium fixtures, layout changes', 'price' => '$55,000 - $80,000+'],
+            ],
+        ],
+    ],
+    [
+        'type' => 'pricing_table',
+        'data' => [
+            'title' => 'Basement Finishing Costs in Orange, CT',
+            'subtitle' => 'Orange split-levels often have partially finished lower levels that make excellent candidates for full finishing. Moisture assessment is standard before framing begins.',
+            'columns' => ['Tier', 'Scope', 'Typical Range'],
+            'rows' => [
+                ['label' => 'Basic', 'notes' => 'Framing, drywall, basic flooring, lighting, paint', 'price' => '$25,000 - $45,000'],
+                ['label' => 'Mid-Range', 'notes' => 'Multiple rooms, upgraded flooring, bathroom rough-in', 'price' => '$45,000 - $70,000'],
+                ['label' => 'High-End', 'notes' => 'Full bathroom, wet bar, custom built-ins', 'price' => '$70,000 - $100,000+'],
+            ],
+        ],
+    ],
+    [
+        'type' => 'pricing_table',
+        'data' => [
+            'title' => 'Flooring Costs in Orange, CT',
+            'subtitle' => 'Many Orange homes have original hardwood floors under carpet that are worth refinishing rather than replacing. We assess what is there and give you an honest recommendation.',
+            'columns' => ['Material', 'Best For', 'Installed Cost/sq ft'],
+            'rows' => [
+                ['label' => 'Solid Hardwood', 'notes' => 'Living rooms, dining rooms, bedrooms', 'price' => '$12 - $25'],
+                ['label' => 'Engineered Hardwood', 'notes' => 'Basements, moisture-prone areas', 'price' => '$8 - $18'],
+                ['label' => 'Luxury Vinyl Plank', 'notes' => 'Basements, kitchens, high-traffic', 'price' => '$6 - $14'],
+                ['label' => 'Tile', 'notes' => 'Bathrooms, kitchens, entryways', 'price' => '$12 - $25'],
+                ['label' => 'Carpet', 'notes' => 'Bedrooms, basement rec rooms', 'price' => '$4 - $12'],
+            ],
+        ],
+    ],
+    [
+        'type' => 'pricing_table',
+        'data' => [
+            'title' => 'Home Additions Costs in Orange, CT',
+            'columns' => ['Type', 'Scope', 'Typical Range'],
+            'rows' => [
+                ['label' => 'Bump-Out', 'notes' => 'Single-room expansion, 100-200 sq ft', 'price' => '$150 - $400/sq ft'],
+                ['label' => 'Single-Story', 'notes' => 'Family room, sunroom, or garage conversion', 'price' => '$150 - $400/sq ft'],
+                ['label' => 'Second-Story', 'notes' => 'Full second floor with structural support', 'price' => '$200 - $400/sq ft'],
+            ],
+        ],
+    ],
+    [
+        'type' => 'pricing_table',
+        'data' => [
+            'title' => 'Interior Painting Costs in Orange, CT',
+            'columns' => ['Scope', 'Details', 'Typical Range'],
+            'rows' => [
+                ['label' => 'Per Square Foot', 'notes' => 'Walls, ceilings, trim, proper surface prep', 'price' => '$3 - $6/sq ft'],
+                ['label' => 'Single Room', 'notes' => 'Average bedroom or living room', 'price' => '$800 - $2,500'],
+                ['label' => 'Whole Home', 'notes' => 'Full interior, all rooms, trim, doors', 'price' => '$8,000 - $25,000+'],
+            ],
+        ],
+    ],
+    [
+        'type' => 'pricing_table',
+        'data' => [
+            'title' => 'Interior Carpentry Costs in Orange, CT',
+            'subtitle' => 'Orange colonials and split-levels often have original trim and built-in cabinetry that homeowners want preserved or updated during renovation. Custom millwork matching these mid-century profiles adds both material cost and lead time.',
+            'columns' => ['Scope', 'Details', 'Typical Range'],
+            'rows' => [
+                ['label' => 'Hourly Rate', 'notes' => 'Custom trim, built-ins, shelving, wainscoting', 'price' => '$75 - $150/hour'],
+                ['label' => 'Crown Molding', 'notes' => 'Per linear foot, installed', 'price' => '$8 - $25/LF'],
+                ['label' => 'Custom Built-Ins', 'notes' => 'Bookcases, window seats, mudroom storage', 'price' => '$3,000 - $15,000+'],
+            ],
+        ],
+    ],
+    [
+        'type' => 'pricing_table',
+        'data' => [
+            'title' => 'Additional Service Costs in Orange, CT',
+            'columns' => ['Service', 'Details', 'Typical Range'],
+            'rows' => [
+                ['label' => 'Attic Conversions', 'notes' => 'Framing, insulation, electrical, flooring, egress', 'price' => '$50,000 - $150,000'],
+                ['label' => 'Decks and Porches', 'notes' => 'Wood, composite, or PVC with railings and permits', 'price' => '$15,000 - $75,000'],
+                ['label' => 'Design and Planning', 'notes' => 'Layout, material selection, 3D rendering, permit drawings', 'price' => '$2,500 - $15,000'],
+                ['label' => 'Comfort and Accessibility', 'notes' => 'Grab bars, walk-in showers, widened doorways, ramps', 'price' => '$5,000 - $50,000'],
+                ['label' => 'Insurance Reconstruction', 'notes' => 'Fire, water, storm damage rebuilds with carrier coordination', 'price' => '$25,000 - $250,000+'],
+            ],
+        ],
+    ],
+    [
+        'type' => 'rich_text',
+        'data' => $rich(
+            '',
+            'What Drives Cost in This Market',
+            "Orange's housing stock creates specific cost drivers that homeowners should understand before budgeting a renovation. Split-level construction adds complexity to structural work because the staggered floor plates create load paths that require careful engineering when walls are opened or removed. Homes built in the 1960s frequently have original systems - 100-amp electrical panels, galvanized plumbing, and outdated HVAC - that require full replacement rather than repair during a major renovation. Asbestos in 9x9 vinyl floor tiles and pipe insulation is common in this era of construction and requires professional abatement when disturbed, adding $2,000 to $8,000 depending on scope. Basement moisture in low-lying areas near the Wepawaug River and other drainage corridors requires waterproofing assessment and mitigation before finishing work can begin. These are not surprises if your contractor knows the area - they are standard scope items that belong in the original estimate.",
+            ['anchor_id' => 'orange-cost-drivers', 'container_width' => 'wide']
+        ),
+    ],
+    [
+        'type' => 'services_grid',
+        'data' => [
+            'eyebrow' => 'Our Services',
+            'title' => 'Our Remodeling Services in Orange, CT',
+            'highlight_text' => 'Orange, CT',
+            'subtitle' => "BuiltWell CT provides a full range of remodeling services in Orange including kitchen renovation, bathroom remodeling, basement finishing, flooring, home additions, interior painting, carpentry, attic conversions, decks, design, and accessibility modifications, all permitted and backed by CT HIC License #0668405. Orange's split-levels, colonials, and 1950s-1980s housing stock shape how we approach every project.",
+            'initial_visible_count' => 6,
+            'toggle_label' => 'Show 6 More Services',
+            'toggle_less_label' => 'Show Less',
+            'items' => [
+                ['title' => 'Kitchen Remodeling in Orange, CT', 'summary' => 'Full kitchen renovations for Orange homes, including cabinetry, countertops, tile, electrical, plumbing, and permits.', 'image' => '/services/kitchen-remodeling-ct.jpg', 'image_alt' => 'Kitchen remodeling in Orange CT by BuiltWell', 'url' => '/kitchen-remodeling/orange-ct/', 'cta_label' => 'Get Started', 'price' => '$25K-$150K+', 'timeline' => '6-12 weeks'],
+                ['title' => 'Bathroom Remodeling in Orange, CT', 'summary' => 'Complete bathroom renovations for Orange colonials and split-levels - tile, vanities, showers, tubs, and plumbing upgrades.', 'image' => '/services/bathroom-remodeling-ct.jpg', 'image_alt' => 'Bathroom remodeling in Orange CT by BuiltWell', 'url' => '/bathroom-remodeling/orange-ct/', 'cta_label' => 'Get Started', 'price' => '$15K-$80K+', 'timeline' => '3-6 weeks'],
+                ['title' => 'Basement Finishing in Orange, CT', 'summary' => "Convert unfinished basements in Orange's 1950s-1980s homes into living space with proper waterproofing and egress.", 'image' => '/services/basement-finishing-ct.jpg', 'image_alt' => 'Basement finishing in Orange CT by BuiltWell', 'url' => '/basement-finishing/orange-ct/', 'cta_label' => 'Get Started', 'price' => '$25K-$100K+', 'timeline' => '4-8 weeks'],
+                ['title' => 'Flooring in Orange, CT', 'summary' => 'Hardwood, LVP, tile, and engineered wood with expert subfloor preparation for Orange homes.', 'image' => '/services/flooring-installation-ct.jpg', 'image_alt' => 'Flooring installation in Orange CT by BuiltWell', 'url' => '/flooring/orange-ct/', 'cta_label' => 'Get Started', 'price' => '$6-$25/sq ft', 'timeline' => '2-5 days'],
+                ['title' => 'Home Additions in Orange, CT', 'summary' => 'Single-story and second-story additions, sunrooms, and bump-outs for Orange split-levels and colonials with full structural work.', 'image' => '/services/home-additions-ct.jpg', 'image_alt' => 'Home additions in Orange CT by BuiltWell', 'url' => '/home-additions/', 'cta_label' => 'Get Started', 'price' => '$150-$400/sq ft', 'timeline' => '8-16 weeks'],
+                ['title' => 'Interior Painting in Orange, CT', 'summary' => 'Walls, ceilings, trim, doors, and built-ins in Orange homes with professional-grade paints and proper prep.', 'image' => '/services/interior-painting-ct.jpg', 'image_alt' => 'Interior painting in Orange CT by BuiltWell', 'url' => '/interior-painting/', 'cta_label' => 'Get Started', 'price' => '$3-$6/sq ft', 'timeline' => '2-5 days'],
+                ['title' => 'Interior Carpentry in Orange, CT', 'summary' => 'Custom millwork, built-in cabinetry, wainscoting, crown molding, coffered ceilings, closet systems, and finish trim for Orange residences.', 'image' => '/services/interior-carpentry-ct.jpg', 'image_alt' => 'Interior carpentry in Orange CT by BuiltWell', 'url' => '/interior-carpentry/', 'cta_label' => 'Get Started', 'price' => '$75-$150/hr', 'timeline' => 'Varies'],
+                ['title' => 'Attic Conversions in Orange, CT', 'summary' => 'Converting unfinished attics in Orange into bedrooms, offices, or playrooms with structural assessment through final finish.', 'image' => '/services/attic-conversions-ct.jpg', 'image_alt' => 'Attic conversion in Orange CT by BuiltWell', 'url' => '/attic-conversions/', 'cta_label' => 'Get Started', 'price' => '$50K-$150K', 'timeline' => '6-12 weeks'],
+                ['title' => 'Decks and Porches in Orange, CT', 'summary' => 'Pressure-treated lumber, composite, and hardwood for Orange outdoor spaces. Covered porches, screened-in structures, and multi-level decks.', 'image' => '/services/decks-porches-ct.jpg', 'image_alt' => 'Deck and porch construction in Orange CT by BuiltWell', 'url' => '/decks-porches/', 'cta_label' => 'Get Started', 'price' => '$15K-$75K', 'timeline' => '2-4 weeks'],
+                ['title' => 'Design and Planning in Orange, CT', 'summary' => 'Space planning, material selection, finish coordination, and project documentation for Orange remodeling projects before construction begins.', 'image' => '/services/design-planning-ct.jpg', 'image_alt' => 'Design and planning in Orange CT by BuiltWell', 'url' => '/remodeling-design-planning/', 'cta_label' => 'Get Started', 'price' => '$2.5K-$15K', 'timeline' => '2-6 weeks'],
+                ['title' => 'Comfort and Accessibility in Orange, CT', 'summary' => 'Grab bars, roll-in showers, wider doorways, ramp installation, and first-floor adaptations for Orange homeowners of all ages and abilities.', 'image' => '/services/comfort-accessibility-ct.jpg', 'image_alt' => 'Comfort and accessibility remodeling in Orange CT by BuiltWell', 'url' => '/comfort-accessibility-remodeling/', 'cta_label' => 'Get Started', 'price' => '$5K-$50K', 'timeline' => '1-4 weeks'],
+                ['title' => 'Insurance Reconstruction in Orange, CT', 'summary' => 'Rebuilding Orange homes after fire, water, and storm damage. Full reconstruction working directly with your insurance carrier.', 'image' => '/portfolio/builtwell-contractor-handshake-arrival-ct-optimized.jpg', 'image_alt' => 'Insurance reconstruction in Orange CT by BuiltWell', 'url' => '/insurance-restoration/', 'cta_label' => 'Get Started', 'price' => '$25K-$250K+', 'timeline' => '4-16 weeks'],
+            ],
+        ],
+    ],
+    [
+        'type' => 'cta_block',
+        'data' => [
+            'title' => 'Ready to Remodel in Orange?',
+            'subtitle' => 'Right from our headquarters on Boston Post Road - your neighbors trust us with their homes. We know Orange inside and out.',
+            'button' => ['label' => 'Get Your Free Estimate', 'url' => '#contact'],
+            'subtext' => 'On-site or remote via Google Meet. No charge, no obligation.',
+            'variant' => 'default',
+        ],
+    ],
+    [
+        'type' => 'rich_text',
+        'data' => $rich(
+            'Working With Us',
+            'What to Expect Working With BuiltWell',
+            "We handle all Orange permits, Building Department submissions, zoning verification, Inland Wetlands coordination where applicable, inspection scheduling, and subcontractor management under CT HIC License #0668405, with daily progress updates and a five-step process covering consultation through final walkthrough. We carry full liability insurance and workers' compensation, and we do not start a project until permits are pulled and the scope is in writing with a clear timeline attached.\n\nOur five-step process covers every project regardless of scale: Consultation, Planning, Selections, Build, and Walkthrough. You can read through the full process at [/process/](/process/). In practice, what this means for an Orange project is that the planning phase accounts for the specific construction patterns of the home's era, the permit requirements of the Orange Building Department, and the material and system conditions that are standard in housing stock from the 1950s through 1980s.\n\nDuring active construction, you receive daily updates on progress and a clean job site at the end of every workday. If something unexpected turns up inside a wall, you hear from us that day with an explanation of what we found and your options before we proceed.\n\nH3: New Haven County Project Reference\n\nOur work in New Haven County includes a whole-home restoration in nearby Hamden, where the project involved flooring, interior painting, bathroom remodeling, and drywall throughout a home that had sustained significant damage. \"We were devastated when we saw the damage. BuiltWell took everything off our plate,\" said the Martins, Hamden. You can read the full case study at [/case-studies/whole-home-restoration-hamden/](/case-studies/whole-home-restoration-hamden/).\n\nOrange projects are served from our [Orange, CT office](/new-haven-county/orange-ct/) at 206A Boston Post Road. For county-level context on the full scope of what we do in this market, visit [/new-haven-county/](/new-haven-county/).",
+            ['anchor_id' => 'orange-expect', 'container_width' => 'narrow']
+        ),
+    ],
+    [
+        'type' => 'faq_list',
+        'data' => [
+            'eyebrow' => 'Common Questions',
+            'title' => 'Frequently Asked Questions: Orange Remodeling',
+            'highlight_text' => 'Orange Remodeling',
+            'subtitle' => 'Orange homeowners most commonly ask about remodeling costs, split-level renovation challenges, project timelines, and what to expect when working with a local contractor.',
+            'items' => [
+                ['question' => 'How much does a kitchen remodel cost in Orange, CT?', 'answer' => 'A kitchen remodel in Orange, CT typically costs $30,000 to $50,000 for a minor refresh and $60,000 to $120,000 for a mid-range gut renovation with new cabinets, countertops, and flooring. High-end custom kitchens with structural changes run $120,000 to $200,000. Many Orange homes are split-levels or raised ranches built in the 1960s and 1970s, and kitchen renovations in these layouts often involve opening the wall between the kitchen and adjacent family room to create an open floor plan. That structural modification adds $8,000 to $15,000 for beam work and finishing. We provide detailed pricing during your free consultation so the number reflects your actual kitchen, not an average.'],
+                ['question' => 'What are common renovation challenges in Orange, CT split-level homes?', 'answer' => 'Split-level homes in Orange present specific renovation challenges including half-level transitions, load-bearing walls between levels, and small compartmentalized rooms that homeowners want to open up. The staggered floor plates mean that structural modifications require careful engineering because walls that appear non-structural often carry loads from the level above. Electrical panels in 1960s and 1970s split-levels are frequently 100-amp systems that need upgrading during a major renovation. Basement levels in Orange split-levels tend to have 7-foot ceilings, which limits finishing options but can still work for rec rooms, home offices, or laundry areas. We have renovated dozens of split-levels in Orange and neighboring Woodbridge and know exactly where the common structural and mechanical issues occur in these floor plans.'],
+                ['question' => 'Can I finish the basement in my Orange, CT split-level?', 'answer' => 'Yes, most basements in Orange split-level homes can be finished, though ceiling height and moisture conditions will determine what the space can realistically become. Basement finishing in Orange typically costs $25,000 to $50,000 for a standard 400 to 600 square foot space. Lower-level basements in split-levels often have 7-foot ceilings, which meets Connecticut code for habitable space but feels tight with a dropped ceiling, so we typically use drywall ceilings or exposed-and-painted options to preserve height. Before framing, we assess moisture conditions and install any necessary drainage or vapor barrier systems. Orange sits on mostly well-drained soil, but homes near the Wepawaug River or in lower elevations may need interior drainage before finishing.'],
+                ['question' => 'How long does a full home renovation take in Orange, CT?', 'answer' => 'A full home renovation in Orange typically takes 3 to 6 months of active construction depending on the scope and whether structural changes are involved. A whole-house renovation that includes kitchen, bathrooms, flooring, and paint without structural work runs closer to 3 to 4 months. Projects that involve additions, removing walls, or reconfiguring the layout run 5 to 6 months or longer. Permit turnaround in Orange is generally faster than larger municipalities, usually 2 to 4 weeks for residential projects. We build the permit timeline into the project schedule during planning so your start date reflects what is actually achievable.'],
+                ['question' => 'How do I start an insurance reconstruction project in Orange, CT?', 'answer' => "Starting an insurance reconstruction project in Orange begins with filing your claim with your homeowner's insurance carrier and having an adjuster assess the damage to your property. Once your claim is open, we can step in to document the full scope of damage, provide detailed rebuild estimates, and coordinate directly with your carrier. We work with State Farm, Liberty Mutual, Travelers, The Hartford, and other carriers that commonly insure Orange homes. We handle supplemental documentation when the adjuster's initial estimate does not cover the full rebuild scope, which is common on fire and water damage projects where hidden damage becomes apparent during demolition. We bill your insurance company directly, so you are not managing payments between us and your carrier. Our office is in Orange, so we can respond quickly to emergency situations. We hold CT HIC License #0668405 and carry the liability and workers' comp coverage that insurance carriers require from reconstruction contractors."],
+                ['question' => 'Does BuiltWell handle permits for remodeling in Orange, CT?', 'answer' => "Yes, we handle all permit applications and inspection coordination for every remodeling project we take on in Orange, CT. Orange's Building Department at Town Hall requires permits for any work involving structural changes, electrical modifications, plumbing, or mechanical systems. We prepare and submit all required documentation, schedule inspections at each phase of the project, and ensure the work passes inspection before moving to the next stage. Permit fees in Orange are based on project value and are included in our project timeline during planning. You do not need to visit the Building Department or coordinate inspections yourself. We hold CT HIC License #0668405, which is required for any contractor performing residential construction in Connecticut."],
+                ['question' => 'Why should I hire a local Orange, CT contractor instead of one from out of town?', 'answer' => "Hiring a local Orange contractor means working with a team that knows the town's housing stock, building department, and inspection process firsthand. Our office is in Orange, and most of the homes we work on are within 20 minutes of our shop. That proximity matters for project management, response time, and accountability. We know that most of Orange's residential construction dates to the 1960s and 1970s, which means split-level and raised ranch floor plans with specific structural, electrical, and plumbing characteristics that a contractor from outside the area may not anticipate. We also have established relationships with Orange's Building Department and know the local inspection expectations. If something comes up after your project is complete, we are a local phone call away, not an out-of-area contractor who has moved on to a different market."],
+            ],
+        ],
+    ],
+    [
+        'type' => 'areas_served',
+        'data' => [
+            'eyebrow' => 'Where We Work',
+            'title' => 'Serving Two Connecticut Counties',
+            'highlight_text' => 'Connecticut Counties',
+            'subtitle' => 'We provide home remodeling throughout New Haven and Fairfield Counties, with dedicated teams serving both regions from our Orange office.',
+            'counties' => [
+                [
+                    'name' => 'New Haven County',
+                    'image' => '/images/areas/new-haven-county.jpg',
+                    'image_alt' => 'New Haven County Connecticut towns served by BuiltWell CT from our Orange office',
+                    'url' => '/new-haven-county/',
+                    'phone' => '(203) 466-9148',
+                    'description' => 'Served from our Orange, CT office. We cover every town in New Haven County with crews who know the housing stock and building departments throughout the area.',
+                    'towns' => ['Orange', 'New Haven', 'Hamden', 'Branford', 'Guilford', 'Madison', 'Woodbridge', 'Milford', 'Cheshire'],
+                    'extra_towns' => ['Ansonia', 'Beacon Falls', 'Bethany', 'Derby', 'East Haven', 'Meriden', 'Middlebury', 'Naugatuck', 'North Branford', 'North Haven', 'Oxford', 'Prospect', 'Seymour', 'Southbury', 'Wallingford', 'Waterbury', 'West Haven', 'Wolcott'],
+                    'town_links' => ['New Haven' => '/new-haven-county/new-haven-ct/', 'Hamden' => '/new-haven-county/', 'Branford' => '/new-haven-county/', 'Guilford' => '/new-haven-county/', 'Madison' => '/new-haven-county/madison-ct/', 'Woodbridge' => '/new-haven-county/', 'Milford' => '/new-haven-county/'],
+                    'cta_label' => 'Learn more about New Haven County',
+                ],
+                [
+                    'name' => 'Fairfield County',
+                    'image' => '/images/areas/fairfield-county.jpg',
+                    'image_alt' => 'Fairfield County Connecticut towns served by BuiltWell CT',
+                    'url' => '/fairfield-county/',
+                    'phone' => '(203) 919-9616',
+                    'description' => 'Served by our Fairfield County Service Area Team. We cover every town in the county with dedicated local crews who know the housing stock and building departments.',
+                    'towns' => ['Greenwich', 'Stamford', 'Norwalk', 'Westport', 'Darien', 'New Canaan', 'Fairfield', 'Ridgefield', 'Trumbull'],
+                    'extra_towns' => ['Bethel', 'Bridgeport', 'Brookfield', 'Danbury', 'Easton', 'Monroe', 'New Fairfield', 'Newtown', 'Redding', 'Shelton', 'Sherman', 'Stratford', 'Weston', 'Wilton'],
+                    'town_links' => ['Greenwich' => '/fairfield-county/greenwich-ct/', 'Stamford' => '/fairfield-county/', 'Norwalk' => '/fairfield-county/', 'Westport' => '/fairfield-county/westport-ct/', 'Darien' => '/fairfield-county/', 'New Canaan' => '/fairfield-county/', 'Fairfield' => '/fairfield-county/', 'Ridgefield' => '/fairfield-county/'],
+                    'cta_label' => 'Learn more about Fairfield County',
+                ],
+            ],
+        ],
+    ],
+    [
+        'type' => 'trust_bar',
+        'data' => [
+            'variant' => 'strip',
+            'items' => [
+                ['icon' => 'star', 'label' => 'Google Rating', 'value' => '4.9', 'url' => 'https://www.google.com/search?q=builtwell+ct+reviews'],
+                ['icon' => 'check-circle', 'label' => 'Trusted on', 'value' => 'Houzz', 'url' => 'https://www.houzz.com/professionals/general-contractors/builtwell-ct'],
+                ['icon' => 'license', 'label' => 'CT HIC License', 'value' => '#0668405', 'url' => 'https://www.elicense.ct.gov/Lookup/LicenseLookup.aspx'],
+                ['icon' => 'check-circle', 'label' => 'Verified on', 'value' => 'Angi', 'url' => 'https://www.angi.com/companylist/us/ct/orange/builtwell-ct-reviews-'],
+            ],
+        ],
+    ],
+    [
+        'type' => 'lead_form',
+        'data' => [
+            'eyebrow' => 'Get Started',
+            'title' => 'Schedule Your Free Consultation',
+            'title_highlight' => 'Consultation',
+            'subtitle' => 'On-site or remote (Google Meet or Zoom). Call (203) 466-9148 or fill out the form below.',
+            'subtitle2' => 'We will confirm your appointment details and the name of the team member visiting within one business day.',
+            'images' => [
+                ['image' => '/team/builtwell-owner-handshake-client-ct-02.jpg', 'alt' => 'BuiltWell CT owner meeting with a Connecticut homeowner for a remodeling consultation'],
+                ['image' => '/portfolio/builtwell-job-site-aerial-ct.jpg', 'alt' => 'BuiltWell CT job site with two vans at a Connecticut home renovation'],
+            ],
+            'fields' => [
+                ['name' => 'consultation_type', 'label' => 'Consultation Type', 'type' => 'radio_group', 'required' => true, 'options' => [
+                    ['label' => 'In-Home Visit', 'value' => 'in-home'],
+                    ['label' => 'Remote (Zoom/Meet)', 'value' => 'remote'],
+                ]],
+                ['name' => 'name', 'label' => 'Name', 'type' => 'text', 'required' => true, 'placeholder' => 'Your full name'],
+                ['name' => 'phone', 'label' => 'Phone', 'type' => 'tel', 'required' => true, 'placeholder' => '(203) 000-0000'],
+                ['name' => 'email', 'label' => 'Email', 'type' => 'email', 'required' => true, 'placeholder' => 'you@email.com'],
+                ['name' => 'zip', 'label' => 'Zip Code', 'type' => 'text', 'required' => true, 'placeholder' => '06477'],
+                ['name' => 'services_needed', 'label' => 'Services Needed', 'type' => 'checkbox_group', 'required' => true, 'options' => [
+                    ['label' => 'Kitchen Remodeling', 'value' => 'Kitchen Remodeling'],
+                    ['label' => 'Bathroom Remodeling', 'value' => 'Bathroom Remodeling'],
+                    ['label' => 'Basement Finishing', 'value' => 'Basement Finishing'],
+                    ['label' => 'Flooring Installation', 'value' => 'Flooring Installation'],
+                    ['label' => 'Home Additions', 'value' => 'Home Additions'],
+                    ['label' => 'Interior Painting', 'value' => 'Interior Painting'],
+                    ['label' => 'Interior Carpentry', 'value' => 'Interior Carpentry'],
+                    ['label' => 'Attic Conversions', 'value' => 'Attic Conversions'],
+                    ['label' => 'Decks and Porches', 'value' => 'Decks and Porches'],
+                    ['label' => 'Design and Planning', 'value' => 'Design and Planning'],
+                    ['label' => 'Comfort and Accessibility', 'value' => 'Comfort and Accessibility'],
+                    ['label' => 'Other', 'value' => 'Other'],
+                ]],
+                ['name' => 'best_time', 'label' => 'Best Time to Contact', 'type' => 'select', 'required' => true, 'options' => [
+                    ['label' => 'Morning (8am - 12pm)', 'value' => 'Morning (8am - 12pm)'],
+                    ['label' => 'Afternoon (12pm - 4pm)', 'value' => 'Afternoon (12pm - 4pm)'],
+                    ['label' => 'Evening (4pm - 6pm)', 'value' => 'Evening (4pm - 6pm)'],
+                    ['label' => 'Anytime', 'value' => 'Anytime'],
+                ]],
+                ['name' => 'contact_method', 'label' => 'Preferred Contact Method', 'type' => 'radio_group', 'required' => true, 'options' => [
+                    ['label' => 'Call', 'value' => 'call'],
+                    ['label' => 'Text', 'value' => 'text'],
+                    ['label' => 'Email', 'value' => 'email'],
+                ]],
+                ['name' => 'project_details', 'label' => 'Tell Us About Your Project', 'type' => 'textarea', 'required' => false, 'placeholder' => 'Tell us about your project, what rooms, what changes, any timeline or budget considerations...'],
+                ['name' => 'photos', 'label' => 'Upload Photos', 'type' => 'file', 'required' => false],
+            ],
+            'submit_label' => 'Get Your Free Estimate',
+            'consent_text' => 'We respond within 24 hours. No spam, no obligation.',
+        ],
+    ],
+    [
+        'type' => 'office_info',
+        'data' => [
+            'eyebrow' => 'Our Office',
+            'title' => 'Orange, CT Headquarters',
+            'subtitle' => null,
+            'address' => '206A Boston Post Road, Orange, CT 06477',
+            'business_hours' => ['Monday - Friday: 8:00 AM - 5:00 PM', 'Saturday: 8:00 AM - 3:00 PM', 'Sunday: Closed'],
+            'phone_label' => 'New Haven County',
+            'phone' => '(203) 466-9148',
+            'phone_secondary_label' => 'Fairfield County',
+            'phone_secondary' => '(203) 919-9616',
+            'email' => 'info@buildwellct.com',
+            'office_image' => null,
+            'office_image_alt' => null,
+            'directions_url' => 'https://www.google.com/maps/place/206A+Boston+Post+Rd,+Orange,+CT+06477',
+            'map_embed_url' => 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2999.8!2d-73.0401!3d41.2784!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89e87d3a7c1e1b3f%3A0x1234567890abcdef!2s206A+Boston+Post+Rd%2C+Orange%2C+CT+06477!5e0!3m2!1sen!2sus!4v1',
+            'note_label' => 'Fairfield County',
+            'note_url' => '/fairfield-county/',
+            'note' => 'Dedicated local team serving Greenwich, Westport, Darien, New Canaan, Stamford, Norwalk, Fairfield, Ridgefield, and all surrounding towns.',
+        ],
+    ],
+    [
+        'type' => 'rich_text',
+        'data' => $rich(
+            '',
+            'Flexible Financing Available',
+            'Get approved in about 60 seconds and start your project today.',
+            ['cta' => ['label' => 'Check Financing Options', 'url' => '/financing/'], 'style_variant' => 'financing_strip', 'spacing' => 'compact']
+        ),
+    ],
+];
+
+DB::transaction(function () use ($pagePayload, $sections): void {
+    $page = Page::query()->firstOrNew(['full_path' => $pagePayload['full_path']]);
+    $page->fill($pagePayload);
+    $page->save();
+    $page->sections()->delete();
+
+    foreach ($sections as $index => $sectionPayload) {
+        Section::query()->create([
+            'page_id' => $page->id,
+            'type' => $sectionPayload['type'],
+            'data' => $sectionPayload['data'],
+            'sort_order' => $index + 1,
+            'is_active' => true,
+        ]);
+    }
+});
+
+ApiPageController::forgetCacheForPath('/new-haven-county/orange-ct');
+Artisan::call('optimize:clear');
+
+$page = Page::query()
+    ->where('full_path', '/new-haven-county/orange-ct')
+    ->with(['sections' => fn ($query) => $query->orderBy('sort_order')])
+    ->firstOrFail();
+
+echo json_encode([
+    'page_id' => $page->id,
+    'full_path' => $page->full_path,
+    'template_key' => $page->template_key,
+    'section_types' => $page->sections->pluck('type')->all(),
+    'section_count' => $page->sections->count(),
+], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES), PHP_EOL;
