@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\MediaAsset;
 use Illuminate\Support\Facades\Storage;
 
 /**
@@ -29,6 +30,14 @@ class MediaUrlResolver
         'cover_image',
         'office_image',
     ];
+
+    /**
+     * Per-request cache: file_path → alt_text from media_assets table.
+     * Avoids repeated DB hits for the same image used on multiple sections.
+     *
+     * @var array<string, string|null>
+     */
+    private static array $altCache = [];
 
     /**
      * Convert a single file_path to an absolute public URL.
@@ -80,10 +89,35 @@ class MediaUrlResolver
             if (is_array($value)) {
                 $value = self::walk($value);
             } elseif (is_string($value) && in_array($key, self::MEDIA_FIELDS, true)) {
-                $value = self::url($value);
+                $rawPath = $value;
+                $value   = self::url($value);
+
+                // If the sibling _alt field exists but is empty, fall back to
+                // the alt_text stored on the media asset itself.
+                $altKey = $key . '_alt';
+                if (array_key_exists($altKey, $data) && empty($data[$altKey])) {
+                    $data[$altKey] = self::mediaAlt($rawPath);
+                }
             }
         }
 
         return $data;
+    }
+
+    /**
+     * Look up alt_text for a file path from the media_assets table.
+     * Results are cached per-request to avoid N+1 queries.
+     */
+    private static function mediaAlt(string $path): ?string
+    {
+        if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) {
+            return null;
+        }
+
+        if (!array_key_exists($path, self::$altCache)) {
+            self::$altCache[$path] = MediaAsset::where('file_path', $path)->value('alt_text');
+        }
+
+        return self::$altCache[$path] ?: null;
     }
 }
