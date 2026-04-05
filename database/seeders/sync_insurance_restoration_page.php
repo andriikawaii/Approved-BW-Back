@@ -4,16 +4,17 @@ use App\Http\Controllers\Api\PageController as ApiPageController;
 use App\Models\Page;
 use App\Models\Section;
 use App\Models\Service;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 
 $servicePayload = [
-    'name' => 'Insurance Restoration',
+    'name' => 'Insurance Reconstruction',
     'slug' => 'insurance-restoration',
-    'short_description' => 'Licensed Connecticut contractor for fire, water, and storm damage reconstruction.',
-    'description' => 'BuiltWell handles full insurance restoration and reconstruction work across Fairfield and New Haven Counties.',
-    'meta_title' => 'Insurance Restoration Services in Connecticut | BuiltWell CT',
-    'meta_description' => 'Licensed CT contractor specializing in home reconstruction after fire, water, and storm damage.',
+    'short_description' => 'Licensed Connecticut contractor for complete home reconstruction after fire, water, and storm damage.',
+    'description' => 'BuiltWell handles complete insurance reconstruction work across Fairfield and New Haven Counties.',
+    'meta_title' => 'Insurance Reconstruction Services CT | BuiltWell CT',
+    'meta_description' => 'Licensed CT contractor specializing in complete home reconstruction after fire, water, and storm damage.',
     'is_active' => true,
     'is_primary' => false,
     'sort_order' => 200,
@@ -23,17 +24,17 @@ $pagePayload = [
     'full_path' => '/insurance-restoration',
     'template_key' => 'service_global',
     'status' => 'published',
-    'published_at' => now(),
-    'seo_title' => 'Insurance Restoration Services in Connecticut | BuiltWell CT',
-    'seo_description' => 'Licensed CT contractor specializing in home reconstruction after fire, water, and storm damage. We rebuild kitchens, bathrooms, flooring, drywall, and full interiors once cleanup is complete. Fairfield: (203) 919-9616 | New Haven: (203) 466-9148',
+    'published_at' => Carbon::now(),
+    'seo_title' => 'Insurance Reconstruction Services CT | BuiltWell CT',
+    'seo_description' => 'Licensed CT contractor specializing in complete home reconstruction after fire, water, and storm damage. We coordinate directly with your insurance carrier and rebuild to pre-loss condition or better.',
     'canonical_url' => null,
     'schema_overrides' => [
-        'description' => 'Licensed Connecticut contractor specializing in home reconstruction after fire, water, and storm damage. We rebuild homes to pre-loss condition or better once cleanup is complete. Serving Fairfield and New Haven Counties.',
+        'description' => 'Licensed Connecticut contractor specializing in complete home reconstruction after fire, water, and storm damage. Direct insurance carrier coordination, Xactimate estimates, and full-scope rebuilds to pre-loss condition or better. Serving Fairfield and New Haven Counties.',
         'areaServed' => [
             ['@type' => 'AdministrativeArea', 'name' => 'Fairfield County, Connecticut'],
             ['@type' => 'AdministrativeArea', 'name' => 'New Haven County, Connecticut'],
         ],
-        'serviceType' => 'Insurance Restoration',
+        'serviceType' => 'Insurance Reconstruction',
     ],
 ];
 
@@ -42,9 +43,9 @@ $sections = [
         'type' => 'service_hero',
         'data' => [
             'title' => 'Insurance Reconstruction Services',
-            'subtitle' => 'Licensed Connecticut contractor specializing in rebuilding homes after fire, water, and storm damage. We handle the full reconstruction, from structural framing to finish carpentry, once the cleanup is complete.',
-            'background_image' => '/portfolio/builtwell-team-client-arrival-ct.jpeg',
-            'primary_cta' => ['label' => 'Schedule Now', 'url' => '#contact'],
+            'subtitle' => 'Complete home reconstruction after fire, water, and storm damage in Connecticut. We coordinate directly with your insurance carrier, write Xactimate estimates, and rebuild your home from the studs up.',
+            'background_image' => '/hero/builtwell-team-approaching-home-hero-ct.jpg',
+            'primary_cta' => ['label' => 'Get Your Free Estimate', 'url' => '#contact'],
             'secondary_cta' => ['label' => 'Call BuiltWell', 'url' => 'tel:2039199616'],
             'overlay_opacity' => 0.52,
         ],
@@ -56,7 +57,7 @@ $sections = [
             'items' => [
                 ['icon' => 'clock', 'label' => 'Years of Experience', 'value' => '15+'],
                 ['icon' => 'check', 'label' => 'Completed Projects', 'value' => '100+'],
-                ['icon' => 'star', 'label' => 'Google Rating', 'value' => '4.9'],
+                ['icon' => 'star', 'label' => 'Google Rating', 'value' => '4.9', 'url' => 'https://www.google.com/maps/search/?api=1&query=BuiltWell+CT,+206A+Boston+Post+Road,+Orange,+CT+06477'],
                 ['icon' => 'shield-check', 'label' => 'Fully Bonded & Insured', 'value' => null],
             ],
         ],
@@ -90,13 +91,13 @@ $sections = [
             'layout' => 'grid',
             'items' => [
                 [
-                    'image' => '/portfolio/builtwell-contractor-handshake-arrival-ct-optimized.jpg',
-                    'alt' => 'BuiltWell CT contractor meeting homeowner for insurance reconstruction assessment in Connecticut',
+                    'image' => '/portfolio/builtwell-contractor-client-consultation-ct.jpeg',
+                    'alt' => 'BuiltWell CT owner discussing reconstruction project with Connecticut homeowner',
                     'caption' => null,
                 ],
                 [
-                    'image' => '/portfolio/builtwell-team-completed-interior-ct.png',
-                    'alt' => 'Completed interior reconstruction by BuiltWell CT after insurance claim in Connecticut',
+                    'image' => '/portfolio/builtwell-job-site-aerial-ct.jpg',
+                    'alt' => 'BuiltWell CT job site with two vans at a Connecticut home reconstruction',
                     'caption' => null,
                 ],
             ],
@@ -155,11 +156,11 @@ $sections = [
             'title' => 'Why Homeowners Choose BuiltWell',
             'subtitle' => null,
             'items' => [
-                ['icon' => 'shield', 'title' => 'Nearly 15 Years in Reconstruction', 'description' => 'Rebuilt homes from the studs up after every type of residential disaster throughout Connecticut.'],
-                ['icon' => 'file-text', 'title' => 'Insurance Grade Quality', 'description' => 'We meet the demanding documentation, quality, and timeline standards that insurance carriers require on every project.'],
-                ['icon' => 'message-circle', 'title' => 'Direct Carrier Communication', 'description' => 'We handle all adjuster communication and documentation so you do not have to manage the process yourself.'],
-                ['icon' => 'house', 'title' => 'Full Scope Capability', 'description' => 'Every phase of the rebuild handled in house. One team, one standard, from structural framing to custom finish carpentry.'],
-                ['icon' => 'shield-check', 'title' => 'CT Licensed and Insured', 'description' => 'CT HIC License #0668405. Fully insured for residential reconstruction work throughout Fairfield and New Haven Counties.'],
+                ['icon' => 'shield', 'title' => 'Nearly 15 Years in Reconstruction', 'description' => 'Full rebuilds after every type of residential disaster across Connecticut.'],
+                ['icon' => 'file-text', 'title' => 'Insurance Grade Quality', 'description' => 'Documentation, quality, and timeline standards that carriers require on every project.'],
+                ['icon' => 'message-circle', 'title' => 'Direct Carrier Communication', 'description' => 'We handle all adjuster communication and documentation on your behalf.'],
+                ['icon' => 'house', 'title' => 'Full Scope Capability', 'description' => 'One team from structural framing to finish carpentry. Every phase in house.'],
+                ['icon' => 'shield-check', 'title' => 'CT Licensed and Insured', 'description' => 'HIC #0668405. Fully insured across Fairfield and New Haven Counties.'],
             ],
         ],
     ],
@@ -179,7 +180,13 @@ $sections = [
                 ['name' => 'Nationwide', 'logo' => '/logos/builtwell-logo-text-only.png', 'url' => 'https://www.nationwide.com'],
                 ['name' => 'USAA', 'logo' => '/logos/builtwell-logo-text-only.png', 'url' => 'https://www.usaa.com'],
                 ['name' => 'Erie', 'logo' => '/logos/builtwell-logo-text-only.png', 'url' => 'https://www.erieinsurance.com'],
+                ['name' => 'Amica', 'logo' => '/logos/builtwell-logo-text-only.png', 'url' => 'https://www.amica.com'],
+                ['name' => 'Safeco', 'logo' => '/logos/builtwell-logo-text-only.png', 'url' => 'https://www.safeco.com'],
+                ['name' => 'Plymouth Rock', 'logo' => '/logos/builtwell-logo-text-only.png', 'url' => 'https://www.plymouthrock.com'],
+                ['name' => 'MetLife', 'logo' => '/logos/builtwell-logo-text-only.png', 'url' => 'https://www.metlife.com/insurance/home-insurance/'],
+                ['name' => 'Farmers', 'logo' => '/logos/builtwell-logo-text-only.png', 'url' => 'https://www.farmers.com'],
             ],
+            'note' => 'We work with all major insurance carriers. Don&apos;t see yours listed? <a href="/contact/" style="color: var(--gold); font-weight: 600; text-decoration: underline;">Contact us</a> -- we&apos;ve likely worked with them before.',
         ],
     ],
     [
@@ -235,6 +242,7 @@ $sections = [
                 ['step_number' => 2, 'title' => 'Insurance Coordination', 'description' => 'We work directly with your adjuster, provide all required documentation, and ensure nothing is missed in the claim.'],
                 ['step_number' => 3, 'title' => 'Scope and Planning', 'description' => 'Once cleanup is complete, we develop a detailed reconstruction plan, finalize materials, and coordinate the build schedule with your carrier.'],
                 ['step_number' => 4, 'title' => 'Complete Reconstruction', 'description' => 'From framing and drywall to cabinetry, flooring, and paint, we rebuild every damaged area to pre-loss condition or better.'],
+                ['step_number' => 5, 'title' => 'Walkthrough', 'description' => 'When the work is finished, we walk through the project together. Nothing is signed off until you&apos;re satisfied with every detail.'],
             ],
         ],
     ],
@@ -259,7 +267,7 @@ $sections = [
             'eyebrow' => 'Get Started',
             'title' => 'Need Your Home Rebuilt?',
             'subtitle' => 'Call us directly or schedule a free assessment. We will review the damage scope, coordinate with your insurance carrier, and begin the reconstruction process.',
-            'button' => ['label' => 'Schedule Now', 'url' => '#contact'],
+            'button' => ['label' => 'Get Your Free Estimate', 'url' => '#contact'],
             'subtext' => 'Free assessment available in both counties',
             'variant' => 'dark',
         ],
@@ -278,8 +286,8 @@ $sections = [
                     'url' => '/fairfield-county/',
                     'phone' => '(203) 919-9616',
                     'description' => 'Insurance reconstruction across Fairfield County. We rebuild homes after fire, water, and storm damage in every town in the county with direct carrier coordination included.',
-                    'towns' => ['Greenwich', 'Stamford', 'Norwalk', 'Westport', 'Darien', 'New Canaan', 'Fairfield', 'Ridgefield'],
-                    'extra_towns' => ['Bethel', 'Bridgeport', 'Brookfield', 'Danbury', 'Easton', 'Monroe', 'New Fairfield', 'Newtown', 'Redding', 'Shelton', 'Sherman', 'Stratford', 'Trumbull', 'Weston', 'Wilton'],
+                    'towns' => ['Greenwich', 'Stamford', 'Norwalk', 'Westport', 'Darien', 'New Canaan', 'Fairfield', 'Ridgefield', 'Trumbull'],
+                    'extra_towns' => ['Bethel', 'Bridgeport', 'Brookfield', 'Danbury', 'Easton', 'Monroe', 'New Fairfield', 'Newtown', 'Redding', 'Shelton', 'Sherman', 'Stratford', 'Weston', 'Wilton'],
                     'town_links' => [
                         'Greenwich' => '/fairfield-county/greenwich-ct/',
                         'Stamford' => '/fairfield-county/stamford-ct/',
@@ -289,6 +297,7 @@ $sections = [
                         'New Canaan' => '/fairfield-county/new-canaan-ct/',
                         'Fairfield' => '/fairfield-county/fairfield-ct/',
                         'Ridgefield' => '/fairfield-county/ridgefield-ct/',
+                        'Trumbull' => '/fairfield-county/',
                     ],
                     'cta_label' => 'Learn more about Fairfield County',
                 ],
@@ -298,8 +307,8 @@ $sections = [
                     'url' => '/new-haven-county/',
                     'phone' => '(203) 466-9148',
                     'description' => 'Insurance reconstruction across New Haven County from our Orange, CT office. Full home reconstruction after damage with direct insurance carrier communication throughout.',
-                    'towns' => ['Orange', 'New Haven', 'Hamden', 'Branford', 'Guilford', 'Madison', 'Woodbridge', 'Milford'],
-                    'extra_towns' => ['Ansonia', 'Beacon Falls', 'Bethany', 'Cheshire', 'Derby', 'East Haven', 'Meriden', 'Middlebury', 'Naugatuck', 'North Branford', 'North Haven', 'Oxford', 'Prospect', 'Seymour', 'Southbury', 'Wallingford', 'Waterbury', 'West Haven', 'Wolcott'],
+                    'towns' => ['Orange', 'New Haven', 'Hamden', 'Branford', 'Guilford', 'Madison', 'Woodbridge', 'Milford', 'Cheshire'],
+                    'extra_towns' => ['Ansonia', 'Beacon Falls', 'Bethany', 'Derby', 'East Haven', 'Meriden', 'Middlebury', 'Naugatuck', 'North Branford', 'North Haven', 'Oxford', 'Prospect', 'Seymour', 'Southbury', 'Wallingford', 'Waterbury', 'West Haven', 'Wolcott'],
                     'town_links' => [
                         'Orange' => '/new-haven-county/orange-ct/',
                         'New Haven' => '/new-haven-county/new-haven-ct/',
@@ -321,10 +330,9 @@ $sections = [
             'variant' => 'insurance_secondary',
             'items' => [
                 ['icon' => 'star', 'label' => 'Google Rating', 'value' => '4.9', 'url' => 'https://www.google.com/search?q=builtwell+ct+reviews'],
-                ['icon' => 'shield-check', 'label' => 'BBB A+ Accredited', 'value' => null, 'url' => 'https://www.bbb.org/search?find_country=USA&find_text=builtwell+ct&find_loc=Orange%2C+CT'],
                 ['icon' => 'check', 'label' => 'Trusted on Houzz', 'value' => null, 'url' => 'https://www.houzz.com/professionals/general-contractors/builtwell-ct'],
                 ['icon' => 'calendar', 'label' => 'CT HIC License #0668405', 'value' => null, 'url' => 'https://www.elicense.ct.gov/Lookup/LicenseLookup.aspx'],
-                ['icon' => 'check', 'label' => 'Verified on Angi & Thumbtack', 'value' => null, 'url' => 'https://www.angi.com/companylist/us/ct/orange/builtwell-ct-reviews-'],
+                ['icon' => 'check', 'label' => 'Verified on Angi', 'value' => null, 'url' => 'https://www.angi.com/companylist/us/ct/orange/builtwell-ct-reviews-'],
             ],
         ],
     ],
@@ -336,8 +344,8 @@ $sections = [
             'title_highlight' => 'Reconstruction',
             'subtitle' => "Fill out the form and we'll get back to you within one business day with next steps. No obligation, no pressure.",
             'images' => [
-                ['image' => '/portfolio/builtwell-contractor-handshake-arrival-ct-optimized.jpg', 'alt' => 'BuiltWell CT contractor meeting homeowner for insurance reconstruction assessment'],
-                ['image' => '/images/headers/kitchen-remodeling-header.jpg', 'alt' => 'Beautiful kitchen remodel completed by BuiltWell CT'],
+                ['image' => '/team/builtwell-owner-handshake-client-ct-02.jpg', 'alt' => 'BuiltWell CT owner meeting homeowner for insurance reconstruction assessment'],
+                ['image' => '/portfolio/builtwell-job-site-aerial-ct.jpg', 'alt' => 'BuiltWell CT owner meeting homeowner for a free consultation'],
             ],
             'fields' => [
                 ['name' => 'name', 'label' => 'Name', 'type' => 'text', 'required' => true, 'placeholder' => 'Your full name'],
@@ -391,8 +399,9 @@ $sections = [
                 ],
                 ['name' => 'photos', 'label' => 'Upload Photos', 'type' => 'file', 'required' => false],
             ],
-            'submit_label' => 'Send Request',
+            'submit_label' => 'Get Your Free Estimate',
             'consent_text' => 'We respond within 24 hours. No spam, no obligation.',
+            'privacy_consent_html' => 'I agree to the <a href="/privacy-policy/" style="color: #C9A96E; text-decoration: underline;">Privacy Policy</a> and <a href="/terms/" style="color: #C9A96E; text-decoration: underline;">Terms of Service</a>. I consent to receive calls, texts (SMS), and emails from BuiltWell CT, including automated messages. Msg &amp; data rates may apply. Reply STOP to opt out.',
         ],
     ],
     [
