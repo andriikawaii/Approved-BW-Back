@@ -77,12 +77,18 @@ class OptimizeMedia extends Command
             foreach ($files as $file) {
                 $ext = strtolower($file->getExtension());
 
-                if (! in_array($ext, ['jpg', 'jpeg', 'png'], true)) {
+                // Skip non-image extensions and files already in WebP format
+                if (! in_array($ext, ['jpg', 'jpeg', 'png', 'gif'], true)) {
                     continue;
                 }
 
                 $sourcePath = $file->getRealPath();
-                $webpPath   = preg_replace('/\.(jpe?g|png)$/i', '.webp', $sourcePath);
+                // Output always gets .webp extension regardless of source extension
+                $webpPath   = preg_replace('/\.(jpe?g|png|gif)$/i', '.webp', $sourcePath);
+                if ($webpPath === $sourcePath) {
+                    // Extension didn't match pattern (e.g. unusual casing) — append .webp
+                    $webpPath = $sourcePath . '.webp';
+                }
 
                 if (! $force && file_exists($webpPath)) {
                     $skipped++;
@@ -130,16 +136,23 @@ class OptimizeMedia extends Command
 
     private function convertToWebP(string $source, string $dest, int $maxWidth, int $quality): bool
     {
-        $ext = strtolower(pathinfo($source, PATHINFO_EXTENSION));
+        // Detect actual format by magic bytes, not file extension
+        $actualType = $this->detectImageType($source);
 
-        $image = match ($ext) {
-            'jpg', 'jpeg' => imagecreatefromjpeg($source),
-            'png'         => $this->loadPng($source),
-            default       => false,
+        if (! $actualType) {
+            throw new \RuntimeException("Unrecognized image format (checked magic bytes): {$source}");
+        }
+
+        $image = match ($actualType) {
+            'jpeg' => imagecreatefromjpeg($source),
+            'png'  => $this->loadPng($source),
+            'webp' => imagecreatefromwebp($source),
+            'gif'  => imagecreatefromgif($source),
+            default => false,
         };
 
         if (! $image) {
-            throw new \RuntimeException("Could not load image: {$source}");
+            throw new \RuntimeException("Could not load image (type={$actualType}): {$source}");
         }
 
         $width  = imagesx($image);
@@ -176,12 +189,44 @@ class OptimizeMedia extends Command
             return false;
         }
 
-        // Convert transparent background to opaque for WebP (optional — WebP supports alpha too)
-        // We keep alpha so PNGs with transparency stay transparent in WebP.
+        // Keep alpha so PNGs with transparency stay transparent in WebP.
         imagealphablending($image, false);
         imagesavealpha($image, true);
 
         return $image;
+    }
+
+    /**
+     * Detect the actual image type by reading magic bytes from the file header.
+     * Returns 'jpeg', 'png', 'webp', 'gif', or null if unrecognized.
+     */
+    private function detectImageType(string $path): ?string
+    {
+        $handle = fopen($path, 'rb');
+        if (! $handle) {
+            return null;
+        }
+
+        $header = fread($handle, 12);
+        fclose($handle);
+
+        if (str_starts_with($header, "\xFF\xD8\xFF")) {
+            return 'jpeg';
+        }
+
+        if (str_starts_with($header, "\x89PNG\r\n\x1A\n")) {
+            return 'png';
+        }
+
+        if (str_starts_with($header, 'RIFF') && substr($header, 8, 4) === 'WEBP') {
+            return 'webp';
+        }
+
+        if (str_starts_with($header, 'GIF87a') || str_starts_with($header, 'GIF89a')) {
+            return 'gif';
+        }
+
+        return null;
     }
 
     private function humanBytes(int $bytes): string
