@@ -41,6 +41,7 @@ class MediaUrlResolver
 
     /**
      * Convert a single file_path to an absolute public URL.
+     * Automatically returns the WebP version if it exists alongside the original.
      */
     public static function url(?string $path): ?string
     {
@@ -52,6 +53,9 @@ class MediaUrlResolver
         if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) {
             return $path;
         }
+
+        // Prefer WebP if a converted version exists next to the original
+        $path = self::preferWebP($path);
 
         // Many BuiltWell assets are stored directly under public/, not storage/app/public.
         $publicRelativePath = ltrim($path, '/');
@@ -119,5 +123,37 @@ class MediaUrlResolver
         }
 
         return self::$altCache[$path] ?: null;
+    }
+
+    /**
+     * If a WebP version of the given path exists on disk, return its path instead.
+     * Checks both public/ and storage/app/public/ locations.
+     *
+     * Example: "images/areas/fairfield-county.png"
+     *   → returns "images/areas/fairfield-county.webp" if that file exists
+     *   → otherwise returns the original path unchanged
+     */
+    private static function preferWebP(string $path): string
+    {
+        $ext = strtolower(pathinfo($path, PATHINFO_EXTENSION));
+
+        if (! in_array($ext, ['jpg', 'jpeg', 'png'], true)) {
+            return $path;
+        }
+
+        $webpPath = preg_replace('/\.(jpe?g|png)$/i', '.webp', $path);
+        $relative = ltrim($webpPath, '/');
+
+        // Check public/ directory
+        if (file_exists(public_path($relative))) {
+            return $webpPath;
+        }
+
+        // Check storage/app/public/ (symlinked as public/storage/)
+        if (Storage::disk('public')->exists($webpPath)) {
+            return $webpPath;
+        }
+
+        return $path;
     }
 }
