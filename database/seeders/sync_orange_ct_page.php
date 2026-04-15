@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 $pagePayload = [
     'full_path' => '/new-haven-county/orange-ct',
-    'template_key' => 'office',
+    'template_key' => 'service_town',
     'status' => 'published',
     'published_at' => now(),
     'seo_title' => 'Home Remodeling Orange, CT | BuiltWell CT',
@@ -16,6 +16,7 @@ $pagePayload = [
     'canonical_url' => 'https://buildwellct.com/new-haven-county/orange-ct/',
     'og_image_alt' => 'BuiltWell CT office at 206A Boston Post Road, Orange, Connecticut',
     'robots' => 'index, follow',
+    'schema_overrides' => null,
 ];
 
 $rich = static fn (

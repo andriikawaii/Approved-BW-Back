@@ -179,7 +179,7 @@ class Edit extends Component
     {
         $path = rtrim(PathNormalizer::normalize($this->full_path), '/') . '/';
 
-        return $path === '/new-haven-county/orange-ct/';
+        return $path === '/new-haven-county/orange-ct/' && $this->template_key === 'office';
     }
 
     protected function resolvedCountySlug(): ?string

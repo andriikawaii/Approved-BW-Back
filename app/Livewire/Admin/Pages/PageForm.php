@@ -131,7 +131,7 @@ class PageForm extends Component
     public function getFooterVariantProperty(): string
     {
         $path = rtrim(PathNormalizer::normalize((string) ($this->page->full_path ?? '/')), '/') . '/';
-        if ($path === '/new-haven-county/orange-ct/') {
+        if ($path === '/new-haven-county/orange-ct/' && $this->page->template_key === 'office') {
             return 'D';
         }
 

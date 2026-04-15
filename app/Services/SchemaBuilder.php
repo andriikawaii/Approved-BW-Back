@@ -91,7 +91,7 @@ class SchemaBuilder
         }
 
         // Orange office → HomeAndConstructionBusiness
-        if ($path === self::ORANGE_PATH) {
+        if ($path === self::ORANGE_PATH && $template === 'office') {
             return self::buildHomeAndConstructionBusiness($page);
         }
 

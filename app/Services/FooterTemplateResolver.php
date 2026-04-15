@@ -84,6 +84,7 @@ class FooterTemplateResolver
 
     private const FOOTER_C_PATHS = [
         '/new-haven-county/',
+        '/new-haven-county/orange-ct/',
         '/new-haven-county/new-haven-ct/',
         '/new-haven-county/madison-ct/',
         '/kitchen-remodeling/orange-ct/',
@@ -161,7 +162,7 @@ class FooterTemplateResolver
         }
 
         // D: Orange office page only
-        if ($path === self::ORANGE_PATH) {
+        if ($path === self::ORANGE_PATH && $page->template_key === 'office') {
             $phones = PhoneResolver::resolve($page);
 
             return [
