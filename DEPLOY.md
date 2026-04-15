@@ -41,7 +41,7 @@ curl -s https://api.DOMAIN/api/pages/home | jq '.data.schema[0]["@type"]'
 curl -s https://api.DOMAIN/sitemap.xml | head -10
 
 # 5. Redirect returns frontend URL (not /api/pages/...)
-curl -sI https://api.DOMAIN/api/pages/roofing
+curl -sI https://api.DOMAIN/api/pages/kitchen-remodeling/fairfield-county
 # Expected: Location header pointing to frontend path
 ```
 

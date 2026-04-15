@@ -346,7 +346,7 @@ $sections = [
                 'description' => 'Served from our Orange, CT office. We cover every town in the county with dedicated local crews who know the housing stock and building departments.',
                 'towns' => ['Orange', 'New Haven', 'Hamden', 'Branford', 'Guilford', 'Madison', 'Woodbridge', 'Milford'],
                 'extra_towns' => ['Ansonia', 'Beacon Falls', 'Bethany', 'Derby', 'East Haven', 'Meriden', 'Middlebury', 'Naugatuck', 'North Branford', 'North Haven', 'Oxford', 'Prospect', 'Seymour', 'Southbury', 'Wallingford', 'Waterbury', 'West Haven', 'Wolcott'],
-                'town_links' => ['Orange' => '/new-haven-county/orange-ct/', 'New Haven' => '/new-haven-county/new-haven-ct/', 'Hamden' => '/new-haven-county/hamden-ct/', 'Branford' => '/new-haven-county/branford-ct/', 'Guilford' => '/new-haven-county/guilford-ct/', 'Madison' => '/new-haven-county/madison-ct/', 'Woodbridge' => '/new-haven-county/woodbridge-ct/', 'Milford' => '/new-haven-county/milford-ct/'],
+                'town_links' => ['Orange' => '/new-haven-county/orange-ct/', 'New Haven' => '/new-haven-county/new-haven-ct/', 'Madison' => '/new-haven-county/madison-ct/'],
                 'cta_label' => 'Learn more about New Haven County',
             ]],
         ],

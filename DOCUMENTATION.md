@@ -661,7 +661,7 @@ curl -s https://api.DOMAIN/api/pages/faq | jq '.schema[0]["@type"]'
 curl -s https://api.DOMAIN/api/pages/kitchen-remodeling/greenwich-ct | jq '.phones'
 
 # 7) Redirect API contract check
-curl -si https://api.DOMAIN/api/pages/subcontractors
+curl -si https://api.DOMAIN/api/pages/kitchen-remodeling/fairfield-county
 
 # 8) robots endpoint check
 curl -s https://api.DOMAIN/robots.txt | head -20

@@ -233,7 +233,7 @@ $sections = [
                     'description' => 'Kitchen remodeling across Fairfield County, from custom chef kitchens in Greenwich and Westport to practical layout upgrades in Norwalk and Stamford. We handle every phase of the build in house.',
                     'towns' => ['Greenwich', 'Stamford', 'Norwalk', 'Westport', 'Darien', 'New Canaan', 'Fairfield', 'Ridgefield'],
                     'extra_towns' => ['Bethel', 'Bridgeport', 'Brookfield', 'Danbury', 'Easton', 'Monroe', 'New Fairfield', 'Newtown', 'Redding', 'Shelton', 'Sherman', 'Stratford', 'Trumbull', 'Weston', 'Wilton'],
-                    'town_links' => ['Greenwich' => '/fairfield-county/greenwich-ct/', 'Stamford' => '/fairfield-county/stamford-ct/', 'Norwalk' => '/fairfield-county/norwalk-ct/', 'Westport' => '/fairfield-county/westport-ct/', 'Darien' => '/fairfield-county/darien-ct/', 'New Canaan' => '/fairfield-county/new-canaan-ct/', 'Fairfield' => '/fairfield-county/fairfield-ct/', 'Ridgefield' => '/fairfield-county/ridgefield-ct/'],
+                    'town_links' => ['Greenwich' => '/fairfield-county/greenwich-ct/', 'Westport' => '/fairfield-county/westport-ct/'],
                     'cta_label' => 'Learn more about Fairfield County',
                 ],
                 [
@@ -244,7 +244,7 @@ $sections = [
                     'description' => 'Kitchen remodeling across New Haven County, from our Orange, CT office. We modernize galley kitchens, open up floor plans, and deliver full gut renovations tailored to the local housing stock.',
                     'towns' => ['Orange', 'New Haven', 'Hamden', 'Branford', 'Guilford', 'Madison', 'Woodbridge', 'Milford'],
                     'extra_towns' => ['Ansonia', 'Beacon Falls', 'Bethany', 'Cheshire', 'Derby', 'East Haven', 'Meriden', 'Middlebury', 'Naugatuck', 'North Branford', 'North Haven', 'Oxford', 'Prospect', 'Seymour', 'Southbury', 'Wallingford', 'Waterbury', 'West Haven', 'Wolcott'],
-                    'town_links' => ['Orange' => '/new-haven-county/orange-ct/', 'New Haven' => '/new-haven-county/new-haven-ct/', 'Hamden' => '/new-haven-county/hamden-ct/', 'Branford' => '/new-haven-county/branford-ct/', 'Guilford' => '/new-haven-county/guilford-ct/', 'Madison' => '/new-haven-county/madison-ct/', 'Woodbridge' => '/new-haven-county/woodbridge-ct/', 'Milford' => '/new-haven-county/milford-ct/'],
+                    'town_links' => ['Orange' => '/new-haven-county/orange-ct/', 'New Haven' => '/new-haven-county/new-haven-ct/', 'Madison' => '/new-haven-county/madison-ct/'],
                     'cta_label' => 'Learn more about New Haven County',
                 ],
             ],
