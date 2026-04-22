@@ -115,4 +115,10 @@ return [
         'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
 
+    /*
+    | Lead recipients — comma-separated list. Defaults to MAIL_FROM_ADDRESS.
+    | Set LEAD_RECIPIENTS in .env for production (e.g. info@builtwellct.com,andrii@builtwellct.com).
+    */
+    'lead_recipients' => env('LEAD_RECIPIENTS', env('MAIL_FROM_ADDRESS')),
+
 ];

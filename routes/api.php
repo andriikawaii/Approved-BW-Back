@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\LeadController;
 use App\Http\Controllers\Api\PageController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,3 +20,12 @@ Route::get('/pages/{path?}', [PageController::class, 'show'])
 Route::get('/preview/pages', [PageController::class, 'preview'])
     ->middleware('signed')
     ->name('api.pages.preview');
+
+/*
+|--------------------------------------------------------------------------
+| Lead submissions
+|--------------------------------------------------------------------------
+*/
+
+Route::post('/leads', [LeadController::class, 'store'])
+    ->name('api.leads.store');

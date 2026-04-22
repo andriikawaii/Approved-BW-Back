@@ -90,8 +90,8 @@ class SchemaBuilder
             return self::buildOrganization($page);
         }
 
-        // Orange office → HomeAndConstructionBusiness
-        if ($path === self::ORANGE_PATH && $template === 'office') {
+        // Orange HQ → HomeAndConstructionBusiness (regardless of template, since it's the physical HQ)
+        if ($path === self::ORANGE_PATH) {
             return self::buildHomeAndConstructionBusiness($page);
         }
 
@@ -233,16 +233,7 @@ class SchemaBuilder
             'url'         => CanonicalResolver::resolve($page),
             'description' => $page->seo_description ?: null,
             'provider'    => [
-                '@type'         => 'HomeAndConstructionBusiness',
-                '@id'           => $siteUrl . self::ORANGE_PATH . '#business',
-                'name'          => self::BUSINESS_NAME,
-                'url'           => $siteUrl,
-                'telephone'     => self::resolvePhone($page),
-                'hasCredential' => [
-                    '@type'              => 'EducationalOccupationalCredential',
-                    'credentialCategory' => 'Home Improvement Contractor License',
-                    'name'               => self::HIC_LICENSE,
-                ],
+                '@id' => $siteUrl . self::ORANGE_PATH . '#business',
             ],
             'areaServed' => self::buildAreaServed($page),
             'serviceType' => $serviceName,

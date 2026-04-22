@@ -10,8 +10,12 @@ class SitemapGenerator
     public function generate(): string
     {
         $pages = Page::query()
-            ->select(['id', 'full_path', 'updated_at'])
+            ->select(['id', 'full_path', 'updated_at', 'robots'])
             ->publicVisible()
+            ->where(function ($q) {
+                $q->whereNull('robots')
+                    ->orWhere('robots', 'not like', '%noindex%');
+            })
             ->orderBy('full_path')
             ->get();
 
