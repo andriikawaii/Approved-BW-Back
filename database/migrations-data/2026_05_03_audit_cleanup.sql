@@ -624,3 +624,23 @@ COMMIT;
 -- SELECT COUNT(*) AS active_recent_projects FROM sections s JOIN pages p ON p.id=s.page_id WHERE s.is_active=1 AND s.type IN ('before_after','before_after_grid') AND p.status='published' AND p.template_key IN ('service_global','service_town','county_hub');  -- expect 0
 -- SELECT COUNT(*) AS dropped_town_hubs_published FROM pages WHERE status='published' AND full_path REGEXP '^/(fairfield-county|new-haven-county)/(stamford|new-canaan|norwalk|darien|fairfield|ridgefield|hamden|branford|guilford|madison|milford|woodbridge)-ct$';  -- expect 0
 -- SELECT label, COUNT(*) FROM (SELECT JSON_UNQUOTE(JSON_EXTRACT(data,'$.items[1].label')) AS label FROM sections WHERE is_active=1 AND type='trust_bar' AND JSON_UNQUOTE(JSON_EXTRACT(data,'$.items[1].value'))='100+') t GROUP BY label;  -- expect 'Restoration Projects' x91
+-- =============================================================================
+-- Part 2 (2026-05-03): Portfolio + Case Studies SEO metadata reframe
+-- Aligns page-level SEO with the "coming soon" body copy.
+-- =============================================================================
+
+START TRANSACTION;
+
+UPDATE pages
+SET seo_title='Portfolio Coming Soon | BuiltWell CT Connecticut',
+    seo_description='Our BuiltWell CT remodeling portfolio is coming as our first projects wrap up across Fairfield and New Haven Counties. Detailed before-and-after photos, scope, and homeowner feedback will be published here.',
+    updated_at=NOW()
+WHERE full_path='/portfolio';
+
+UPDATE pages
+SET seo_title='Case Studies Coming Soon | BuiltWell CT Connecticut',
+    seo_description='Detailed case studies will be published here as our first BuiltWell CT remodeling projects wrap up across Fairfield and New Haven Counties — photos, timelines, scope, and homeowner feedback.',
+    updated_at=NOW()
+WHERE full_path='/case-studies';
+
+COMMIT;
