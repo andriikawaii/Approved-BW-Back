@@ -31,6 +31,7 @@ class LeadController extends Controller
             'phone'             => ['nullable', 'string', 'max:32'],
             'town'              => ['nullable', 'string', 'max:80'],
             'zip'               => ['nullable', 'string', 'max:16'],
+            'property_address'  => ['nullable', 'string', 'max:200'],
             'consultation_type' => ['nullable', 'string', 'max:32'],
             'contact_method'    => ['nullable', 'string', 'max:16'],
             'best_time'         => ['nullable', 'string', 'max:64'],

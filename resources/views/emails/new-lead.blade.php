@@ -34,6 +34,9 @@ td.value { color: #1e2b43; }
     @if($lead->town)
     <tr><td class="label">Town</td><td class="value">{{ $lead->town }}{{ $lead->zip ? ' ('.$lead->zip.')' : '' }}</td></tr>
     @endif
+    @if($lead->property_address)
+    <tr><td class="label">Property</td><td class="value">{{ $lead->property_address }}</td></tr>
+    @endif
     @if($lead->contact_method)
     <tr><td class="label">Prefers</td><td class="value">{{ ucfirst($lead->contact_method) }}</td></tr>
     @endif

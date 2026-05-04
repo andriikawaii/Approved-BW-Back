@@ -47,7 +47,9 @@
       @if($lead->phone)
       <tr><td class="label">Phone</td><td>{{ $lead->phone }}</td></tr>
       @endif
-      @if($lead->town || $lead->zip)
+      @if($lead->property_address)
+      <tr><td class="label">Property</td><td>{{ $lead->property_address }}{{ $lead->town ? ', ' . $lead->town : '' }}{{ $lead->zip ? ' '.$lead->zip : '' }}</td></tr>
+      @elseif($lead->town || $lead->zip)
       <tr><td class="label">Location</td><td>{{ trim(($lead->town ?? '') . ' ' . ($lead->zip ?? '')) }}</td></tr>
       @endif
       @if($lead->best_time)

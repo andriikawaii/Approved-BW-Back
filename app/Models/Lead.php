@@ -12,6 +12,7 @@ class Lead extends Model
         'phone',
         'town',
         'zip',
+        'property_address',
         'consultation_type',
         'contact_method',
         'best_time',

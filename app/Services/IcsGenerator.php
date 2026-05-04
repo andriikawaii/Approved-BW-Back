@@ -87,6 +87,15 @@ class IcsGenerator
 
     private static function buildLocation(Lead $lead): string
     {
+        if (!empty($lead->property_address)) {
+            $parts = array_filter([
+                $lead->property_address,
+                $lead->town,
+                $lead->zip ? 'CT ' . $lead->zip : 'CT',
+            ]);
+            return implode(', ', $parts);
+        }
+
         $parts = array_filter([
             $lead->town,
             $lead->zip,
