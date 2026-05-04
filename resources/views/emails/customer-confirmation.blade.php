@@ -6,9 +6,9 @@
 <style>
   body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #1e2b43; margin: 0; padding: 24px; background: #f5f1e9; }
   .wrap { max-width: 640px; margin: 0 auto; background: #fff; border: 1px solid #e6dccd; border-radius: 8px; overflow: hidden; }
-  .header { background: #1e2b43; padding: 28px 32px; text-align: center; }
-  .header img { max-width: 220px; height: auto; }
-  .header .tagline { color: #d8b27a; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; margin-top: 12px; font-style: italic; font-family: Georgia, 'Times New Roman', serif; }
+  .header { background: #f5f1e9; padding: 32px 32px 28px; text-align: center; border-bottom: 1px solid #e6dccd; }
+  .header img { max-width: 240px; height: auto; }
+  .header .tagline { color: #bc9155; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; margin-top: 14px; font-style: italic; font-family: Georgia, 'Times New Roman', serif; }
   .body { padding: 32px; }
   h1 { font-size: 22px; margin: 0 0 16px; color: #1e2b43; font-weight: 600; }
   p { font-size: 16px; line-height: 1.6; margin: 0 0 16px; color: #1e2b43; }
@@ -31,7 +31,7 @@
 <div class="wrap">
 
   <div class="header">
-    <img src="https://api.builtwellct.com/logos/builtwell-logo-white.png" alt="BuiltWell CT" />
+    <img src="https://api.builtwellct.com/logos/builtwell-logo-colored-cropped.png" alt="BuiltWell CT" />
     <div class="tagline">The Last Contractor You'll Hire.</div>
   </div>
 
