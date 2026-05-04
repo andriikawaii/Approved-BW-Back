@@ -6,7 +6,9 @@
 <style>
 body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #1e2b43; margin: 0; padding: 24px; background: #f5f1e9; }
 .wrap { max-width: 640px; margin: 0 auto; background: #fff; padding: 32px; border-radius: 8px; border: 1px solid #e6dccd; }
-h1 { font-size: 22px; margin: 0 0 20px; color: #1e2b43; }
+h1 { font-size: 22px; margin: 0 0 20px; color: #1e2b43; text-align: center; }
+.tagline { color: #bc9155; font-size: 18px; line-height: 1.4; margin-top: 16px; font-style: italic; font-family: 'Playfair Display', Georgia, 'Times New Roman', serif; font-weight: 400; white-space: nowrap; }
+.tagline span { color: #1e2b43; }
 h2 { font-size: 14px; text-transform: uppercase; letter-spacing: 1px; color: #bc9155; margin: 24px 0 8px; }
 table { width: 100%; border-collapse: collapse; }
 td { padding: 8px 0; border-bottom: 1px solid #f0e9dc; font-size: 15px; vertical-align: top; }
@@ -20,8 +22,9 @@ td.value { color: #1e2b43; }
 </head>
 <body>
 <div class="wrap">
-  <div style="background: #f5f1e9; padding: 24px 20px; text-align: center; margin: -32px -32px 24px -32px; border-radius: 8px 8px 0 0; border-bottom: 1px solid #e6dccd;">
+  <div style="background: #f5f1e9; padding: 28px 20px 24px; text-align: center; margin: -32px -32px 24px -32px; border-radius: 8px 8px 0 0; border-bottom: 1px solid #e6dccd;">
     <img src="https://api.builtwellct.com/logos/builtwell-logo-colored-cropped.png" alt="BuiltWell CT" style="max-width: 200px; height: auto;" />
+    <div class="tagline">The Last Contractor You'll <span>Hire.</span></div>
   </div>
   <h1>New BuiltWell Lead</h1>
 
