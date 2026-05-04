@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Mail\CustomerConfirmation;
 use App\Mail\NewLead;
 use App\Models\Lead;
 use Illuminate\Http\JsonResponse;
@@ -60,6 +61,14 @@ class LeadController extends Controller
             }
         } catch (\Throwable $e) {
             Log::error('Lead email failed', ['lead_id' => $lead->id, 'error' => $e->getMessage()]);
+        }
+
+        if (!empty($lead->email)) {
+            try {
+                Mail::to($lead->email)->send(new CustomerConfirmation($lead));
+            } catch (\Throwable $e) {
+                Log::error('Customer confirmation email failed', ['lead_id' => $lead->id, 'error' => $e->getMessage()]);
+            }
         }
 
         return response()->json([

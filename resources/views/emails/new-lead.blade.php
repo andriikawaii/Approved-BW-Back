@@ -20,6 +20,9 @@ td.value { color: #1e2b43; }
 </head>
 <body>
 <div class="wrap">
+  <div style="background: #1e2b43; padding: 20px; text-align: center; margin: -32px -32px 24px -32px; border-radius: 8px 8px 0 0;">
+    <img src="https://api.builtwellct.com/logos/builtwell-logo-white.png" alt="BuiltWell CT" style="max-width: 180px; height: auto;" />
+  </div>
   <h1>New BuiltWell Lead</h1>
 
   <table>
