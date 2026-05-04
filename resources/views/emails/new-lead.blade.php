@@ -47,7 +47,10 @@ td.value { color: #1e2b43; }
     <tr><td class="label">Best Time</td><td class="value">{{ $lead->best_time }}</td></tr>
     @endif
     @if($lead->consultation_type)
-    <tr><td class="label">Consultation</td><td class="value">{{ ucfirst($lead->consultation_type) }}</td></tr>
+    <tr><td class="label">Consultation</td><td class="value">{{ ucfirst($lead->consultation_type) }}@php
+        $isVirtual = in_array(strtolower((string) $lead->consultation_type), ['video','virtual','remote','google-meet','google_meet','meet','phone']);
+        $meetLink = config('services.builtwell.meet_link');
+    @endphp@if($isVirtual && $meetLink)<br><a href="{{ $meetLink }}" style="color: #bc9155; font-weight: 600;">{{ $meetLink }}</a>@endif</td></tr>
     @endif
     @if(!empty($lead->services))
     <tr><td class="label">Services</td><td class="value">{{ is_array($lead->services) ? implode(', ', $lead->services) : $lead->services }}</td></tr>

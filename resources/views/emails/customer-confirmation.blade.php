@@ -69,10 +69,24 @@
       <p style="background: #f5f1e9; padding: 16px; border-left: 3px solid #bc9155; font-size: 15px;">{{ $lead->message }}</p>
     @endif
 
+    @php
+        $isVirtual = in_array(strtolower((string) ($lead->consultation_type ?? '')), ['video','virtual','remote','google-meet','google_meet','meet','phone']);
+        $meetLink = config('services.builtwell.meet_link');
+    @endphp
+
     <div class="calendar-cta">
       <h3>📅 Tentative consultation hold attached</h3>
       <p>We've attached a calendar file (<strong>builtwell-consultation.ics</strong>) so you can drop a tentative hold on your calendar. We'll confirm the actual time when we reach out.</p>
     </div>
+
+    @if($isVirtual && $meetLink)
+    <div style="margin-top: 20px; padding: 20px; background: #1e2b43; border-radius: 8px; text-align: center;">
+      <h3 style="color: #ffffff; margin: 0 0 8px; font-size: 16px;">Your Google Meet link</h3>
+      <p style="color: #d8b27a; font-size: 14px; margin: 0 0 14px;">Use this link at the scheduled time. We'll be there to take the call.</p>
+      <a href="{{ $meetLink }}" style="display: inline-block; background: #bc9155; color: #ffffff; padding: 12px 28px; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 15px;">Join Google Meet</a>
+      <p style="color: #8a92a3; font-size: 12px; margin: 12px 0 0; word-break: break-all;">{{ $meetLink }}</p>
+    </div>
+    @endif
 
     <h2>What happens next</h2>
     <ol class="next-steps">

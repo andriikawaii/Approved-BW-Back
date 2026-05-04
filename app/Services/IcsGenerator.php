@@ -31,6 +31,9 @@ class IcsGenerator
                 self::escape($lead->name), $lead->email)
             : null;
 
+        $isVirtual = self::isVirtualConsult($lead);
+        $meetLink = $isVirtual ? (string) config('services.builtwell.meet_link') : null;
+
         $lines = [
             'BEGIN:VCALENDAR',
             'VERSION:2.0',
@@ -47,6 +50,11 @@ class IcsGenerator
             'DESCRIPTION:' . $description,
             'ORGANIZER;CN=BuiltWell CT:' . $organizer,
         ];
+
+        if ($meetLink) {
+            $lines[] = 'URL:' . $meetLink;
+            $lines[] = 'X-GOOGLE-CONFERENCE:' . $meetLink;
+        }
 
         if ($attendee) {
             $lines[] = $attendee;
@@ -88,7 +96,8 @@ class IcsGenerator
     private static function buildLocation(Lead $lead): string
     {
         if (self::isVirtualConsult($lead)) {
-            return 'Google Meet — link to be sent when we confirm';
+            $link = (string) config('services.builtwell.meet_link');
+            return $link !== '' ? $link : 'Google Meet';
         }
 
         if (!empty($lead->property_address)) {
@@ -150,7 +159,12 @@ class IcsGenerator
 
         $lines[] = '';
         if (self::isVirtualConsult($lead)) {
-            $lines[] = 'This is a tentative time. The BuiltWell team will confirm by phone and send the Google Meet link before the call.';
+            $link = (string) config('services.builtwell.meet_link');
+            if ($link !== '') {
+                $lines[] = 'Join Google Meet: ' . $link;
+                $lines[] = '';
+            }
+            $lines[] = 'This is a tentative time. The BuiltWell team will confirm by phone before the call.';
         } else {
             $lines[] = 'This is a tentative time. The BuiltWell team will confirm by phone before the on-site visit.';
         }

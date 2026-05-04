@@ -35,4 +35,8 @@ return [
         ],
     ],
 
+    'builtwell' => [
+        'meet_link' => env('BUILTWELL_MEET_LINK', 'https://meet.google.com/pvd-mroe-ebe'),
+    ],
+
 ];
