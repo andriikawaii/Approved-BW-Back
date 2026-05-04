@@ -87,6 +87,10 @@ class IcsGenerator
 
     private static function buildLocation(Lead $lead): string
     {
+        if (self::isVirtualConsult($lead)) {
+            return 'Google Meet — link to be sent when we confirm';
+        }
+
         if (!empty($lead->property_address)) {
             $parts = array_filter([
                 $lead->property_address,
@@ -103,6 +107,20 @@ class IcsGenerator
         ]);
 
         return $parts ? implode(', ', $parts) : 'Connecticut';
+    }
+
+    private static function isVirtualConsult(Lead $lead): bool
+    {
+        $type = strtolower((string) $lead->consultation_type);
+        if ($type === '') {
+            return false;
+        }
+        foreach (['video', 'virtual', 'remote', 'google-meet', 'google_meet', 'meet', 'phone'] as $keyword) {
+            if (str_contains($type, $keyword)) {
+                return $type !== 'in-person' && $type !== 'in_person';
+            }
+        }
+        return false;
     }
 
     private static function buildDescription(Lead $lead): string
@@ -131,7 +149,11 @@ class IcsGenerator
         }
 
         $lines[] = '';
-        $lines[] = 'This is a tentative time. The BuiltWell team will confirm by phone.';
+        if (self::isVirtualConsult($lead)) {
+            $lines[] = 'This is a tentative time. The BuiltWell team will confirm by phone and send the Google Meet link before the call.';
+        } else {
+            $lines[] = 'This is a tentative time. The BuiltWell team will confirm by phone before the on-site visit.';
+        }
 
         return implode('\\n', $lines);
     }
