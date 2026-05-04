@@ -8,7 +8,7 @@
   .wrap { max-width: 640px; margin: 0 auto; background: #fff; border: 1px solid #e6dccd; border-radius: 8px; overflow: hidden; }
   .header { background: #f5f1e9; padding: 32px 32px 28px; text-align: center; border-bottom: 1px solid #e6dccd; }
   .header img { max-width: 240px; height: auto; }
-  .header .tagline { color: #bc9155; font-size: 22px; line-height: 1.4; margin-top: 18px; font-style: italic; font-family: 'Playfair Display', Georgia, 'Times New Roman', serif; font-weight: 400; }
+  .header .tagline { color: #bc9155; font-size: 18px; line-height: 1.4; margin-top: 16px; font-style: italic; font-family: 'Playfair Display', Georgia, 'Times New Roman', serif; font-weight: 400; white-space: nowrap; }
   .header .tagline span { color: #1e2b43; }
   .body { padding: 32px; }
   h1 { font-size: 22px; margin: 0 0 16px; color: #1e2b43; font-weight: 600; }
