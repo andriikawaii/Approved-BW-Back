@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <title>BuiltWell CT</title>
 <style>
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #1e2b43; margin: 0; padding: 24px; background: #f5f1e9; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #1e2b43; margin: 0; padding: 24px; background: #ffffff; }
   .wrap { max-width: 640px; margin: 0 auto; background: #fff; border: 1px solid #e6dccd; border-radius: 8px; overflow: hidden; }
-  .header { background: #f5f1e9; padding: 32px 32px 28px; text-align: center; border-bottom: 1px solid #e6dccd; }
+  .header { background: #ffffff; padding: 32px 32px 28px; text-align: center; border-bottom: 1px solid #e6dccd; }
   .header img { max-width: 240px; height: auto; }
   .header .tagline { color: #bc9155; font-size: 18px; line-height: 1.4; margin-top: 16px; font-style: italic; font-family: 'Playfair Display', Georgia, 'Times New Roman', serif; font-weight: 400; white-space: nowrap; }
   .header .tagline span { color: #1e2b43; }
@@ -17,12 +17,12 @@
   table { width: 100%; border-collapse: collapse; margin: 8px 0; }
   td { padding: 10px 0; border-bottom: 1px solid #f0e9dc; font-size: 15px; vertical-align: top; }
   td.label { width: 130px; color: #5c677d; font-weight: 600; }
-  .calendar-cta { background: #f5f1e9; padding: 20px; border-left: 4px solid #bc9155; margin-top: 24px; border-radius: 0 6px 6px 0; }
+  .calendar-cta { background: #ffffff; padding: 20px; border-left: 4px solid #bc9155; margin-top: 24px; border-radius: 0 6px 6px 0; }
   .calendar-cta h3 { margin: 0 0 6px; color: #1e2b43; font-size: 16px; }
   .calendar-cta p { font-size: 14px; margin: 0; color: #5c677d; }
   .next-steps { margin-top: 28px; }
   .next-steps li { margin: 6px 0; font-size: 15px; color: #1e2b43; }
-  .footer { background: #f5f1e9; padding: 24px 32px; border-top: 1px solid #e6dccd; text-align: center; font-size: 13px; color: #5c677d; line-height: 1.6; }
+  .footer { background: #ffffff; padding: 24px 32px; border-top: 1px solid #e6dccd; text-align: center; font-size: 13px; color: #5c677d; line-height: 1.6; }
   .footer a { color: #bc9155; text-decoration: none; font-weight: 600; }
   .footer .divider { color: #d6cebc; margin: 0 8px; }
   .signature { margin-top: 24px; font-style: italic; color: #5c677d; font-size: 14px; line-height: 1.7; }
@@ -66,7 +66,7 @@
 
     @if($lead->message)
       <h2>Your Notes</h2>
-      <p style="background: #f5f1e9; padding: 16px; border-left: 3px solid #bc9155; font-size: 15px;">{{ $lead->message }}</p>
+      <p style="background: #ffffff; padding: 16px; border-left: 3px solid #bc9155; font-size: 15px;">{{ $lead->message }}</p>
     @endif
 
     @php

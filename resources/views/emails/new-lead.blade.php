@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <title>New Lead</title>
 <style>
-body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #1e2b43; margin: 0; padding: 24px; background: #f5f1e9; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #1e2b43; margin: 0; padding: 24px; background: #ffffff; }
 .wrap { max-width: 640px; margin: 0 auto; background: #fff; padding: 32px; border-radius: 8px; border: 1px solid #e6dccd; }
 h1 { font-size: 22px; margin: 0 0 20px; color: #1e2b43; text-align: center; }
 .tagline { color: #bc9155; font-size: 18px; line-height: 1.4; margin-top: 16px; font-style: italic; font-family: 'Playfair Display', Georgia, 'Times New Roman', serif; font-weight: 400; white-space: nowrap; }
@@ -14,7 +14,7 @@ table { width: 100%; border-collapse: collapse; }
 td { padding: 8px 0; border-bottom: 1px solid #f0e9dc; font-size: 15px; vertical-align: top; }
 td.label { width: 140px; color: #5c677d; font-weight: 600; }
 td.value { color: #1e2b43; }
-.msg { background: #f5f1e9; padding: 16px; border-left: 3px solid #bc9155; margin-top: 8px; font-size: 15px; line-height: 1.6; white-space: pre-wrap; }
+.msg { background: #ffffff; padding: 16px; border-left: 3px solid #bc9155; margin-top: 8px; font-size: 15px; line-height: 1.6; white-space: pre-wrap; }
 .cta { margin-top: 24px; }
 .cta a { display: inline-block; background: #bc9155; color: #fff; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: 600; }
 .meta { margin-top: 24px; font-size: 13px; color: #8a92a3; }
@@ -22,7 +22,7 @@ td.value { color: #1e2b43; }
 </head>
 <body>
 <div class="wrap">
-  <div style="background: #f5f1e9; padding: 28px 20px 24px; text-align: center; margin: -32px -32px 24px -32px; border-radius: 8px 8px 0 0; border-bottom: 1px solid #e6dccd;">
+  <div style="background: #ffffff; padding: 28px 20px 24px; text-align: center; margin: -32px -32px 24px -32px; border-radius: 8px 8px 0 0; border-bottom: 1px solid #e6dccd;">
     <img src="https://api.builtwellct.com/logos/builtwell-logo-colored-cropped.png" alt="BuiltWell CT" style="max-width: 200px; height: auto;" />
     <div class="tagline">The Last Contractor You'll <span>Hire.</span></div>
   </div>
